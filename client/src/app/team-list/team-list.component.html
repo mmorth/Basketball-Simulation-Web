@@ -1,9 +1,7 @@
 <h2>Team List: </h2>
-<div class="col-sm-3" style="background-color:blue;">
 	<div class="list-group">
 		<a href="#" class="list-group-item list-group-item-action disabled">
 			Teams
 		</a>
-		<a href="#" class="list-group-item list-group-item-action" *ngFor="let team of teams"><span class="badge">{{team.id}}</span> {{team.name}}</a>
+		<a href="#" class="list-group-item list-group-item-action" *ngFor="let team of teams" (click)="onSelect(team)"><span class="badge">{{team.overallRating}}</span> {{team.name}}</a>
 	</div>
-</div>

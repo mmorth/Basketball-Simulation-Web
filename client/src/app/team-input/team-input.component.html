@@ -1,4 +1,6 @@
-<div class="teamInputForm">
+<!-- <div class="teamInputForm" *ngIf="selectedTeam">
+
+	<h1>Team Information:</h1>
 
 	<div class="form-group">
 		<label for="inputlg">Team Name</label>
@@ -7,13 +9,14 @@
 
 	<div class="form-group">
 		<label for="inputlg">Offensive Rating</label>
-		<input class="form-control input-lg" id="inputlg" type="text">
+		<input class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="selectedTeam.name" placeholder="name">
 	</div>
 	<div class="form-group">
 		<label for="inputlg">Defensive Rating</label>
 		<input class="form-control input-lg" id="inputlg" type="text">
 	</div>
 
-	<a id="delete-team-button" href="#" class="btn btn-primary">Create Team</a>
+	<a id="delete-team-button" href="#" class="btn btn-primary">Create/Edit Team</a>
 
 </div>
+ -->

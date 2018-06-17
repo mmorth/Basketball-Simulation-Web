@@ -1,22 +1,40 @@
-<!-- <div class="teamInputForm" *ngIf="selectedTeam">
+<h1>Team Information:</h1>
 
-	<h1>Team Information:</h1>
+<div class="teamInputForm" *ngIf="team; else notTeam">
 
 	<div class="form-group">
 		<label for="inputlg">Team Name</label>
-		<input class="form-control input-lg" id="inputlg" type="text">
+		<input id="teamName" class="form-control input-lg" id="inputlg" type="text" placeholder="Team Name" value={{team.name}} ng-model="teamInputs">
 	</div>
 
 	<div class="form-group">
 		<label for="inputlg">Offensive Rating</label>
-		<input class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="selectedTeam.name" placeholder="name">
+		<input id="teamOffensiveRating" class="form-control input-lg" id="inputlg" type="text" placeholder="Offensive Rating" value={{team.offensiveRating}} ng-model="teamInputs">
 	</div>
+
 	<div class="form-group">
 		<label for="inputlg">Defensive Rating</label>
-		<input class="form-control input-lg" id="inputlg" type="text">
+		<input id="teamDefensiveRating" class="form-control input-lg" id="inputlg" type="text" placeholder="Defensive Rating" value={{team.defensiveRating}} ng-model="teamInputs">
 	</div>
 
-	<a id="delete-team-button" href="#" class="btn btn-primary">Create/Edit Team</a>
-
 </div>
- -->
+
+<ng-template #notTeam>
+	<div class="form-group">
+		<label for="inputlg">Team Name</label>
+		<input id="teamName" class="form-control input-lg" id="inputlg" type="text" placeholder="Team Name" ng-model="teamInputs">
+	</div>
+
+	<div class="form-group">
+		<label for="inputlg">Offensive Rating</label>
+		<input id="teamOffensiveRating" class="form-control input-lg" id="inputlg" type="text" placeholder="Offensive Rating" ng-model="teamInputs">
+	</div>
+
+	<div class="form-group">
+		<label for="inputlg">Defensive Rating</label>
+		<input id="teamDefensiveRating" class="form-control input-lg" id="inputlg" type="text" placeholder="Defensive Rating" ng-model="teamInputs">
+	</div>
+</ng-template>
+
+<a id="delete-team-button" href="#" class="btn btn-primary">Create/Edit Team</a>
+<a id="clear-input-button" href="#" class="btn btn-primary" onclick="this.value = '';">Clear Input Fields</a>

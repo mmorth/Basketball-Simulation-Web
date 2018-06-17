@@ -3,5 +3,7 @@
 		<a href="#" class="list-group-item list-group-item-action disabled">
 			Teams
 		</a>
-		<a href="#" class="list-group-item list-group-item-action" *ngFor="let team of teams" (click)="onSelect(team)"><span class="badge">{{team.overallRating}}</span> {{team.name}}</a>
+		<a href="#" class="list-group-item list-group-item-action" *ngFor="let team of teams" [class.selected]="team === selectedTeam" (click)="onSelect(team)"><span class="badge">{{team.overallRating}}</span> {{team.name}}</a>
 	</div>
+
+<app-team-input [team]="selectedTeam"></app-team-input>

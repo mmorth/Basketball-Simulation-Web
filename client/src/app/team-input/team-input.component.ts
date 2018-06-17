@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Team } from '../models/team';
 
 @Component({
   selector: 'app-team-input',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TeamInputComponent implements OnInit {
 
+  @Input() team: Team;
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  clearInputs() {
+  	document.getElementById("teamName").value = "";
   }
 
 }

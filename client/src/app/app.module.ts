@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { ScoreboardComponent } from './scoreboard/scoreboard.component';
@@ -22,7 +23,8 @@ import { GameSimulationInputComponent } from './game-simulation-input/game-simul
     GameSimulationInputComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

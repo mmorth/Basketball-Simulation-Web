@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+
+import { Team } from '../models/team'
 import { TEAMS } from '../models/mock-teams'
 
 @Component({
@@ -10,9 +12,13 @@ export class TeamListComponent implements OnInit {
 
   teams = TEAMS;
   
-  constructor() { }
+  constructor(private transfereService:TransfereService) { }
 
   ngOnInit() {
+  }
+
+  onSelect(team: Team): void {
+  	this.transfereService.setData(team);
   }
 
 }

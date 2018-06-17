@@ -3,87 +3,17 @@
 <head>
   <title>Scoreboard</title>
   <meta charset="utf-8">
-
-  <style>
-  .container {
-    width: 100%;
-  }
-
-  #away-team, #home-team {
-    text-align:center;
-  }
-
-  #away-team-label, #away-team-select-dropdown, #home-team-label, #home-team-select-dropdown {
-    display: inline-block;
-  }
-
-</style>
 </head>
 <body>
+
   <div class="container-fluid">
-    <nav class="navbar navbar-inverse">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">Basketball Simulation</a>
-        </div>
-        <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Home</a></li>
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Game Simulation
-              <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Game</a></li>
-                <li><a href="#">Season</a></li>
-                <li><a href="#"></a></li>
-              </ul>
-            </li>
-            <li><a href="#">Page 2</a></li>
-            <li><a href="#">Page 3</a></li>
-          </ul>
-        </div>
-      </nav>  
-        
+    
+      <app-navigation-bar></app-navigation-bar>
+
       <app-scoreboard></app-scoreboard>
 
-      <h3>Possessions Remaining: 100</h3>
+      <app-game-simulation-input></app-game-simulation-input>
 
-      <div class="btn-group btn-group-justified">
-        <a href="#" class="btn btn-primary">Simulate Possession</a>
-        <a href="#" class="btn btn-primary">Simulate Quarter</a>
-        <a href="#" class="btn btn-primary">Simulate Game</a>
-        <a href="#" class="btn btn-primary">Reset Simulation</a>
-      </div>
-
-      <div id="away-team" class="away-team-select">
-        <div id="away-team-label"><h3>Away Team: </h3> </div>
-        <!-- Example single danger button -->
-        <div id="away-team-select-dropdown" class="dropdown">
-          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Away Team Select
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </div>                 
-
-      </div>
-
-      <div id="home-team" class="away-team-select">
-        <div id="home-team-label"><h3>Home Team: </h3> </div>
-        <!-- Example single danger button -->
-        <div id="home-team-select-dropdown" class="dropdown">
-          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Home Team Select
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </div>                     
-      </div>
     </div>
   </body>
   </html>

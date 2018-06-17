@@ -1,0 +1,8 @@
+#update-delete-buttons {
+	text-align:center;
+	float: left;
+}
+
+#delete-team-button, #update-team-button {
+	display: inline-block;
+}

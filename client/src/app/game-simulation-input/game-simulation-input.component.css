@@ -1,0 +1,7 @@
+ #away-team, #home-team {
+    text-align:center;
+  }
+
+  #away-team-label, #away-team-select-dropdown, #home-team-label, #home-team-select-dropdown {
+    display: inline-block;
+  }

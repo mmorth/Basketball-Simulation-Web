@@ -3,11 +3,23 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { ScoreboardComponent } from './scoreboard/scoreboard.component';
+import { TeamInputComponent } from './team-input/team-input.component';
+import { GameSimulationComponent } from './game-simulation/game-simulation.component';
+import { TeamDetailsComponent } from './team-details/team-details.component';
+import { TeamListComponent } from './team-list/team-list.component';
+import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
+import { GameSimulationInputComponent } from './game-simulation-input/game-simulation-input.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ScoreboardComponent
+    ScoreboardComponent,
+    TeamInputComponent,
+    GameSimulationComponent,
+    TeamDetailsComponent,
+    TeamListComponent,
+    NavigationBarComponent,
+    GameSimulationInputComponent
   ],
   imports: [
     BrowserModule

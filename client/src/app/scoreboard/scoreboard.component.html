@@ -1,3 +1,65 @@
-<p>
-  scoreboard works!
-</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Scoreboard</title>
+  <meta charset="utf-8">
+
+  <style>
+  .container {
+      width: 100%;
+  }
+
+  #away-team, #home-team {
+    text-align:center;
+}
+
+#away-team-label, #away-team-select-dropdown, #home-team-label, #home-team-select-dropdown {
+    display: inline-block;
+}
+
+</style>
+</head>
+<body>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="container">
+            <h2>Scoreboard</h2>       
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Teams</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>OT</th>
+                        <th>F</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{awayTeam.name}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{awayTeam.score}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{homeTeam.name}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{homeTeam.score}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

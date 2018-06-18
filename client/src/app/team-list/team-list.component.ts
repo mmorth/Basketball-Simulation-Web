@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Team } from '../models/team';
-import { TEAMS } from '../models/mock-teams'
+import { TeamService } from '../services/team.service';
 
 @Component({
   selector: 'app-team-list',
@@ -10,16 +10,21 @@ import { TEAMS } from '../models/mock-teams'
 })
 export class TeamListComponent implements OnInit {
 
-  teams = TEAMS;
+  teams: Team[];
   selectedTeam: Team;
   
-  constructor() { }
+  constructor(private teamService: TeamService) { }
 
   ngOnInit() {
+    this.getTeams();
   }
 
   onSelect(team: Team): void {
     this.selectedTeam = team;
+  }
+
+  getTeams(): void {
+    this.teams = this.teamService.getTeams();
   }
 
 }

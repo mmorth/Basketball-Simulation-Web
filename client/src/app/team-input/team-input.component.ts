@@ -15,8 +15,4 @@ export class TeamInputComponent implements OnInit {
   ngOnInit() {
   }
 
-  clearInputs() {
-  	document.getElementById("teamName").value = "";
-  }
-
 }

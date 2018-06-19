@@ -5,7 +5,6 @@ import { GameSimulationComponent } from './game-simulation/game-simulation.compo
 import { TeamDetailsComponent } from './team-details/team-details.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/game-simulation', pathMatch: 'full' },
   { path: 'game-simulation', component: GameSimulationComponent }
   { path: 'team-details', component: TeamDetailsComponent }
 ];

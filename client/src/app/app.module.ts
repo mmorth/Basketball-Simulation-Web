@@ -9,6 +9,7 @@ import { TeamDetailsComponent } from './team-details/team-details.component';
 import { TeamListComponent } from './team-list/team-list.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 import { GameSimulationInputComponent } from './game-simulation-input/game-simulation-input.component';
+import { AppRoutingModule } from './/app-routing.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { GameSimulationInputComponent } from './game-simulation-input/game-simul
     GameSimulationInputComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

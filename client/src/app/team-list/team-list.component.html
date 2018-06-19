@@ -1,9 +1,14 @@
-<h2>Team List: </h2>
-	<div class="list-group">
-		<a href="#" class="list-group-item list-group-item-action disabled">
-			Teams
-		</a>
-		<a href="#" class="list-group-item list-group-item-action" *ngFor="let team of teams" [class.selected]="team === selectedTeam" (click)="onSelect(team)"><span class="badge">{{team.overallRating}}</span> {{team.name}}</a>
+<div class="row">
+	<div class="col-sm-3">
+		<h2>Team List: </h2>
+		<div class="list-group">
+			<a href="#" class="list-group-item list-group-item-action disabled">
+				Teams
+			</a>
+			<a href="#" class="list-group-item list-group-item-action" *ngFor="let team of teams" [class.selected]="team === selectedTeam" (click)="onSelect(team)"><span class="badge">{{team.overallRating}}</span> {{team.name}}</a>
+		</div>
 	</div>
-
-<app-team-input [team]="selectedTeam"></app-team-input>
+	<div class="col-sm-9">
+		<app-team-input [team]="selectedTeam"></app-team-input>
+	</div>
+</div>

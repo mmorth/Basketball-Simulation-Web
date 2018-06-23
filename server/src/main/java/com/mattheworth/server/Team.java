@@ -1,30 +1,42 @@
 package com.mattheworth.server;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+@Entity
+@Table(uniqueConstraints=@UniqueConstraint(columnNames="NAME"))
 public class Team {
 
 	/* fields */
-	private final long id;
+	@Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+	private Integer id;
 	private String name;
 	private int offensiveRating;
 	private int defensiveRating;
-	private int score;
 
 	/* constructor */
-	public Team(long id, String name, int offensiveRating, int defensiveRating) {
-		this.id = id;
-		this.name = name;
-		this.offensiveRating = offensiveRating;
-		this.defensiveRating = defensiveRating;
-		this.score = 0;
-	}
+//	public Team(String name, int offensiveRating, int defensiveRating) {
+//		this.name = name;
+//		this.offensiveRating = offensiveRating;
+//		this.defensiveRating = defensiveRating;
+//	}
 
 	/* getters and setters */
 	public String getName() {
 		return name;
 	}
 
-	public long getId() {
+	public Integer getId() {
 		return id;
+	}
+	
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public void setName(String name) {
@@ -45,14 +57,6 @@ public class Team {
 
 	public void setDefensiveRating(int defensiveRating) {
 		this.defensiveRating = defensiveRating;
-	}
-
-	public int getScore() {
-		return score;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
 	}
 
 }

@@ -9,6 +9,8 @@ public class GameSimulation {
 	private Team homeTeam;
 	private int possessionsRemaining;
 	private boolean isOvertime;
+	private int awayTeamScore;
+	private int homeTeamScore;
 	private int awayTeamPreviousQuarterScore;
 	private int homeTeamPreviousQuarterScore;
 	private Random rand;
@@ -19,12 +21,11 @@ public class GameSimulation {
 		this.homeTeam = homeTeam;
 		this.possessionsRemaining = 0;
 		this.isOvertime = false;
+		this.awayTeamScore = 0;
+		this.homeTeamScore = 0;
 		this.awayTeamPreviousQuarterScore = 0;
 		this.homeTeamPreviousQuarterScore = 0;
 		this.rand = new Random();
-		
-		awayTeam.setScore(0);
-		homeTeam.setScore(0);
 	}
 
 	/* logic methods */
@@ -50,7 +51,7 @@ public class GameSimulation {
 		}
 
 		// Check if game is tied after regulation
-		if (!isOvertime && awayTeam.getScore() == homeTeam.getScore() && possessionsRemaining == -1) {
+		if (!isOvertime && awayTeamScore == homeTeamScore && possessionsRemaining == -1) {
 			possessionsRemaining = 9;
 			isOvertime = true;
 		}
@@ -60,7 +61,7 @@ public class GameSimulation {
 			possessions = simulatePossession(5, possessions);
 		}
 
-		if (awayTeam.getScore() == homeTeam.getScore() && possessionsRemaining == -1 && isOvertime) {
+		if (awayTeamScore == homeTeamScore && possessionsRemaining == -1 && isOvertime) {
 			possessionsRemaining = 9;
 			isOvertime = true;
 		}
@@ -96,8 +97,8 @@ public class GameSimulation {
 		// Store the previous quarter scores if the quarter just ended
 		// Used to calculate the scores for following quarters
 		if (possessionsRemaining == possessionsRemainingCondition) {
-			awayTeamPreviousQuarterScore = awayTeam.getScore();
-			homeTeamPreviousQuarterScore = homeTeam.getScore();
+			awayTeamPreviousQuarterScore = awayTeamScore;
+			homeTeamPreviousQuarterScore = homeTeamScore;
 		}
 
 		return possessions;
@@ -115,14 +116,14 @@ public class GameSimulation {
 
 		awayTeamScoreIncrease = determineScoreIncrease(awayTeamRandNum, 500 + awayTeamOffense);
 
-		awayTeam.setScore(awayTeam.getScore() + awayTeamScoreIncrease);
+		awayTeamScore += awayTeamScoreIncrease;
 
 		// Determine the score increase for the home team
 		int homeTeamRandNum = rand.nextInt(100);
 
 		homeTeamScoreIncrease = determineScoreIncrease(homeTeamRandNum, 500 + homeTeamOffense);
 
-		homeTeam.setScore(homeTeam.getScore() + homeTeamScoreIncrease);
+		homeTeamScore += homeTeamScoreIncrease;
 	}
 
 	public int determineScoreIncrease(int randNum, int teamRatio) {
@@ -150,8 +151,8 @@ public class GameSimulation {
 		awayTeamPreviousQuarterScore = 0;
 		homeTeamPreviousQuarterScore = 0;
 
-		awayTeam.setScore(0);
-		homeTeam.setScore(0);
+		this.awayTeamScore = 0;
+		this.homeTeamScore = 0;
 
 		isOvertime = false;
 
@@ -212,6 +213,22 @@ public class GameSimulation {
 
 	public void setRand(Random rand) {
 		this.rand = rand;
+	}
+
+	public int getAwayTeamScore() {
+		return awayTeamScore;
+	}
+
+	public void setAwayTeamScore(int awayTeamScore) {
+		this.awayTeamScore = awayTeamScore;
+	}
+
+	public int getHomeTeamScore() {
+		return homeTeamScore;
+	}
+
+	public void setHomeTeamScore(int homeTeamScore) {
+		this.homeTeamScore = homeTeamScore;
 	}
 
 }

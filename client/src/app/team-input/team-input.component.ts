@@ -14,6 +14,12 @@ export class TeamInputComponent implements OnInit {
 
   team: Team;
 
+  teamName: string;
+  offensiveRating: number;
+  defensiveRating: number;
+
+  error: string;
+
   constructor(private route: ActivatedRoute, private teamService: TeamService, private location: Location) { }
 
   ngOnInit(): void {
@@ -23,7 +29,33 @@ export class TeamInputComponent implements OnInit {
   getTeam(): void {
   	const id = +this.route.snapshot.paramMap.get('id');
   	this.teamService.getTeam(id)
-    .subscribe(team => this.team = team);
+    .subscribe(team => {
+    	this.teamName = team.name; 
+    	this.offensiveRating = team.offensiveRating; 
+    	this.defensiveRating = team.defensiveRating
+    	}
+    );
+  }
+
+  createTeam(): void {
+  	if (this.teamName != "" && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
+  		this.teamService.createTeam(this.teamName, this.offensiveRating, this.defensiveRating)
+  		.subscribe(() => {
+  			this.teamName = "";
+  			this.offensiveRating = 0;
+  			this.defensiveRating = 0;
+  		});
+    }
+  }
+
+  deleteTeam(): void {
+  	const id = +this.route.snapshot.paramMap.get('id');
+  	this.teamService.deleteTeam(id)
+  	.subscribe(
+  		() => {
+  			
+  		}
+  	);
   }
 
 }

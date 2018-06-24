@@ -1,22 +1,35 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Team } from '../models/team';
-import { TEAMS } from '../models/mock-teams';
+
+const HEADERS: any = { headers: { 'Content-Type': 'application/json' }};
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeamService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   getTeams(): Observable<Team[]> {
-    return of(TEAMS);
+    return this.http.get<Team[]>('http://localhost:8080/api/teams')
   }
 
   getTeam(id: number): Observable<Team> {
-  	return of(TEAMS.find(team => team.id === id));
+  	return this.http.get<Team>('http://localhost:8080/api/teams/' + id)
+  }
+
+  createTeam(teamName: string, offRating: number, defRating: number) {
+  	return this.http.post('http://localhost:8080/api/teams/',
+  		JSON.stringify({ name: teamName, offensiveRating: offRating, defensiveRating: defRating }), 
+  		HEADERS
+  	);
+  }
+
+  deleteTeam(teamID: number) {
+  	return this.http.delete('http://localhost:8080/api/teams/' + teamID)
   }
 
 }

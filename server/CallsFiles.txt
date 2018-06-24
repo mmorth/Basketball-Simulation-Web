@@ -1,0 +1,23 @@
+Calls:
+GET /teams: Returns a list of all teams
+GET /teams/:id: Returns information about the team with the given ID
+POST /teams: Creates a new team 
+POST /teams/:id: Updates the information about the team with the given id
+DELETE /teams/:id: Deletes a team with the given id
+
+GET /game-simulation/:id: Returns information about a game simulation with the given id
+GET /game-simulation: Returns a list of all game simulations
+POST /game-simulation: Creates a new game simulation
+POST /game-simulation/:id: Updates the game simlation with the given id
+DELETE /game-simulation/:id: Deletes the game simlation with the given id
+
+Classes:
+Team
+	teamName
+	offensiveRating
+	defensiveRating
+
+GameSimulation
+	homeTeam
+	awayTeam
+	

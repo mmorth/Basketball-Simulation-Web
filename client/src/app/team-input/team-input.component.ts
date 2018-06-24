@@ -1,5 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+
 import { Team } from '../models/team';
+import { TeamService } from '../services/team.service';
 
 @Component({
   selector: 'app-team-input',
@@ -8,11 +12,18 @@ import { Team } from '../models/team';
 })
 export class TeamInputComponent implements OnInit {
 
-  @Input() team: Team;
+  team: Team;
 
-  constructor() { }
+  constructor(private route: ActivatedRoute, private teamService: TeamService, private location: Location) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
+  	this.getTeam();
+  }
+
+  getTeam(): void {
+  	const id = +this.route.snapshot.paramMap.get('id');
+  	this.teamService.getTeam(id)
+    .subscribe(team => this.team = team);
   }
 
 }

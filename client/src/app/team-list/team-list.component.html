@@ -1,14 +1,9 @@
 <div class="row">
-	<div class="col-sm-3">
-		<h2>Team List: </h2>
-		<div class="list-group">
-			<a href="#" class="list-group-item list-group-item-action disabled">
-				Teams
-			</a>
-			<a class="list-group-item list-group-item-action" *ngFor="let team of teams" [class.selected]="team === selectedTeam" (click)="onSelect(team)"><span class="badge">{{team.overallRating}}</span> {{team.name}}</a>
-		</div>
-	</div>
-	<div class="col-sm-9">
-		<app-team-input [team]="selectedTeam"></app-team-input>
+	<div class="list-group">
+		<h2>. Team List: </h2>
+		<a href="#" class="list-group-item list-group-item-action disabled">
+			Teams
+		</a>
+		<a class="list-group-item list-group-item-action" *ngFor="let team of teams" routerLink="/team-details/{{team.id}}"><span class="badge">{{team.overallRating}}</span> {{team.name}}</a>
 	</div>
 </div>

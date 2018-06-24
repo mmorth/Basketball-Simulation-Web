@@ -14,4 +14,9 @@ export class TeamService {
   getTeams(): Observable<Team[]> {
     return of(TEAMS);
   }
+
+  getTeam(id: number): Observable<Team> {
+  	return of(TEAMS.find(team => team.id === id));
+  }
+
 }

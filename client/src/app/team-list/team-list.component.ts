@@ -11,16 +11,11 @@ import { TeamService } from '../services/team.service';
 export class TeamListComponent implements OnInit {
 
   teams: Team[];
-  selectedTeam: Team;
   
   constructor(private teamService: TeamService) { }
 
   ngOnInit() {
     this.getTeams();
-  }
-
-  onSelect(team: Team): void {
-    this.selectedTeam = team;
   }
 
   getTeams(): void {

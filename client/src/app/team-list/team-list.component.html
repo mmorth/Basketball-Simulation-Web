@@ -1,9 +1,25 @@
 <div class="row">
-	<div class="list-group">
-		<h2>. Team List: </h2>
-		<a href="#" class="list-group-item list-group-item-action disabled">
-			Teams
-		</a>
-		<a class="list-group-item list-group-item-action" *ngFor="let team of teams" routerLink="/team-details/{{team.id}}"><span class="badge">{{team.overallRating}}</span> {{team.name}}</a>
+	<div class="col-sm-12">
+		<div class="container">      
+			<h2>Team List: </h2>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>Team</th>
+						<th>Offensive Rating</th>
+						<th>Defensive Rating</th>
+						<th>Overall Rating</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let team of teams">
+						<td><a routerLink="/team-details/{{team.id}}">{{team.name}}</a></td>
+						<td>{{team.offensiveRating}}</td>
+						<td>{{team.defensiveRating}}</td>
+						<td>{{(team.offensiveRating+team.defensiveRating)/2}}
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>

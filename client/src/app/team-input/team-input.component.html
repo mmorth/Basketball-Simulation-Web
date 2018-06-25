@@ -12,8 +12,8 @@
 	<div class="teamInputForm" *ngIf="team; else notTeam">
 
 		<div class="form-group">
-			<label for="inputlg">Team Name (must be greater than or equal to 1 character)</label>
-			<input id="teamName" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="teamName" placeholder="Team Name" value={{team.name}} ng-model="teamInputs">
+			<label for="inputlg">Team Name (cannot change)</label>
+			<input id="teamName" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="teamName" placeholder="Team Name" value={{team.name}} ng-model="teamInputs" readonly>
 		</div>
 
 		<div class="form-group">
@@ -25,6 +25,9 @@
 			<label for="inputlg">Defensive Rating (must be between 1 and 100)</label>
 			<input id="teamDefensiveRating" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="defensiveRating" placeholder="Defensive Rating" value={{team.defensiveRating}} ng-model="teamInputs">
 		</div>
+
+		<a id="delete-team-button" class="btn btn-primary" (click)="updateTeam()">Update Team</a>
+		<a id="clear-input-button" class="btn btn-primary" (click)="deleteTeam()">Delete Team</a>
 
 	</div>
 
@@ -43,10 +46,11 @@
 			<label for="inputlg">Defensive Rating (must be between 1 and 100)</label>
 			<input id="teamDefensiveRating" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="defensiveRating" placeholder="Defensive Rating" ng-model="teamInputs">
 		</div>
+
+		<a id="delete-team-button" class="btn btn-primary" (click)="createTeam()">Create Team</a>
 	</ng-template>
 
-	<a id="delete-team-button" class="btn btn-primary" routerLink="/team-details/" (click)="createTeam()">Create/Edit Team</a>
-	<a id="clear-input-button" class="btn btn-primary" routerLink="/team-details/" (click)="deleteTeam()">Delete Team</a>
+	  <font color="red">{{ inputError }}</font> 
 
 </body>
 </html>

@@ -32,4 +32,11 @@ export class TeamService {
   	return this.http.delete('http://localhost:8080/api/teams/' + teamID)
   }
 
+  updateTeam(teamID: number, teamName: string, offRating: number, defRating: number) {
+  	return this.http.put('http://localhost:8080/api/teams/' + teamID,
+  		JSON.stringify({ name: teamName, offensiveRating: offRating, defensiveRating: defRating }), 
+  		HEADERS
+  	);
+  }
+
 }

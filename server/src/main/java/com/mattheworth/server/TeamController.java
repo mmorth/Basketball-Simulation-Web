@@ -48,13 +48,11 @@ public class TeamController {
 	
 	// Updates a team
 	@RequestMapping(path="/{id}", method = RequestMethod.PUT)
-	public @ResponseBody String updateTeam(@PathVariable long id, @RequestParam String name
-			, @RequestParam int offensiveRating, @RequestParam int defensiveRating) {
+	public @ResponseBody String updateTeam(@PathVariable long id, @RequestBody Team jsonTeam) {
 		Team updateTeam = teamRepository.findById(id).get();
 		
-		updateTeam.setName(name);
-		updateTeam.setOffensiveRating(offensiveRating);
-		updateTeam.setDefensiveRating(defensiveRating);
+		updateTeam.setOffensiveRating(jsonTeam.getOffensiveRating());
+		updateTeam.setDefensiveRating(jsonTeam.getDefensiveRating());
 		teamRepository.save(updateTeam);
 		
 		return "Team Updated";

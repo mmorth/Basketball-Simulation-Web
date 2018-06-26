@@ -10,7 +10,7 @@ export class ScoreboardComponent implements OnInit {
 
   homeTeam: Team = {
   	id: 1,
-  	name: 'Dragons',
+  	name: 'Home',
     offensiveRating: 100,
     defensiveRating: 100,
     overallRating: 100,
@@ -19,7 +19,7 @@ export class ScoreboardComponent implements OnInit {
 
   awayTeam: Team = {
   	id: 2,
-  	name: 'Gators',
+  	name: 'Away',
     offensiveRating: 90,
     defensiveRating: 90,
     overallRating: 90,

@@ -2,18 +2,34 @@ package com.mattheworth.server;
 
 import java.util.Random;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
+@Entity
 public class GameSimulation {
 
 	/* fields */
+	@Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+	private int id;
+	
+	@OneToOne()
 	private Team awayTeam;
+	
+	@OneToOne()
 	private Team homeTeam;
+	
 	private int possessionsRemaining;
 	private boolean isOvertime;
 	private int awayTeamScore;
 	private int homeTeamScore;
 	private int awayTeamPreviousQuarterScore;
 	private int homeTeamPreviousQuarterScore;
-	private Random rand;
 
 	/* constructor */
 	public GameSimulation(Team awayTeam, Team homeTeam) {
@@ -25,7 +41,6 @@ public class GameSimulation {
 		this.homeTeamScore = 0;
 		this.awayTeamPreviousQuarterScore = 0;
 		this.homeTeamPreviousQuarterScore = 0;
-		this.rand = new Random();
 	}
 
 	/* logic methods */
@@ -105,6 +120,8 @@ public class GameSimulation {
 	}
 
 	public void determineScoringOutcome() {
+		Random rand = new Random();
+		
 		int awayTeamScoreIncrease = 0;
 		int homeTeamScoreIncrease = 0;
 
@@ -205,14 +222,6 @@ public class GameSimulation {
 
 	public void setHomeTeamPreviousQuarterScore(int homeTeamPreviousQuarterScore) {
 		this.homeTeamPreviousQuarterScore = homeTeamPreviousQuarterScore;
-	}
-
-	public Random getRand() {
-		return rand;
-	}
-
-	public void setRand(Random rand) {
-		this.rand = rand;
 	}
 
 	public int getAwayTeamScore() {

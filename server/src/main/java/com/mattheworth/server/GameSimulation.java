@@ -1,27 +1,32 @@
 package com.mattheworth.server;
 
+import java.io.Serializable;
 import java.util.Random;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
-public class GameSimulation {
+@Table(name = "game_simulation")
+public class GameSimulation implements Serializable {
 
 	/* fields */
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	private long id;
 	
-	@OneToOne()
+	@OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id", nullable = false)
 	private Team awayTeam;
 	
-	@OneToOne()
 	private Team homeTeam;
 	
 	private int possessionsRemaining;
@@ -31,17 +36,21 @@ public class GameSimulation {
 	private int awayTeamPreviousQuarterScore;
 	private int homeTeamPreviousQuarterScore;
 
-	/* constructor */
-	public GameSimulation(Team awayTeam, Team homeTeam) {
-		this.awayTeam = awayTeam;
-		this.homeTeam = homeTeam;
-		this.possessionsRemaining = 0;
-		this.isOvertime = false;
-		this.awayTeamScore = 0;
-		this.homeTeamScore = 0;
-		this.awayTeamPreviousQuarterScore = 0;
-		this.homeTeamPreviousQuarterScore = 0;
+	public GameSimulation() {
+		
 	}
+	
+	/* constructor */
+//	public GameSimulation(Team awayTeam, Team homeTeam) {
+//		this.awayTeam = awayTeam;
+//		this.homeTeam = homeTeam;
+//		this.possessionsRemaining = 0;
+//		this.isOvertime = false;
+//		this.awayTeamScore = 0;
+//		this.homeTeamScore = 0;
+//		this.awayTeamPreviousQuarterScore = 0;
+//		this.homeTeamPreviousQuarterScore = 0;
+//	}
 
 	/* logic methods */
 	public void simulationPossession(int possessions) {

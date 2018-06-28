@@ -23,22 +23,8 @@ public class GameSimulationController {
 	private TeamRepository teamRepository;
 
 	// Creates a new team
-	@RequestMapping(path="/{awayTeamID}/{homeTeamID}", method = RequestMethod.POST)
-	public @ResponseBody String createGameSimulation(@PathVariable long awayTeamID, @PathVariable long homeTeamID) {
-
-		Team awayTeam = teamRepository.findById(awayTeamID).get();
-		Team homeTeam = teamRepository.findById(homeTeamID).get();
-		
-		GameSimulation gameSimulation = new GameSimulation();
-		
-		gameSimulation.setAwayTeam(awayTeam);
-		gameSimulation.setHomeTeam(homeTeam);
-		gameSimulation.setPossessionsRemaining(99);
-		gameSimulation.setOvertime(false);
-		gameSimulation.setHomeTeamScore(0);
-		gameSimulation.setAwayTeamScore(0);
-		gameSimulation.setHomeTeamPreviousQuarterScore(0);
-		gameSimulation.setAwayTeamPreviousQuarterScore(0);
+	@RequestMapping(method = RequestMethod.POST)
+	public @ResponseBody String createGameSimulation(@RequestBody GameSimulation gameSimulation) {
 		
 		gameSimulationRepository.save(gameSimulation);
 		

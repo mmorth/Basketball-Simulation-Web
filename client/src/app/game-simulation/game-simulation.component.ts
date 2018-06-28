@@ -19,7 +19,8 @@ export class GameSimulationComponent implements OnInit {
   }
 
   createSimulation(): void {
-	this.gameSimulationService.createGameSimulation(6, 16)
+	this.gameSimulationService.createGameSimulation()
 		.subscribe(() => { });
   }
+
 }

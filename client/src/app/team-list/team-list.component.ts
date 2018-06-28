@@ -21,6 +21,6 @@ export class TeamListComponent implements OnInit {
   getTeams(): void {
   this.teamService.getTeams()
       .subscribe(teams => this.teams = teams);
-}
+  }
 
 }

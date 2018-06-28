@@ -1,6 +1,5 @@
 package com.mattheworth.server;
 
-import java.io.Serializable;
 import java.util.Random;
 
 import javax.persistence.CascadeType;
@@ -11,22 +10,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "game_simulation")
-public class GameSimulation implements Serializable {
+public class GameSimulation {
 
 	/* fields */
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id", nullable = false)
+	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name="away_team_id")
 	private Team awayTeam;
 	
+	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name="home_team_id")
 	private Team homeTeam;
 	
 	private int possessionsRemaining;
@@ -41,16 +39,16 @@ public class GameSimulation implements Serializable {
 	}
 	
 	/* constructor */
-//	public GameSimulation(Team awayTeam, Team homeTeam) {
-//		this.awayTeam = awayTeam;
-//		this.homeTeam = homeTeam;
-//		this.possessionsRemaining = 0;
-//		this.isOvertime = false;
-//		this.awayTeamScore = 0;
-//		this.homeTeamScore = 0;
-//		this.awayTeamPreviousQuarterScore = 0;
-//		this.homeTeamPreviousQuarterScore = 0;
-//	}
+	public GameSimulation(Team awayTeam, Team homeTeam) {
+		this.awayTeam = awayTeam;
+		this.homeTeam = homeTeam;
+		this.possessionsRemaining = 0;
+		this.isOvertime = false;
+		this.awayTeamScore = 0;
+		this.homeTeamScore = 0;
+		this.awayTeamPreviousQuarterScore = 0;
+		this.homeTeamPreviousQuarterScore = 0;
+	}
 
 	/* logic methods */
 	public void simulationPossession(int possessions) {
@@ -247,6 +245,14 @@ public class GameSimulation implements Serializable {
 
 	public void setHomeTeamScore(int homeTeamScore) {
 		this.homeTeamScore = homeTeamScore;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 }

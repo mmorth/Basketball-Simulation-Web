@@ -13,9 +13,21 @@ export class GameSimulationService {
 
   constructor(private http: HttpClient) { }
 
-  createGameSimulation(awayTeamID: number, homeTeamID: number) {
+  createGameSimulation(awayTeam: Team, homeTeam: Team) {
   	return this.http.post('http://localhost:8080/api/game-simulation/',
-  		JSON.stringify({ awayTeam: 1, homeTeam: 2, possessionsRemaining: 99, isOvertime: false, awayTeamScore: 0, homeTeamScore: 0, awayTeamPreviousQuarterScore: 0, homeTeamPreviousQuarterScore: 0 }), 
+  		JSON.stringify({ 
+  		"awayTeam": {
+  			"id": 47
+  		}, 
+  		"homeTeam": {
+  			"id": 48
+  		}, 
+  		"possessionsRemaining": 99, 
+  		"isOvertime": 0, 
+  		"awayTeamScore": 0, 
+  		"homeTeamScore": 0, 
+  		"awayTeamPreviousQuarterScore": 0, 
+  		"homeTeamPreviousQuarterScore": 0 }), 
   		HEADERS
   	);
   }

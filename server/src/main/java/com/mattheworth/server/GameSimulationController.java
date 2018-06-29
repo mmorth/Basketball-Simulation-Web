@@ -25,7 +25,7 @@ public class GameSimulationController {
 	// Creates a new team
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody String createGameSimulation(@RequestBody GameSimulation gameSimulation) {
-		
+
 		gameSimulationRepository.save(gameSimulation);
 		
 		return "GameSimulation Created";

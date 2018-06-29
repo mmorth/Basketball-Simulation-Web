@@ -13,8 +13,6 @@ export class ScoreboardComponent implements OnInit {
   	name: 'Home',
     offensiveRating: 100,
     defensiveRating: 100,
-    overallRating: 100,
-  	score: 0
   };
 
   awayTeam: Team = {
@@ -22,8 +20,6 @@ export class ScoreboardComponent implements OnInit {
   	name: 'Away',
     offensiveRating: 90,
     defensiveRating: 90,
-    overallRating: 90,
-  	score: 0
   }
 
   constructor() { }

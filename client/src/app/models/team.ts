@@ -3,6 +3,4 @@ export class Team {
 	name: string;
 	offensiveRating: number;
 	defensiveRating: number;
-	overallRating: number;
-	score: number;
 }

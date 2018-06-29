@@ -23,7 +23,7 @@ export class TeamService {
 
   createTeam(teamName: string, offRating: number, defRating: number) {
   	return this.http.post('http://localhost:8080/api/teams/',
-  		JSON.stringify({ name: teamName, offensiveRating: offRating, defensiveRating: defRating }), 
+  		JSON.stringify({ "name": teamName, "offensiveRating": offRating, "defensiveRating": defRating }), 
   		HEADERS
   	);
   }
@@ -34,7 +34,7 @@ export class TeamService {
 
   updateTeam(teamID: number, teamName: string, offRating: number, defRating: number) {
   	return this.http.put('http://localhost:8080/api/teams/' + teamID,
-  		JSON.stringify({ name: teamName, offensiveRating: offRating, defensiveRating: defRating }), 
+  		JSON.stringify({ "name": teamName, "offensiveRating": offRating, "defensiveRating": defRating }), 
   		HEADERS
   	);
   }

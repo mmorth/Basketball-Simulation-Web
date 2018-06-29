@@ -19,11 +19,11 @@ public class GameSimulation {
     @GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
 	@JoinColumn(name="away_team_id")
 	private Team awayTeam;
 	
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
 	@JoinColumn(name="home_team_id")
 	private Team homeTeam;
 	

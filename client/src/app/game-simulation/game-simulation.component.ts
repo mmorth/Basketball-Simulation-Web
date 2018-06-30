@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { GameSimulationService } from '../services/game-simulation.service';
+import { GameSimulation } from '../models/game-simulation';
 import { Team } from '../models/team';
 import { TeamService } from '../services/team.service';
 
@@ -11,18 +12,14 @@ import { TeamService } from '../services/team.service';
 })
 export class GameSimulationComponent implements OnInit {
 
-  gameSimID: number;
+  gameSimulation: GameSimulation;
   awayTeamID: number;
   homeTeamID: number;
-  awayTeam: Team;
-  homeTeam: Team;
 
   constructor(private gameSimulationService: GameSimulationService, private teamService: TeamService) { }
 
   ngOnInit() {
-    this.getAwayTeam();
-    this.getHomeTeam();
-    this.createSimulation();
+    this.getSimulation(100);
   }
 
   ngOnDestroy() {
@@ -30,12 +27,15 @@ export class GameSimulationComponent implements OnInit {
   }
 
   createSimulation(): void {
-	this.gameSimulationService.createGameSimulation(this.awayTeam, this.homeTeam)
-		.subscribe(() => { });
+	  this.gameSimulationService.createGameSimulation(this.awayTeamID, this.homeTeamID)
+		.subscribe(gameSimulation => {
+        this.gameSimulation = gameSimulation;
+    	}
+    );
   }
 
   deleteSimulation(): void {
-  	this.gameSimulationService.deleteGameSimulation(this.gameSimID)
+  	this.gameSimulationService.deleteGameSimulation(this.gameSimulation.id)
   	.subscribe(
   		() => {
 
@@ -43,18 +43,19 @@ export class GameSimulationComponent implements OnInit {
   	);
   }
 
-  getAwayTeam(): void {
-  	this.teamService.getTeam(47)
-    .subscribe(team => {
-    	this.homeTeam = team;
-    	}
-    );
-  }
-
-  getHomeTeam(): void {
-  	this.teamService.getTeam(48)
-    .subscribe(team => {
-    	this.homeTeam = team;
+  getSimulation(gameSimID: number): void {
+    this.gameSimulationService.getGameSimulation(gameSimID)
+    .subscribe(gameSimulation => {
+      this.gameSimulation = gameSimulation;
+      console.log(this.gameSimulation.id);
+      console.log(this.gameSimulation.awayTeam);
+      console.log(this.gameSimulation.homeTeam);
+      console.log(this.gameSimulation.possessionsRemaining);
+      console.log(this.gameSimulation.isOvertime);
+      console.log(this.gameSimulation.awayTeamScore);
+      console.log(this.gameSimulation.homeTeamScore);
+      console.log(this.gameSimulation.awayTeamPreviousQuarterScore);
+      console.log(this.gameSimulation.homeTeamPreviousQuarterScore);
     	}
     );
   }

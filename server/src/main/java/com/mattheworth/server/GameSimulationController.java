@@ -22,24 +22,24 @@ public class GameSimulationController {
 	@Autowired 
 	private TeamRepository teamRepository;
 
-	// Creates a new team
+	// Creates a new game simulation
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody String createGameSimulation(@RequestBody GameSimulation gameSimulation) {
+	public @ResponseBody long createGameSimulation(@RequestBody GameSimulation gameSimulation) {
 
 		gameSimulationRepository.save(gameSimulation);
 		
-		return "GameSimulation Created";
+		return gameSimulation.getId();
 	}
-//	
-//	// Deletes a team
-//	@RequestMapping(path="/{id}", method = RequestMethod.DELETE)
-//	public @ResponseBody String deleteTeam(@PathVariable long id) {
-//		Team deleteTeam = teamRepository.findById(id).get();
-//		teamRepository.delete(deleteTeam);
-//		
-//		return "Team Deleted";
-//	}
-//	
+	
+	// Deletes a game simulation
+	@RequestMapping(path="/{id}", method = RequestMethod.DELETE)
+	public @ResponseBody long deleteGameSimulation(@PathVariable long id) {
+		GameSimulation deleteGameSimulation = gameSimulationRepository.findById(id).get();
+		gameSimulationRepository.delete(deleteGameSimulation);
+		
+		return id;
+	}
+	
 //	// Updates a team
 //	@RequestMapping(path="/{id}", method = RequestMethod.PUT)
 //	public @ResponseBody String updateTeam(@PathVariable long id, @RequestBody Team jsonTeam) {
@@ -52,11 +52,11 @@ public class GameSimulationController {
 //		return "Team Updated";
 //	}
 //	
-//	// Lists a specific team
-//	@RequestMapping(path="", method = RequestMethod.GET)
-//	public @ResponseBody Team getTeam(@PathVariable long id) {
-//		return teamRepository.findById(id).get();
-//	}
+	// Lists a specific game simulation
+	@RequestMapping(path="/{id}", method = RequestMethod.GET)
+	public @ResponseBody GameSimulation getGameSimulation(@PathVariable long id) {
+		return gameSimulationRepository.findById(id).get();
+	}
 //	
 //	// Lists all the teams
 //	@RequestMapping(method = RequestMethod.GET)

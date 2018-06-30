@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+
+import { GameSimulation } from '../models/game-simulation';
 import { Team } from '../models/team'
 
 @Component({
@@ -7,20 +9,8 @@ import { Team } from '../models/team'
   styleUrls: ['./scoreboard.component.css']
 })
 export class ScoreboardComponent implements OnInit {
-
-  homeTeam: Team = {
-  	id: 1,
-  	name: 'Home',
-    offensiveRating: 100,
-    defensiveRating: 100,
-  };
-
-  awayTeam: Team = {
-  	id: 2,
-  	name: 'Away',
-    offensiveRating: 90,
-    defensiveRating: 90,
-  }
+  
+  @Input() gameSimulation: GameSimulation;
 
   constructor() { }
 

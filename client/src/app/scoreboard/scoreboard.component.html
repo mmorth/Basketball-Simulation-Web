@@ -16,22 +16,22 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{awayTeam.name}}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>{{awayTeam.score}}</td>
+                        <td *ngIf="gameSimulation" [(ngModel)]="gameSimulation" ngDefaultControl>{{gameSimulation.awayTeam.name}}</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td *ngIf="gameSimulation" [(ngModel)]="gameSimulation" ngDefaultControl>{{gameSimulation.awayTeamScore}}</td>
                     </tr>
                     <tr>
-                        <td>{{homeTeam.name}}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>{{homeTeam.score}}</td>
+                        <td *ngIf="gameSimulation" [(ngModel)]="gameSimulation" ngDefaultControl>{{gameSimulation.homeTeam.name}}</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td *ngIf="gameSimulation" [(ngModel)]="gameSimulation" ngDefaultControl>{{gameSimulation.homeTeamScore}}</td>
                     </tr>
                 </tbody>
             </table>

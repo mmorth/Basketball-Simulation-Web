@@ -24,11 +24,11 @@ public class GameSimulationController {
 
 	// Creates a new game simulation
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody long createGameSimulation(@RequestBody GameSimulation gameSimulation) {
+	public @ResponseBody GameSimulation createGameSimulation(@RequestBody GameSimulation gameSimulation) {
 
 		gameSimulationRepository.save(gameSimulation);
 		
-		return gameSimulation.getId();
+		return gameSimulationRepository.findById(gameSimulation.getId()).get();
 	}
 	
 	// Deletes a game simulation

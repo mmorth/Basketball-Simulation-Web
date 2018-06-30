@@ -19,7 +19,7 @@ export class GameSimulationComponent implements OnInit {
   constructor(private gameSimulationService: GameSimulationService, private teamService: TeamService) { }
 
   ngOnInit() {
-    this.getSimulation(100);
+    this.createSimulation();
   }
 
   ngOnDestroy() {
@@ -29,7 +29,17 @@ export class GameSimulationComponent implements OnInit {
   createSimulation(): void {
 	  this.gameSimulationService.createGameSimulation(this.awayTeamID, this.homeTeamID)
 		.subscribe(gameSimulation => {
-        this.gameSimulation = gameSimulation;
+        console.log(gameSimulation.id);
+        console.log(gameSimulation.id);
+        console.log(gameSimulation.awayTeam);
+        console.log(gameSimulation.homeTeam);
+        console.log(gameSimulation.possessionsRemaining);
+        console.log(gameSimulation.isOvertime);
+        console.log(gameSimulation.awayTeamScore);
+        console.log(gameSimulation.homeTeamScore);
+        console.log(gameSimulation.awayTeamPreviousQuarterScore);
+        console.log(gameSimulation.homeTeamPreviousQuarterScore);
+        this.getSimulation(gameSimulation.id);
     	}
     );
   }
@@ -38,7 +48,7 @@ export class GameSimulationComponent implements OnInit {
   	this.gameSimulationService.deleteGameSimulation(this.gameSimulation.id)
   	.subscribe(
   		() => {
-
+        console.log("DELETE")
   		}
   	);
   }
@@ -47,15 +57,6 @@ export class GameSimulationComponent implements OnInit {
     this.gameSimulationService.getGameSimulation(gameSimID)
     .subscribe(gameSimulation => {
       this.gameSimulation = gameSimulation;
-      console.log(this.gameSimulation.id);
-      console.log(this.gameSimulation.awayTeam);
-      console.log(this.gameSimulation.homeTeam);
-      console.log(this.gameSimulation.possessionsRemaining);
-      console.log(this.gameSimulation.isOvertime);
-      console.log(this.gameSimulation.awayTeamScore);
-      console.log(this.gameSimulation.homeTeamScore);
-      console.log(this.gameSimulation.awayTeamPreviousQuarterScore);
-      console.log(this.gameSimulation.homeTeamPreviousQuarterScore);
     	}
     );
   }

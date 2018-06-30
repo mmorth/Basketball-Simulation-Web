@@ -11,6 +11,7 @@ import { TeamService } from '../services/team.service';
 })
 export class GameSimulationComponent implements OnInit {
 
+  gameSimID: number;
   awayTeamID: number;
   homeTeamID: number;
   awayTeam: Team;
@@ -24,9 +25,22 @@ export class GameSimulationComponent implements OnInit {
     this.createSimulation();
   }
 
+  ngOnDestroy() {
+  	this.deleteSimulation();
+  }
+
   createSimulation(): void {
 	this.gameSimulationService.createGameSimulation(this.awayTeam, this.homeTeam)
 		.subscribe(() => { });
+  }
+
+  deleteSimulation(): void {
+  	this.gameSimulationService.deleteGameSimulation(this.gameSimID)
+  	.subscribe(
+  		() => {
+
+  		}
+  	);
   }
 
   getAwayTeam(): void {

@@ -20,7 +20,7 @@ public class Team {
     @GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
-	@Column(unique = true)
+	@Column(unique = true)	
 	private String name;
 	private int offensiveRating;
 	private int defensiveRating;

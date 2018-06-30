@@ -29,7 +29,7 @@ export class TeamService {
   }
 
   deleteTeam(teamID: number) {
-  	return this.http.delete('http://localhost:8080/api/teams/' + teamID)
+  	return this.http.delete('http://localhost:8080/api/teams/' + teamID);
   }
 
   updateTeam(teamID: number, teamName: string, offRating: number, defRating: number) {

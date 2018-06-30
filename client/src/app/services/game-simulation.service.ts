@@ -31,4 +31,9 @@ export class GameSimulationService {
   		HEADERS
   	);
   }
+
+  deleteGameSimulation(gameSimID: number) {
+  	return this.http.delete('http://localhost:8080/api/game-simulation/' + gameSimID);
+  }
+
 }

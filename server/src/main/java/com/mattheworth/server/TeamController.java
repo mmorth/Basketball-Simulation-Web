@@ -20,33 +20,35 @@ public class TeamController {
 	private TeamRepository teamRepository;
 
 	// Creates a new team
-	@RequestMapping(method = RequestMethod.POST) 
-	public @ResponseBody String createTeam(@RequestBody Team jsonTeam) {
+	@RequestMapping(method = RequestMethod.POST, produces = "application/json") 
+	public @ResponseBody long createTeam(@RequestBody Team jsonTeam) {
 
-		teamRepository.save(jsonTeam);
+		teamRepository.save(jsonTeam); 
 		
-		return "Team Created";
+		long teamID = jsonTeam.getId();
+		
+		return teamID;
 	}
 	
 	// Deletes a team
-	@RequestMapping(path="/{id}", method = RequestMethod.DELETE)
-	public @ResponseBody String deleteTeam(@PathVariable long id) {
+	@RequestMapping(path="/{id}", method = RequestMethod.DELETE, produces = "application/json")
+	public @ResponseBody long deleteTeam(@PathVariable long id) {
 		Team deleteTeam = teamRepository.findById(id).get();
 		teamRepository.delete(deleteTeam);
 		
-		return "Team Deleted";
+		return id;
 	}
 	
 	// Updates a team
-	@RequestMapping(path="/{id}", method = RequestMethod.PUT)
-	public @ResponseBody String updateTeam(@PathVariable long id, @RequestBody Team jsonTeam) {
+	@RequestMapping(path="/{id}", method = RequestMethod.PUT, produces = "application/json")
+	public @ResponseBody long updateTeam(@PathVariable long id, @RequestBody Team jsonTeam) {
 		Team updateTeam = teamRepository.findById(id).get();
 		
 		updateTeam.setOffensiveRating(jsonTeam.getOffensiveRating());
 		updateTeam.setDefensiveRating(jsonTeam.getDefensiveRating());
 		teamRepository.save(updateTeam);
 		
-		return "Team Updated";
+		return id;
 	}
 	
 	// Lists a specific team

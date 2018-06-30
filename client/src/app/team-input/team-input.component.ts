@@ -24,7 +24,11 @@ export class TeamInputComponent implements OnInit {
   constructor(private route: ActivatedRoute, private teamService: TeamService, private location: Location, private router: Router) { }
 
   ngOnInit(): void {
-  	this.getTeam();
+    const id = +this.route.snapshot.paramMap.get('id');
+
+    if (!isNaN(id)) {
+  	 this.getTeam();
+    }
   }
 
   getTeam(): void {

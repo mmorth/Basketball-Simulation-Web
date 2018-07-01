@@ -11,18 +11,49 @@ import { TeamService } from '../services/team.service';
   templateUrl: './team-input.component.html',
   styleUrls: ['./team-input.component.css']
 })
+
+/**
+ * A component that represents creating / updating teams
+ */
 export class TeamInputComponent implements OnInit {
 
+	/**
+	 * The current team
+	 */
   team: Team;
 
-  teamName: string;
-  offensiveRating: number;
+	/**
+	 * The name of the team
+	 */
+	teamName: string;
+	
+	/**
+	 * The offensive rating of the team
+	 */
+	offensiveRating: number;
+	
+	/**
+	 * The defensive rating of the team
+	 */
   defensiveRating: number;
 
+	/**
+	 * Represents the error message displayed when the user has invalid input
+	 */
   inputError: string;
 
+	/**
+	 * Constructs a new TeamInputComponent with the following injections
+	 * @param route Inject ActivatedRoute into the component
+	 * @param teamService Inject TeamService into the component
+	 * @param location Inject Location into the component
+	 * @param router Inject Router into the component
+	 */
   constructor(private route: ActivatedRoute, private teamService: TeamService, private location: Location, private router: Router) { }
 
+	/**
+	 * Get the specified team if it exists when the user enters the page
+	 */
   ngOnInit(): void {
     const id = +this.route.snapshot.paramMap.get('id');
 
@@ -31,6 +62,9 @@ export class TeamInputComponent implements OnInit {
     }
   }
 
+	/**
+	 * Gets the team with the specified id
+	 */
   getTeam(): void {
   	const id = +this.route.snapshot.paramMap.get('id');
   	this.teamService.getTeam(id)
@@ -43,6 +77,9 @@ export class TeamInputComponent implements OnInit {
     );
   }
 
+	/**
+	 * Create the specified team based on the user's input
+	 */
   createTeam(): void {
   	if (this.teamName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
   		this.teamService.createTeam(this.teamName, this.offensiveRating, this.defensiveRating)
@@ -59,6 +96,9 @@ export class TeamInputComponent implements OnInit {
 
   }
 
+	/**
+	 * Deletes the team with the specified id
+	 */
   deleteTeam(): void {
   	const id = +this.route.snapshot.paramMap.get('id');
   	this.teamService.deleteTeam(id)
@@ -71,6 +111,9 @@ export class TeamInputComponent implements OnInit {
   	this.router.navigateByUrl('/team-details');
   }
 
+	/**
+	 * Update the team with the specified id
+	 */
   updateTeam(): void {
   	const id = +this.route.snapshot.paramMap.get('id');
 

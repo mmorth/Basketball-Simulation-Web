@@ -10,28 +10,59 @@ import { TeamService } from '../services/team.service';
   templateUrl: './game-simulation-input.component.html',
   styleUrls: ['./game-simulation-input.component.css']
 })
+
+/**
+ * Represents the game simulation options for the user
+ */
 export class GameSimulationInputComponent implements OnInit {
 
+  /**
+   * Represents the list of teams
+   */
   teams: Team[];
 
+  /**
+   * The current game simulation
+   */
   @Input() gameSimulation: GameSimulation;
+
+  /**
+   * Used to send the id of the game simulation to the parent to display
+   */
   @Output() gameSimulationUpdate = new EventEmitter<number>();
 
+  /**
+   * Constructs a new GameSimulationInputComponent
+   * @param teamService Inject the TeamService into the component
+   * @param gameSimulationService Inject the GameSimulationService into the component
+   */
   constructor(private teamService: TeamService, private gameSimulationService: GameSimulationService) { }
 
+  /**
+   * Get the list of teams when the user enters the page
+   */
   ngOnInit() {
     this.getTeams();
   }
 
+  /**
+   * Update the current game simulation
+   */
   updateParentGameSimulation() {
     this.gameSimulationUpdate.next(this.gameSimulation.id);
   }
 
+  /**
+   * Gets the list of team
+   */
   getTeams(): void {
     this.teamService.getTeams()
     .subscribe(teams => this.teams = teams);
   }
 
+  /**
+   * Simulates a possession
+   */
   simulatePossession(): void {
     this.gameSimulationService.simulatePossession(this.gameSimulation.id)
     .subscribe(gameSimulation =>{
@@ -40,6 +71,9 @@ export class GameSimulationInputComponent implements OnInit {
     });
   }
 
+  /**
+   * Simulates a quarter
+   */
   simulateQuarter(): void {
     this.gameSimulationService.simulateQuarter(this.gameSimulation.id)
     .subscribe(gameSimulation =>{
@@ -48,6 +82,9 @@ export class GameSimulationInputComponent implements OnInit {
     });
   }
 
+  /**
+   * Simulates the game
+   */
   simulateGame(): void {
     this.gameSimulationService.simulateGame(this.gameSimulation.id)
     .subscribe(gameSimulation => {
@@ -56,6 +93,9 @@ export class GameSimulationInputComponent implements OnInit {
     });
   }
   
+  /**
+   * Resets the simulation
+   */
   resetSimulation(): void {
     this.gameSimulationService.resetSimulation(this.gameSimulation.id)
     .subscribe(gameSimulation => {
@@ -64,6 +104,10 @@ export class GameSimulationInputComponent implements OnInit {
     });
   }
 
+  /**
+   * Sets the away team for the current simulation
+   * @param awayTeamID The id of the team to set as the away team for the simulation
+   */
   setAwayTeam(awayTeamID: number): void {
     this.gameSimulationService.setAwayteam(this.gameSimulation.id, awayTeamID)
     .subscribe(gameSimulation =>{
@@ -72,6 +116,10 @@ export class GameSimulationInputComponent implements OnInit {
     });
   }
 
+  /**
+   * Sets the home team for the game simulation
+   * @param homeTeamID The id of the team to set as the home team for the simulation
+   */
   setHomeTeam(homeTeamID: number): void {
     this.gameSimulationService.setHometeam(this.gameSimulation.id, homeTeamID)
     .subscribe(gameSimulation =>{
@@ -80,6 +128,10 @@ export class GameSimulationInputComponent implements OnInit {
     });
   }
 
+  /**
+   * Gets the simulation with the given id
+   * @param gameSimID The id of the game simulation to get
+   */
   getSimulation(gameSimID: number): void {
     this.gameSimulationService.getGameSimulation(gameSimID)
     .subscribe(gameSimulation => {

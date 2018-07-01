@@ -8,12 +8,25 @@ import { Team } from '../models/team'
   templateUrl: './scoreboard.component.html',
   styleUrls: ['./scoreboard.component.css']
 })
+
+/**
+ * A component that represents a scoreboard
+ */
 export class ScoreboardComponent implements OnInit {
   
+  /**
+   * The game simulation object to pass to the child component
+   */
   @Input() gameSimulation: GameSimulation;
 
+  /**
+   * Constructs a default ScoreboardComponent
+   */
   constructor() { }
 
+  /**
+   * Initialize a new ScoreboardComponent
+   */
   ngOnInit() {
   }
 

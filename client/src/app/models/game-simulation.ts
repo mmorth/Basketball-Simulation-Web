@@ -1,5 +1,8 @@
 import { Team } from './team';
 
+/**
+ * Represents the GameSimulation object received from the back-end
+ */
 export class GameSimulation {
 	id: number;
 	awayTeam: Team;

@@ -5,6 +5,10 @@ import { Component } from '@angular/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
+/**
+ * A component that represents the Basketball Simulation web application
+ */
 export class AppComponent {
   title = 'Basketball Simulation';
 }

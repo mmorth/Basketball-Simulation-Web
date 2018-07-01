@@ -16,7 +16,7 @@ export class GameSimulationInputComponent implements OnInit {
 
   @Input() gameSimulation: GameSimulation;
 
-  constructor(private teamService: TeamService, private gameSimulationSerivce: GameSimulationService) { }
+  constructor(private teamService: TeamService, private gameSimulationService: GameSimulationService) { }
 
   ngOnInit() {
     this.getTeams();
@@ -28,33 +28,53 @@ export class GameSimulationInputComponent implements OnInit {
   }
 
   simulatePossession(): void {
-    this.gameSimulationSerivce.simulatePossession(this.gameSimulation.id)
-    .subscribe(gameSimulation => this.gameSimulation = gameSimulation);
+    this.gameSimulationService.simulatePossession(this.gameSimulation.id)
+    .subscribe(gameSimulation =>{
+      this.getSimulation(gameSimulation.id);
+    });
   }
 
   simulateQuarter(): void {
-    this.gameSimulationSerivce.simulateQuarter(this.gameSimulation.id)
-    .subscribe(gameSimulation => this.gameSimulation = gameSimulation);
+    this.gameSimulationService.simulateQuarter(this.gameSimulation.id)
+    .subscribe(gameSimulation =>{
+      this.getSimulation(gameSimulation.id);
+    });
   }
 
   simulateGame(): void {
-    this.gameSimulationSerivce.simulateGame(this.gameSimulation.id)
-    .subscribe(gameSimulation => this.gameSimulation = gameSimulation);
+    this.gameSimulationService.simulateGame(this.gameSimulation.id)
+    .subscribe(gameSimulation => {
+      this.getSimulation(gameSimulation.id);
+    });
   }
   
   resetSimulation(): void {
-    this.gameSimulationSerivce.resetSimulation(this.gameSimulation.id)
-    .subscribe(gameSimulation => this.gameSimulation = gameSimulation);
+    this.gameSimulationService.resetSimulation(this.gameSimulation.id)
+    .subscribe(gameSimulation => {
+      this.getSimulation(gameSimulation.id);
+    });
   }
 
   setAwayTeam(awayTeamID: number): void {
-    this.gameSimulationSerivce.setAwayteam(this.gameSimulation.id, awayTeamID)
-    .subscribe(gameSimulation => this.gameSimulation = gameSimulation);
+    this.gameSimulationService.setAwayteam(this.gameSimulation.id, awayTeamID)
+    .subscribe(gameSimulation =>{
+      this.getSimulation(gameSimulation.id);
+    });
   }
 
   setHomeTeam(homeTeamID: number): void {
-    this.gameSimulationSerivce.setAwayteam(this.gameSimulation.id, homeTeamID)
-    .subscribe(gameSimulation => this.gameSimulation = gameSimulation);
+    this.gameSimulationService.setHometeam(this.gameSimulation.id, homeTeamID)
+    .subscribe(gameSimulation =>{
+      this.getSimulation(gameSimulation.id);
+    });
+  }
+
+  getSimulation(gameSimID: number): void {
+    this.gameSimulationService.getGameSimulation(gameSimID)
+    .subscribe(gameSimulation => {
+      this.gameSimulation = gameSimulation;
+    	}
+    );
   }
 
 }

@@ -29,16 +29,6 @@ export class GameSimulationComponent implements OnInit {
   createSimulation(): void {
 	  this.gameSimulationService.createGameSimulation(this.awayTeamID, this.homeTeamID)
 		.subscribe(gameSimulation => {
-        console.log(gameSimulation.id);
-        console.log(gameSimulation.id);
-        console.log(gameSimulation.awayTeam);
-        console.log(gameSimulation.homeTeam);
-        console.log(gameSimulation.possessionsRemaining);
-        console.log(gameSimulation.isOvertime);
-        console.log(gameSimulation.awayTeamScore);
-        console.log(gameSimulation.homeTeamScore);
-        console.log(gameSimulation.awayTeamPreviousQuarterScore);
-        console.log(gameSimulation.homeTeamPreviousQuarterScore);
         this.getSimulation(gameSimulation.id);
     	}
     );

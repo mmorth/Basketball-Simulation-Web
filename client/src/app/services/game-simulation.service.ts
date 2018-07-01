@@ -62,31 +62,17 @@ export class GameSimulationService {
 	return this.http.get<GameSimulation>('http://localhost:8080/api/game-simulation/' + gameSimID + '/reset-simulation');
   }
 
-  setAwayteam(gameSimID: number, awayTeamID: number): Observable<GameSimulation> {
-	return this.http.put<GameSimulation>('http://localhost:8080/api/game-simulation/' + gameSimID + '/reset-simulation', 
-	JSON.stringify({ 
-		"awayTeam": {
-			"id": awayTeamID
-		}
-	}), 
-	  {
-		  headers: { 'Content-Type': 'application/json' },
-		  observe: 'body',
-	  }
+  setAwayteam(gameSimID: number, awayTeamID: number) {
+	return this.http.put<GameSimulation>('http://localhost:8080/api/game-simulation/' + gameSimID + '/away-team', 
+	awayTeamID, 
+	  HEADERS
 	);
   }
 
-  setHometeam(gameSimID: number, homeTeamID: number): Observable<GameSimulation> {
-	return this.http.put<GameSimulation>('http://localhost:8080/api/game-simulation/' + gameSimID + '/reset-simulation', 
-	JSON.stringify({ 
-		"awayTeam": {
-			"id": homeTeamID
-		}
-	}), 
-	  {
-		  headers: { 'Content-Type': 'application/json' },
-		  observe: 'body',
-	  }
+  setHometeam(gameSimID: number, homeTeamID: number) {
+	return this.http.put<GameSimulation>('http://localhost:8080/api/game-simulation/' + gameSimID + '/home-team', 
+	homeTeamID, 
+	  HEADERS
 	);
   }
 

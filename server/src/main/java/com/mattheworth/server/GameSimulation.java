@@ -3,6 +3,7 @@ package com.mattheworth.server;
 import java.util.Random;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -28,6 +29,8 @@ public class GameSimulation {
 	private Team homeTeam;
 	
 	private int possessionsRemaining;
+	
+	@Column(nullable = false, columnDefinition = "TINYINT(1)")
 	private boolean isOvertime;
 	private int awayTeamScore;
 	private int homeTeamScore;

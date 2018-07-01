@@ -40,28 +40,72 @@ public class GameSimulationController {
 		return id;
 	}
 	
-//	// Updates a team
-//	@RequestMapping(path="/{id}", method = RequestMethod.PUT)
-//	public @ResponseBody String updateTeam(@PathVariable long id, @RequestBody Team jsonTeam) {
-//		Team updateTeam = teamRepository.findById(id).get();
-//		
-//		updateTeam.setOffensiveRating(jsonTeam.getOffensiveRating());
-//		updateTeam.setDefensiveRating(jsonTeam.getDefensiveRating());
-//		teamRepository.save(updateTeam);
-//		
-//		return "Team Updated";
-//	}
-//	
+	// Updates the away team for the game simulation
+	@RequestMapping(path="/{id}/away-team", method = RequestMethod.PUT)
+	public @ResponseBody GameSimulation updateAwayTeam(@RequestBody Team jsonAwayTeam, @PathVariable long id) {
+		GameSimulation gameSimulation = gameSimulationRepository.findById(id).get();
+		
+		gameSimulation.setAwayTeam(jsonAwayTeam);
+		gameSimulationRepository.save(gameSimulation);
+		
+		return gameSimulation;
+	}
+	
+	// Updates the away team for the game simulation
+	@RequestMapping(path="/{id}/home-team", method = RequestMethod.PUT)
+	public @ResponseBody GameSimulation updateHomeTeam(@RequestBody Team jsonHomeTeam, @PathVariable long id) {
+		GameSimulation gameSimulation = gameSimulationRepository.findById(id).get();
+		
+		gameSimulation.setAwayTeam(jsonHomeTeam);
+		gameSimulationRepository.save(gameSimulation);
+		
+		return gameSimulation;
+	}
+	
+	// Simulates a possession
+	@RequestMapping(path="/{id}/simulate-possession", method = RequestMethod.GET)
+	public @ResponseBody GameSimulation simulatePossession(@PathVariable long id) {
+		GameSimulation gameSimulation = gameSimulationRepository.findById(id).get();
+		
+		gameSimulation.simulationPossession(1);
+		
+		return gameSimulation;
+	}
+	
+	// Simulates a quarter
+	@RequestMapping(path="/{id}/simulate-quarter", method = RequestMethod.GET)
+	public @ResponseBody GameSimulation simulateQuarter(@PathVariable long id) {
+		GameSimulation gameSimulation = gameSimulationRepository.findById(id).get();
+		
+		gameSimulation.simulationPossession((gameSimulation.getPossessionsRemaining()%25) + 1);
+		
+		return gameSimulation;
+	}
+	
+	// Simulates a game
+	@RequestMapping(path="/{id}/simulate-game", method = RequestMethod.GET)
+	public @ResponseBody GameSimulation simulateGame(@PathVariable long id) {
+		GameSimulation gameSimulation = gameSimulationRepository.findById(id).get();
+		
+		gameSimulation.simulationPossession(gameSimulation.getPossessionsRemaining() + 1);
+		
+		return gameSimulation;
+	}
+	
+	// Resets the simulation
+	@RequestMapping(path="/{id}/reset-simulation", method = RequestMethod.GET)
+	public @ResponseBody GameSimulation resetSimulation(@PathVariable long id) {
+		GameSimulation gameSimulation = gameSimulationRepository.findById(id).get();
+		
+		gameSimulation.resetGame();
+		
+		return gameSimulation;
+	}
+	
 	// Lists a specific game simulation
 	@RequestMapping(path="/{id}", method = RequestMethod.GET)
 	public @ResponseBody GameSimulation getGameSimulation(@PathVariable long id) {
 		return gameSimulationRepository.findById(id).get();
 	}
-//	
-//	// Lists all the teams
-//	@RequestMapping(method = RequestMethod.GET)
-//	public @ResponseBody Iterable<Team> getAllTeams() {
-//		// This returns a JSON or XML with the users
-//		return teamRepository.findAll();
-//	}
+
 }

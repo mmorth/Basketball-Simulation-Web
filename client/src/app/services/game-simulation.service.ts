@@ -26,7 +26,7 @@ export class GameSimulationService {
   			"id": 48
   		}, 
   		"possessionsRemaining": 99, 
-  		"isOvertime": 0, 
+  		"isOvertime": false, 
   		"awayTeamScore": 0, 
   		"homeTeamScore": 0, 
   		"awayTeamPreviousQuarterScore": 0, 

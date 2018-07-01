@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { GameSimulationService } from '../services/game-simulation.service';
 import { GameSimulation } from '../models/game-simulation';
@@ -15,11 +15,16 @@ export class GameSimulationInputComponent implements OnInit {
   teams: Team[];
 
   @Input() gameSimulation: GameSimulation;
+  @Output() gameSimulationUpdate = new EventEmitter<number>();
 
   constructor(private teamService: TeamService, private gameSimulationService: GameSimulationService) { }
 
   ngOnInit() {
     this.getTeams();
+  }
+
+  updateParentGameSimulation() {
+    this.gameSimulationUpdate.next(this.gameSimulation.id);
   }
 
   getTeams(): void {
@@ -31,6 +36,7 @@ export class GameSimulationInputComponent implements OnInit {
     this.gameSimulationService.simulatePossession(this.gameSimulation.id)
     .subscribe(gameSimulation =>{
       this.getSimulation(gameSimulation.id);
+      this.updateParentGameSimulation();
     });
   }
 
@@ -38,6 +44,7 @@ export class GameSimulationInputComponent implements OnInit {
     this.gameSimulationService.simulateQuarter(this.gameSimulation.id)
     .subscribe(gameSimulation =>{
       this.getSimulation(gameSimulation.id);
+      this.updateParentGameSimulation();
     });
   }
 
@@ -45,6 +52,7 @@ export class GameSimulationInputComponent implements OnInit {
     this.gameSimulationService.simulateGame(this.gameSimulation.id)
     .subscribe(gameSimulation => {
       this.getSimulation(gameSimulation.id);
+      this.updateParentGameSimulation();
     });
   }
   
@@ -52,6 +60,7 @@ export class GameSimulationInputComponent implements OnInit {
     this.gameSimulationService.resetSimulation(this.gameSimulation.id)
     .subscribe(gameSimulation => {
       this.getSimulation(gameSimulation.id);
+      this.updateParentGameSimulation();
     });
   }
 
@@ -59,6 +68,7 @@ export class GameSimulationInputComponent implements OnInit {
     this.gameSimulationService.setAwayteam(this.gameSimulation.id, awayTeamID)
     .subscribe(gameSimulation =>{
       this.getSimulation(gameSimulation.id);
+      this.updateParentGameSimulation();
     });
   }
 
@@ -66,6 +76,7 @@ export class GameSimulationInputComponent implements OnInit {
     this.gameSimulationService.setHometeam(this.gameSimulation.id, homeTeamID)
     .subscribe(gameSimulation =>{
       this.getSimulation(gameSimulation.id);
+      this.updateParentGameSimulation();
     });
   }
 

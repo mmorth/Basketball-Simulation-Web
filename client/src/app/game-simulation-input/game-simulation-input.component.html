@@ -1,6 +1,6 @@
 <div class="game-sim-input">
 
-  <h3>Possessions Remaining: 100</h3>
+  <h3 *ngIf="gameSimulation" [(ngModel)]="gameSimulation" ngDefaultControl>Possessions Remaining: {{gameSimulation.possessionsRemaining+1}}</h3>
 
   <div class="btn-group btn-group-justified">
     <a class="btn btn-primary" (click)="simulatePossession()">Simulate Possession</a>

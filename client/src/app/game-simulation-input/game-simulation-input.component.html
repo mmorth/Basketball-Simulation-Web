@@ -3,10 +3,10 @@
   <h3>Possessions Remaining: 100</h3>
 
   <div class="btn-group btn-group-justified">
-    <a class="btn btn-primary">Simulate Possession</a>
-    <a class="btn btn-primary">Simulate Quarter</a>
-    <a class="btn btn-primary">Simulate Game</a>
-    <a class="btn btn-primary">Reset Simulation</a>
+    <a class="btn btn-primary" (click)="simulatePossession()">Simulate Possession</a>
+    <a class="btn btn-primary" (click)="simulateQuarter()">Simulate Quarter</a>
+    <a class="btn btn-primary" (click)="simulateGame()">Simulate Game</a>
+    <a class="btn btn-primary" (click)="resetSimulation()">Reset Simulation</a>
   </div>
 
   <div id="away-team" class="away-team-select">
@@ -17,7 +17,7 @@
         Away Team Select
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <li><a class="dropdown-item" *ngFor="let team of teams">{{team.name}}</a></li>
+        <li><a class="dropdown-item" *ngFor="let team of teams" (click)="setAwayTeam(team.id)">{{team.name}}</a></li>
       </ul>
     </div>                 
 
@@ -31,7 +31,7 @@
         Home Team Select
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <li><a class="dropdown-item" *ngFor="let team of teams">{{team.name}}</a></li>
+        <li><a class="dropdown-item" *ngFor="let team of teams" (click)="setHomeTeam(team.id)">{{team.name}}</a></li>
       </ul>
     </div>                     
   </div>

@@ -62,7 +62,7 @@ public class GameSimulationController {
 	
 	/**
 	 * Updates the away team for the GameSimulation object in the database
-	 * @param awayTeamID The id of the team to set
+	 * @param awayTeamID The id of the team to set as json
 	 * @param id The id of the GameSimulation
 	 * @return The updated GameSimulation object as json
 	 */
@@ -75,12 +75,6 @@ public class GameSimulationController {
 		gameSimulation.setAwayTeam(newAwayTeam);
 		gameSimulation.resetGame();
 		
-		System.out.println(newAwayTeam.getName());
-		
-		System.out.println(gameSimulation.getAwayTeam().getName() + " " + gameSimulation.getAwayTeamScore());
-		System.out.println(gameSimulation.getHomeTeam().getName() + " " + gameSimulation.getHomeTeamScore());
-		System.out.println("Possessions: " + gameSimulation.getPossessionsRemaining());
-		
 		gameSimulationRepository.save(gameSimulation);
 		
 		return gameSimulation;
@@ -88,7 +82,7 @@ public class GameSimulationController {
 	
 	/**
 	 * Updates the home team for the GameSimulation object in the database
-	 * @param homeTeamID The id of the team to set
+	 * @param homeTeamID The id of the team to set as json
 	 * @param id The id of the GameSimulation
 	 * @return The updated GameSimulation object as json
 	 */
@@ -100,12 +94,6 @@ public class GameSimulationController {
 		
 		gameSimulation.setHomeTeam(newHomeTeam);
 		gameSimulation.resetGame();
-		
-		System.out.println(newHomeTeam.getName());
-		
-		System.out.println(gameSimulation.getAwayTeam().getName() + " " + gameSimulation.getAwayTeamScore());
-		System.out.println(gameSimulation.getHomeTeam().getName() + " " + gameSimulation.getHomeTeamScore());
-		System.out.println("Possessions: " + gameSimulation.getPossessionsRemaining());
 		
 		gameSimulationRepository.save(gameSimulation);
 		
@@ -123,10 +111,6 @@ public class GameSimulationController {
 		
 		gameSimulation.simulationPossession(1);
 		
-		System.out.println(gameSimulation.getAwayTeam().getName() + " " + gameSimulation.getAwayTeamScore());
-		System.out.println(gameSimulation.getHomeTeam().getName() + " " + gameSimulation.getHomeTeamScore());
-		System.out.println("Possessions: " + gameSimulation.getPossessionsRemaining());
-		
 		gameSimulationRepository.save(gameSimulation);
 		
 		return gameSimulation;
@@ -142,10 +126,6 @@ public class GameSimulationController {
 		GameSimulation gameSimulation = gameSimulationRepository.findById(id).get();
 		
 		gameSimulation.simulationPossession((gameSimulation.getPossessionsRemaining()%25) + 1);
-		
-		System.out.println(gameSimulation.getAwayTeam().getName() + " " + gameSimulation.getAwayTeamScore());
-		System.out.println(gameSimulation.getHomeTeam().getName() + " " + gameSimulation.getHomeTeamScore());
-		System.out.println("Possessions: " + gameSimulation.getPossessionsRemaining());
 		
 		gameSimulationRepository.save(gameSimulation);
 		
@@ -163,10 +143,6 @@ public class GameSimulationController {
 		
 		gameSimulation.simulationPossession(gameSimulation.getPossessionsRemaining() + 1);
 		
-		System.out.println(gameSimulation.getAwayTeam().getName() + " " + gameSimulation.getAwayTeamScore());
-		System.out.println(gameSimulation.getHomeTeam().getName() + " " + gameSimulation.getHomeTeamScore());
-		System.out.println("Possessions: " + gameSimulation.getPossessionsRemaining());
-		
 		gameSimulationRepository.save(gameSimulation);
 		
 		return gameSimulation;
@@ -182,10 +158,6 @@ public class GameSimulationController {
 		GameSimulation gameSimulation = gameSimulationRepository.findById(id).get();
 		
 		gameSimulation.resetGame();
-		
-		System.out.println(gameSimulation.getAwayTeam().getName() + " " + gameSimulation.getAwayTeamScore());
-		System.out.println(gameSimulation.getHomeTeam().getName() + " " + gameSimulation.getHomeTeamScore());
-		System.out.println("Possessions: " + gameSimulation.getPossessionsRemaining());
 		
 		gameSimulationRepository.save(gameSimulation);
 		

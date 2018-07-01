@@ -44,19 +44,19 @@ export class TeamInputComponent implements OnInit {
   }
 
   createTeam(): void {
-  	if (this.teamName != "" && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
+  	if (this.teamName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
   		this.teamService.createTeam(this.teamName, this.offensiveRating, this.defensiveRating)
   		.subscribe(() => {
   			this.teamName = "";
   			this.offensiveRating = 0;
   			this.defensiveRating = 0;
-  			this.inputError = "";
+				this.inputError = "";
+				this.router.navigateByUrl('/team-details');
   		});
     } else {
     	this.inputError = "Invalid Input";
     }
 
-    this.router.navigateByUrl('/team-details');
   }
 
   deleteTeam(): void {

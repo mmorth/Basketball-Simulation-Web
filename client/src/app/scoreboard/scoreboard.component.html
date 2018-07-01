@@ -17,20 +17,20 @@
                 <tbody>
                     <tr>
                         <td *ngIf="gameSimulation" [(ngModel)]="gameSimulation" ngDefaultControl>{{gameSimulation.awayTeam.name}}</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
+                        <td *ngIf="gameSimulation" [(ngModel)]="gameSimulation" ngDefaultControl>{{gameSimulation.awayTeamFirstQuarterScore}}</td>
+                        <td *ngIf="gameSimulation" [(ngModel)]="gameSimulation" ngDefaultControl>{{gameSimulation.awayTeamSecondQuarterScore}}</td>
+                        <td *ngIf="gameSimulation" [(ngModel)]="gameSimulation" ngDefaultControl>{{gameSimulation.awayTeamThirdQuarterScore}}</td>
+                        <td *ngIf="gameSimulation" [(ngModel)]="gameSimulation" ngDefaultControl>{{gameSimulation.awayTeamFourthQuarterScore}}</td>
+                        <td *ngIf="gameSimulation" [(ngModel)]="gameSimulation" ngDefaultControl>{{gameSimulation.awayTeamOvertimeScore}}</td>
                         <td *ngIf="gameSimulation" [(ngModel)]="gameSimulation" ngDefaultControl>{{gameSimulation.awayTeamScore}}</td>
                     </tr>
                     <tr>
                         <td *ngIf="gameSimulation" [(ngModel)]="gameSimulation" ngDefaultControl>{{gameSimulation.homeTeam.name}}</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
+                        <td *ngIf="gameSimulation" [(ngModel)]="gameSimulation" ngDefaultControl>{{gameSimulation.homeTeamFirstQuarterScore}}</td>
+                        <td *ngIf="gameSimulation" [(ngModel)]="gameSimulation" ngDefaultControl>{{gameSimulation.homeTeamSecondQuarterScore}}</td>
+                        <td *ngIf="gameSimulation" [(ngModel)]="gameSimulation" ngDefaultControl>{{gameSimulation.homeTeamThirdQuarterScore}}</td>
+                        <td *ngIf="gameSimulation" [(ngModel)]="gameSimulation" ngDefaultControl>{{gameSimulation.homeTeamFourthQuarterScore}}</td>
+                        <td *ngIf="gameSimulation" [(ngModel)]="gameSimulation" ngDefaultControl>{{gameSimulation.homeTeamOvertimeScore}}</td>
                         <td *ngIf="gameSimulation" [(ngModel)]="gameSimulation" ngDefaultControl>{{gameSimulation.homeTeamScore}}</td>
                     </tr>
                 </tbody>

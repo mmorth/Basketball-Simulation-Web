@@ -1,7 +1,9 @@
+<!-- <script type="text/javascript">
+    window.onbeforeunload = function() {
+        console.log("Left Page")
+    }
+</script> -->
+
 <app-scoreboard [gameSimulation]="gameSimulation"></app-scoreboard>
 
 <app-game-simulation-input [gameSimulation]="gameSimulation" (gameSimulationUpdate)="getSimulation($event)"></app-game-simulation-input>
-
-<h3 *ngIf="gameSimulation" [(ngModel)]="gameSimulation" ngDefaultControl>Possessions Remaining: {{gameSimulation.possessionsRemaining+1}}</h3>
-
-<button type="button" (click)="getSimulation(gameSimulation.id)">GET GameSimulation</button> 

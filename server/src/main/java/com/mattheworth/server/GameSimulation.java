@@ -34,8 +34,18 @@ public class GameSimulation {
 	private boolean isOvertime;
 	private int awayTeamScore;
 	private int homeTeamScore;
-	private int awayTeamPreviousQuarterScore;
-	private int homeTeamPreviousQuarterScore;
+	
+	private int awayTeamFirstQuarterScore;
+	private int awayTeamSecondQuarterScore;
+	private int awayTeamThirdQuarterScore;
+	private int awayTeamFourthQuarterScore;
+	private int awayTeamOvertimeScore;
+	
+	private int homeTeamFirstQuarterScore;
+	private int homeTeamSecondQuarterScore;
+	private int homeTeamThirdQuarterScore;
+	private int homeTeamFourthQuarterScore;
+	private int homeTeamOvertimeScore;
 
 	public GameSimulation() {
 		
@@ -49,8 +59,18 @@ public class GameSimulation {
 		this.isOvertime = false;
 		this.awayTeamScore = 0;
 		this.homeTeamScore = 0;
-		this.awayTeamPreviousQuarterScore = 0;
-		this.homeTeamPreviousQuarterScore = 0;
+		
+		this.awayTeamFirstQuarterScore = 0;
+		this.awayTeamSecondQuarterScore = 0;
+		this.awayTeamThirdQuarterScore = 0;
+		this.awayTeamFourthQuarterScore = 0;
+		this.awayTeamOvertimeScore = 0;
+		
+		this.homeTeamFirstQuarterScore = 0;
+		this.homeTeamSecondQuarterScore = 0;
+		this.homeTeamThirdQuarterScore = 0;
+		this.homeTeamFourthQuarterScore = 0;
+		this.homeTeamOvertimeScore = 0;
 	}
 
 	/* logic methods */
@@ -94,23 +114,6 @@ public class GameSimulation {
 	}
 
 	public int simulatePossession(int quarter, int possessions) {
-		// Set the possessionsRemaining condition and table columns based on what
-		// quarter is being simulated
-		int possessionsRemainingCondition = 0;
-
-		if (quarter == 1) {
-			possessionsRemainingCondition = 74;
-		} else if (quarter == 2) {
-			possessionsRemainingCondition = 49;
-		} else if (quarter == 3) {
-			possessionsRemainingCondition = 24;
-		} else if (quarter == 4) {
-			possessionsRemainingCondition = -1;
-		} else if (isOvertime) {
-			quarter = 5;
-			possessionsRemainingCondition = -2; // The overtime scores should not reset after each overtime
-		}
-
 		// Determine the points scored for each team
 		determineScoringOutcome();
 
@@ -118,12 +121,22 @@ public class GameSimulation {
 		// the game
 		possessionsRemaining--;
 		possessions--;
-
-		// Store the previous quarter scores if the quarter just ended
-		// Used to calculate the scores for following quarters
-		if (possessionsRemaining == possessionsRemainingCondition) {
-			awayTeamPreviousQuarterScore = awayTeamScore;
-			homeTeamPreviousQuarterScore = homeTeamScore;
+		
+		if (quarter == 1) {
+			awayTeamFirstQuarterScore = awayTeamScore;
+			homeTeamFirstQuarterScore = homeTeamScore;
+		} else if (quarter == 2) {
+			awayTeamSecondQuarterScore = awayTeamScore - awayTeamFirstQuarterScore;
+			homeTeamSecondQuarterScore = homeTeamScore - homeTeamFirstQuarterScore;
+		} else if (quarter == 3) {
+			awayTeamThirdQuarterScore = awayTeamScore - awayTeamSecondQuarterScore - awayTeamFirstQuarterScore;
+			homeTeamThirdQuarterScore = homeTeamScore - homeTeamSecondQuarterScore - homeTeamFirstQuarterScore;
+		} else if (quarter == 4) {
+			awayTeamFourthQuarterScore = awayTeamScore - awayTeamThirdQuarterScore - awayTeamSecondQuarterScore - awayTeamFirstQuarterScore;
+			homeTeamFourthQuarterScore = homeTeamScore - homeTeamThirdQuarterScore - homeTeamSecondQuarterScore - homeTeamFirstQuarterScore;
+		} else if (isOvertime) {
+			awayTeamOvertimeScore = awayTeamScore - awayTeamFourthQuarterScore - awayTeamThirdQuarterScore - awayTeamSecondQuarterScore - awayTeamFirstQuarterScore;
+			homeTeamOvertimeScore = homeTeamScore - homeTeamFourthQuarterScore - homeTeamThirdQuarterScore - homeTeamSecondQuarterScore - homeTeamFirstQuarterScore;
 		}
 
 		return possessions;
@@ -175,8 +188,17 @@ public class GameSimulation {
 		// Update the possession and score information
 		possessionsRemaining = 99;
 
-		awayTeamPreviousQuarterScore = 0;
-		homeTeamPreviousQuarterScore = 0;
+		this.awayTeamFirstQuarterScore = 0;
+		this.awayTeamSecondQuarterScore = 0;
+		this.awayTeamThirdQuarterScore = 0;
+		this.awayTeamFourthQuarterScore = 0;
+		this.awayTeamOvertimeScore = 0;
+		
+		this.homeTeamFirstQuarterScore = 0;
+		this.homeTeamSecondQuarterScore = 0;
+		this.homeTeamThirdQuarterScore = 0;
+		this.homeTeamFourthQuarterScore = 0;
+		this.homeTeamOvertimeScore = 0;
 
 		this.awayTeamScore = 0;
 		this.homeTeamScore = 0;
@@ -218,22 +240,6 @@ public class GameSimulation {
 		this.isOvertime = isOvertime;
 	}
 
-	public int getAwayTeamPreviousQuarterScore() {
-		return awayTeamPreviousQuarterScore;
-	}
-
-	public void setAwayTeamPreviousQuarterScore(int awayTeamPreviousQuarterScore) {
-		this.awayTeamPreviousQuarterScore = awayTeamPreviousQuarterScore;
-	}
-
-	public int getHomeTeamPreviousQuarterScore() {
-		return homeTeamPreviousQuarterScore;
-	}
-
-	public void setHomeTeamPreviousQuarterScore(int homeTeamPreviousQuarterScore) {
-		this.homeTeamPreviousQuarterScore = homeTeamPreviousQuarterScore;
-	}
-
 	public int getAwayTeamScore() {
 		return awayTeamScore;
 	}
@@ -256,6 +262,86 @@ public class GameSimulation {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public int getAwayTeamFirstQuarterScore() {
+		return awayTeamFirstQuarterScore;
+	}
+
+	public void setAwayTeamFirstQuarterScore(int awayTeamFirstQuarterScore) {
+		this.awayTeamFirstQuarterScore = awayTeamFirstQuarterScore;
+	}
+
+	public int getAwayTeamSecondQuarterScore() {
+		return awayTeamSecondQuarterScore;
+	}
+
+	public void setAwayTeamSecondQuarterScore(int awayTeamSecondQuarterScore) {
+		this.awayTeamSecondQuarterScore = awayTeamSecondQuarterScore;
+	}
+
+	public int getAwayTeamThirdQuarterScore() {
+		return awayTeamThirdQuarterScore;
+	}
+
+	public void setAwayTeamThirdQuarterScore(int awayTeamThirdQuarterScore) {
+		this.awayTeamThirdQuarterScore = awayTeamThirdQuarterScore;
+	}
+
+	public int getAwayTeamFourthQuarterScore() {
+		return awayTeamFourthQuarterScore;
+	}
+
+	public void setAwayTeamFourthQuarterScore(int awayTeamFourthQuarterScore) {
+		this.awayTeamFourthQuarterScore = awayTeamFourthQuarterScore;
+	}
+
+	public int getAwayTeamOvertimeScore() {
+		return awayTeamOvertimeScore;
+	}
+
+	public void setAwayTeamOvertimeScore(int awayTeamOvertimeScore) {
+		this.awayTeamOvertimeScore = awayTeamOvertimeScore;
+	}
+
+	public int getHomeTeamFirstQuarterScore() {
+		return homeTeamFirstQuarterScore;
+	}
+
+	public void setHomeTeamFirstQuarterScore(int homeTeamFirstQuarterScore) {
+		this.homeTeamFirstQuarterScore = homeTeamFirstQuarterScore;
+	}
+
+	public int getHomeTeamSecondQuarterScore() {
+		return homeTeamSecondQuarterScore;
+	}
+
+	public void setHomeTeamSecondQuarterScore(int homeTeamSecondQuarterScore) {
+		this.homeTeamSecondQuarterScore = homeTeamSecondQuarterScore;
+	}
+
+	public int getHomeTeamThirdQuarterScore() {
+		return homeTeamThirdQuarterScore;
+	}
+
+	public void setHomeTeamThirdQuarterScore(int homeTeamThirdQuarterScore) {
+		this.homeTeamThirdQuarterScore = homeTeamThirdQuarterScore;
+	}
+
+	public int getHomeTeamFourthQuarterScore() {
+		return homeTeamFourthQuarterScore;
+	}
+
+	public void setHomeTeamFourthQuarterScore(int homeTeamFourthQuarterScore) {
+		this.homeTeamFourthQuarterScore = homeTeamFourthQuarterScore;
+	}
+
+	public int getHomeTeamOvertimeScore() {
+		return homeTeamOvertimeScore;
+	}
+
+	public void setHomeTeamOvertimeScore(int homeTeamOvertimeScore) {
+		this.homeTeamOvertimeScore = homeTeamOvertimeScore;
 	}
 
 }

@@ -47,7 +47,7 @@ export class GameSimulationComponent implements OnInit {
     this.gameSimulationService.getGameSimulation(gameSimID)
     .subscribe(gameSimulation => {
       this.gameSimulation = gameSimulation;
-    	}
+    }
     );
   }
 

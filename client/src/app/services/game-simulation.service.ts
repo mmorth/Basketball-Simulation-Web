@@ -20,17 +20,26 @@ export class GameSimulationService {
   	return this.http.post<GameSimulation>('http://localhost:8080/api/game-simulation/',
   		JSON.stringify({ 
   		"awayTeam": {
-  			"id": 47
+  			"id": 233
   		}, 
   		"homeTeam": {
-  			"id": 48
+  			"id": 234
   		}, 
   		"possessionsRemaining": 99, 
   		"isOvertime": false, 
   		"awayTeamScore": 0, 
   		"homeTeamScore": 0, 
-  		"awayTeamPreviousQuarterScore": 0, 
-  		"homeTeamPreviousQuarterScore": 0 }), 
+		"awayTeamFirstQuarterScore": 0,
+		"awayTeamSecondQuarterScore": 0,
+		"awayTeamThirdQuarterScore": 0,
+		"awayTeamFourthQuarterScore": 0,
+		"awayTeamOvertimeScore": 0,
+		"homeTeamFirstQuarterScore": 0,
+		"homeTeamSecondQuarterScore": 0,
+		"homeTeamThirdQuarterScore": 0,
+		"homeTeamFourthQuarterScore": 0,
+		"homeTeamOvertimeScore": 0,
+	}), 
 		{
 			headers: { 'Content-Type': 'application/json' },
 			observe: 'body',

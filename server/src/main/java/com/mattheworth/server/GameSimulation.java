@@ -12,46 +12,122 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+/**
+ * A class that represents a basketball simulation
+ * @author mmorth
+ *
+ */
 @Entity
 public class GameSimulation {
 
-	/* fields */
+	// ============================= Fields ======================================== //
+	
+	/**
+	 * The primary key
+	 */
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
+	/**
+	 * The away team
+	 */
 	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
 	@JoinColumn(name="away_team_id")
 	private Team awayTeam;
 	
+	/**
+	 * The home team
+	 */
 	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
 	@JoinColumn(name="home_team_id")
 	private Team homeTeam;
 	
+	/**
+	 * The number of possession remaining
+	 */
 	private int possessionsRemaining;
 	
+	/**
+	 * Stores whether or not the simulation is in overtime
+	 */
 	@Column(nullable = false, columnDefinition = "TINYINT(1)")
 	private boolean isOvertime;
+	
+	/**
+	 * The score of the away team
+	 */
 	private int awayTeamScore;
+	
+	/**
+	 * The score of the home team
+	 */
 	private int homeTeamScore;
 	
+	/**
+	 * The away team's first quarter score
+	 */
 	private int awayTeamFirstQuarterScore;
+	
+	/**
+	 * The away team's second quarter score
+	 */
 	private int awayTeamSecondQuarterScore;
+	
+	/**
+	 * The away team's third quarter score
+	 */
 	private int awayTeamThirdQuarterScore;
+	
+	/**
+	 * The away team's fourth quarter score
+	 */
 	private int awayTeamFourthQuarterScore;
+	
+	/**
+	 * The away team's overtime score
+	 */
 	private int awayTeamOvertimeScore;
 	
+	/**
+	 * The home team's first quarter score
+	 */
 	private int homeTeamFirstQuarterScore;
+	
+	/**
+	 * The home team's second quarter score
+	 */
 	private int homeTeamSecondQuarterScore;
+	
+	/*
+	 * The home team's third quarter score
+	 */
 	private int homeTeamThirdQuarterScore;
+	
+	/**
+	 * The home team's fourth quarter score
+	 */
 	private int homeTeamFourthQuarterScore;
+	
+	/**
+	 * The home team's overtime score
+	 */
 	private int homeTeamOvertimeScore;
 
+	// ======================================== Constructors =================================== //
+	
+	/**
+	 * Constructs a new default GameSimulation object
+	 */
 	public GameSimulation() {
 		
 	}
 	
-	/* constructor */
+	/**
+	 * Constructs a new GameSimulation with the two given teams
+	 * @param awayTeam The away team 
+	 * @param homeTeam The home team
+	 */
 	public GameSimulation(Team awayTeam, Team homeTeam) {
 		this.awayTeam = awayTeam;
 		this.homeTeam = homeTeam;
@@ -73,7 +149,12 @@ public class GameSimulation {
 		this.homeTeamOvertimeScore = 0;
 	}
 
-	/* logic methods */
+	// ========================================= Logic Methods ========================== //
+	
+	/**
+	 * Simulations the given number of possessions
+	 * @param possessions The number of possessions to simulate
+	 */
 	public void simulationPossession(int possessions) {
 		// Simulate the first quarter if it is not over yet
 		while (possessionsRemaining > 74 && possessions > 0) {
@@ -113,6 +194,12 @@ public class GameSimulation {
 
 	}
 
+	/**
+	 * Simulates the given number of possessions and calculates the points scored for each quarter for each team
+	 * @param quarter The quarter the simulation is in
+	 * @param possessions the number of possessions to simlate
+	 * @return The number of possessions remaining
+	 */
 	public int simulatePossession(int quarter, int possessions) {
 		// Determine the points scored for each team
 		determineScoringOutcome();
@@ -142,6 +229,9 @@ public class GameSimulation {
 		return possessions;
 	}
 
+	/**
+	 * Determines how much each team will score for the current possession
+	 */
 	public void determineScoringOutcome() {
 		Random rand = new Random();
 		
@@ -166,6 +256,12 @@ public class GameSimulation {
 		homeTeamScore += homeTeamScoreIncrease;
 	}
 
+	/**
+	 * Determines how much a given team will score
+	 * @param randNum The random number associated with that team
+	 * @param teamRatio The ratio of the team's offensive to defensive rating
+	 * @return The score increase for the team
+	 */
 	public int determineScoreIncrease(int randNum, int teamRatio) {
 		int teamScoreIncrease;
 
@@ -184,6 +280,9 @@ public class GameSimulation {
 		return teamScoreIncrease;
 	}
 
+	/**
+	 * Resets the game simulation
+	 */
 	public void resetGame() {
 		// Update the possession and score information
 		possessionsRemaining = 99;
@@ -207,11 +306,12 @@ public class GameSimulation {
 
 	}
 
-	/* getters and setters */
+	// ====================================== Getters and Setters ============================ //
+	
 	public Team getAwayTeam() {
 		return awayTeam;
 	}
-
+	
 	public void setAwayTeam(Team awayTeam) {
 		this.awayTeam = awayTeam;
 	}

@@ -13,23 +13,50 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
+/**
+ * A class that represents a Team object
+ * @author mmorth
+ *
+ */
 @Entity
 public class Team {
-	/* fields */
+
+	// ======================================= Fields ================================= //
+	
+	/**
+	 * The primary key
+	 */
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
+	/**
+	 * The team name
+	 */
 	@Column(unique = true)	
 	private String name;
+	
+	/**
+	 * The team's offensive rating
+	 */
 	private int offensiveRating;
+	
+	/**
+	 * The team's defensive rating
+	 */
 	private int defensiveRating;
 	
+	// ===================================== Constructor ============================ //
+	
+	/**
+	 * Constructs a new default team
+	 */
 	public Team() {
 		
 	}
 
-	/* getters and setters */
+	// ====================================== Getters and Setters ============================= //
+	
 	public String getName() {
 		return name;
 	}

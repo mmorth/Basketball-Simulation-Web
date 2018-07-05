@@ -104,11 +104,10 @@ export class TeamInputComponent implements OnInit {
   	this.teamService.deleteTeam(id)
   	.subscribe(
   		() => {
-
+				this.router.navigateByUrl('/team-details');
   		}
   	);
 
-  	this.router.navigateByUrl('/team-details');
   }
 
 	/**

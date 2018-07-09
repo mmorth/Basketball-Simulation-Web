@@ -1,21 +1,17 @@
-package com.mattheworth.server;
+package com.mattheworth.team;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,10 +27,16 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.mattheworth.server.Team;
+import com.mattheworth.server.TeamRepository;
+
+/**
+ * @author Josh Long
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest()
 @WebAppConfiguration
-public class GameSimulationControllerTest {
+public class TeamControllerTest {
 
 
     private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
@@ -51,11 +53,6 @@ public class GameSimulationControllerTest {
 
     @Autowired
     private TeamRepository teamRepository;
-    
-    private GameSimulation gameSimulation;
-    
-    @Autowired
-    private GameSimulationRepository gameSimulationRepository;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -82,55 +79,55 @@ public class GameSimulationControllerTest {
  	    this.team.setOffensiveRating(100);
  	    this.team.setDefensiveRating(100);
         this.team = teamRepository.save(this.team); 
-        
- 	   Team awayTeam = new Team();
- 	   awayTeam.setId(1);
- 	   awayTeam.setName("awayTeam");
- 	   awayTeam.setOffensiveRating(100);
- 	   awayTeam.setDefensiveRating(100);
- 	   
- 	   Team homeTeam = new Team();
- 	   homeTeam.setId(2);
- 	   homeTeam.setName("homeTeam");
- 	   homeTeam.setOffensiveRating(100);
- 	   homeTeam.setDefensiveRating(100);
- 	   
- 	   gameSimulation = new GameSimulation(awayTeam, homeTeam);
     }
 
     @Test
-    public void gameSimulationNotFound() throws Exception {
-        mockMvc.perform(get("/api/game-simulation/" + (gameSimulation.getId()+1) + "/")
-                .content(this.json(new GameSimulation()))
+    public void teamNotFound() throws Exception {
+        mockMvc.perform(get("/api/teams/" + (team.getId()+1) + "/")
+                .content(this.json(new Team()))
                 .contentType(contentType))
                 .andExpect(status().isNotFound());
     }
     
     @Test
-    public void gameSimulationFound() throws Exception {
-        mockMvc.perform(get("/api/game-simulation/" + gameSimulation.getId() + "/")
-                .content(this.json(this.gameSimulation))
+    public void teamFound() throws Exception {
+        mockMvc.perform(get("/api/teams/" + team.getId() + "/")
+                .content(this.json(this.team))
                 .contentType(contentType))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void createGameSimulation() throws Exception {
-        String gameSimulationJson = json(this.gameSimulation);
+    public void readTeams() throws Exception {
+        mockMvc.perform(get("/api/teams/"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].id", is(this.team.getId())))
+                .andExpect(jsonPath("$[0].name", is(this.team.getName())))
+                .andExpect(jsonPath("$[1].id", is(this.team.getId())))
+                .andExpect(jsonPath("$[1].name", is(this.team.getName())));
+    }
 
-        this.mockMvc.perform(post("/api/game-simulation/" + this.gameSimulation.getId() + "/")
+    @Test
+    public void createTeam() throws Exception {
+        String teamJson = json(this.team);
+
+        this.mockMvc.perform(post("/api/teams/" + this.team.getId() + "/")
                 .contentType(contentType)
-                .content(gameSimulationJson))
+                .content(teamJson))
                 .andExpect(status().isCreated());
     }
     
     @Test
-    public void updateGameSimulation() throws Exception {
-        String gameSimulationJson = json(this.gameSimulation);
+    public void updateTeam() throws Exception {
+        String teamJson = json(this.team);
 
-        this.mockMvc.perform(put("/api/game-simulation/" + this.gameSimulation.getId() + "/")
+        this.mockMvc.perform(put("/api/teams/" + this.team.getId() + "/")
                 .contentType(contentType)
-                .content(gameSimulationJson));        
+                .content(teamJson))
+                .andExpect(status().isCreated());
     }
     
     @Test
@@ -142,8 +139,7 @@ public class GameSimulationControllerTest {
                 .content(teamJson))
                 .andExpect(status().isNoContent());
     }
-    
-    // Logic tests
+
     protected String json(Object o) throws IOException {
         MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
         this.mappingJackson2HttpMessageConverter.write(

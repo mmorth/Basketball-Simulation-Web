@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 /**
@@ -45,6 +46,13 @@ public class Team {
 	 * The team's defensive rating
 	 */
 	private int defensiveRating;
+	
+	/**
+	 * The home team
+	 */
+	@OneToMany(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
+	@JoinColumn(name="team_id")
+	private List<Player> players = new ArrayList<>();
 	
 	// ===================================== Constructor ============================ //
 	
@@ -87,6 +95,14 @@ public class Team {
 
 	public void setDefensiveRating(int defensiveRating) {
 		this.defensiveRating = defensiveRating;
+	}
+
+	public List<Player> getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(List<Player> players) {
+		this.players = players;
 	}
 
 }

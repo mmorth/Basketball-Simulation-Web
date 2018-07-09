@@ -1,10 +1,13 @@
-package com.mattheworth.server;
+package com.mattheworth.gamesimulation;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.mattheworth.server.GameSimulation;
+import com.mattheworth.server.Team;
 
 public class GameSimulationTest {
 	

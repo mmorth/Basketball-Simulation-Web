@@ -19,28 +19,38 @@ import org.springframework.web.bind.annotation.RequestBody;
  */
 @CrossOrigin(origins="*")
 @Controller 
-@RequestMapping(path="/api/players") 
+@RequestMapping(path="/api") 
 public class PlayerController {
+	
+	/**
+	 * Handles Player object requests with the database
+	 */
+	@Autowired
+	private PlayerRepository playerRepository;
 	
 	/**
 	 * Handles Team object requests with the database
 	 */
 	@Autowired
-	private PlayerRepository playerRepository;
+	private TeamRepository teamRepository;
 
 	/**
 	 * Creates a new player from the input json 
-	 * @param jsonTeam The player constructed from the input json
+	 * @param jsonPlayer The player constructed from the input json
 	 * @return The id of the new player created as json
 	 */
-	@RequestMapping(method = RequestMethod.POST, produces = "application/json") 
-	public @ResponseBody long createPlayer(@RequestBody Player jsonPlayer) {
+	@RequestMapping(path="/teams/{teamID}/players", method = RequestMethod.POST, produces = "application/json") 
+	public @ResponseBody long createPlayer(@PathVariable long teamID, @RequestBody Player jsonPlayer) {
+		Team team = teamRepository.findById(teamID).get();
 
-		playerRepository.save(jsonPlayer); 
+		playerRepository.save(jsonPlayer);
 		
-		long teamID = jsonPlayer.getId();
+		team.addPlayer(jsonPlayer);
+		teamRepository.save(team);
 		
-		return teamID;
+		long playerID = jsonPlayer.getId();
+		
+		return playerID;
 	}
 	
 	/**
@@ -48,29 +58,36 @@ public class PlayerController {
 	 * @param id The id of the player to delete
 	 * @return The id of the deleted player as json
 	 */
-	@RequestMapping(path="/{id}", method = RequestMethod.DELETE, produces = "application/json")
-	public @ResponseBody long deletePlayer(@PathVariable long id) {
-		Player deletePlayer = playerRepository.findById(id).get();
+	@RequestMapping(path="/teams/{teamID}/{playerID}", method = RequestMethod.DELETE, produces = "application/json")
+	public @ResponseBody long deletePlayer(@PathVariable long teamID, @PathVariable long playerID) {
+		Player deletePlayer = playerRepository.findById(playerID).get();
 		playerRepository.delete(deletePlayer);
 		
-		return id;
+		Team team = teamRepository.findById(teamID).get();
+		team.removePlayer(deletePlayer);
+		teamRepository.save(team);
+		
+		return playerID;
 	}
 	
 	/**
 	 * Updates a player from the input json
 	 * @param id The id of the player to update
-	 * @param jsonTeam The Player object constructed from the input json
+	 * @param jsonPlayer The Player object constructed from the input json
 	 * @return The id of the player that was updated as json
 	 */
-	@RequestMapping(path="/{id}", method = RequestMethod.PUT, produces = "application/json")
-	public @ResponseBody long updatePlayer(@PathVariable long id, @RequestBody Player jsonPlayer) {
-		Player updatePlayer = playerRepository.findById(id).get();
+	@RequestMapping(path="/teams/{teamID}/{playerID}", method = RequestMethod.PUT, produces = "application/json")
+	public @ResponseBody long updatePlayer(@PathVariable long teamID, @PathVariable long playerID, @RequestBody Player jsonPlayer) {
+		Player updatePlayer = playerRepository.findById(playerID).get();
 		
 		updatePlayer.setOffensiveRating(jsonPlayer.getOffensiveRating());
 		updatePlayer.setDefensiveRating(jsonPlayer.getDefensiveRating());
 		playerRepository.save(updatePlayer);
 		
-		return id;
+		Team team = teamRepository.findById(teamID).get();
+		teamRepository.save(team);
+		
+		return playerID;
 	}
 	
 	/**
@@ -78,16 +95,16 @@ public class PlayerController {
 	 * @param id The id of the player that is returned
 	 * @return The player with the specified id as json
 	 */
-	@RequestMapping(path="/{id}", method = RequestMethod.GET)
-	public @ResponseBody Player getTeam(@PathVariable long id) {
-		return playerRepository.findById(id).get();
+	@RequestMapping(path="/players/{playerID}", method = RequestMethod.GET)
+	public @ResponseBody Player getPlayer(@PathVariable long playerID) {
+		return playerRepository.findById(playerID).get();
 	}
 	
 	/**
 	 * Returns a list of all Player objects stored in the database
 	 * @return A list of all Player object stored in the database as json
 	 */
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(path="/players", method = RequestMethod.GET)
 	public @ResponseBody Iterable<Player> getAllPlayers() {
 		return playerRepository.findAll();
 	}

@@ -1,5 +1,7 @@
 package com.mattheworth.server;
 
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,6 +105,16 @@ public class Team {
 
 	public void setPlayers(List<Player> players) {
 		this.players = players;
+	}
+	
+	// ======================================== Logic Methods =============================================== //
+	
+	public void addPlayer(Player player) {
+		this.players.add(player);
+	}
+	
+	public void removePlayer(Player player) {
+		this.players.remove(player);
 	}
 
 }

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { GameSimulationService } from '../services/game-simulation.service';
 import { GameSimulation } from '../models/game-simulation';
-import { Team } from '../models/team';
 import { TeamService } from '../services/team.service';
 
 @Component({

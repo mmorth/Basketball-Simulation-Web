@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	
+</head>
+
+<body>
+
+	<h1>Team Information:</h1>
+
+	<div class="playerInputForm" *ngIf="player; else notPlayer">
+
+		<div class="form-group">
+			<label for="inputlg">Player Name (cannot change)</label>
+			<input id="playerName" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="teamName" placeholder="Player Name" value={{player.name}} ng-model="playerInputs" readonly>
+		</div>
+
+		<div class="form-group">
+			<label for="inputlg">Offensive Rating (must be between 1 and 100</label>
+			<input id="playerOffensiveRating" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="offensiveRating" placeholder="Offensive Rating" value={{player.offensiveRating}} ng-model="playerInputs">
+		</div>
+
+		<div class="form-group">
+			<label for="inputlg">Defensive Rating (must be between 1 and 100)</label>
+			<input id="playerDefensiveRating" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="defensiveRating" placeholder="Defensive Rating" value={{player.defensiveRating}} ng-model="playerInputs">
+		</div>
+
+		<a id="update-player-button" class="btn btn-primary" (click)="updatePlayer()">Update Player</a>
+		<a id="delete-player-button" class="btn btn-primary" (click)="deletePlayer()">Delete Player</a>
+
+	</div>
+
+	<ng-template #notPlayer>
+		<div class="form-group">
+			<label for="inputlg">Player Name (must be greater than or equal to 1 character)</label>
+			<input id="playerName" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="playerName" placeholder="Player Name" ng-model="playerInputs">
+		</div>
+
+		<div class="form-group">
+			<label for="inputlg">Offensive Rating (must be between 1 and 100)</label>
+			<input id="playerOffensiveRating" class="form-control input-lg" id="inputlg" [(ngModel)]="offensiveRating" type="text" placeholder="Offensive Rating" ng-model="playerInputs">
+		</div>
+
+		<div class="form-group">
+			<label for="inputlg">Defensive Rating (must be between 1 and 100)</label>
+			<input id="playerDefensiveRating" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="defensiveRating" placeholder="Defensive Rating" ng-model="playerInputs">
+		</div>
+
+		<a id="delete-team-button" class="btn btn-primary" (click)="createPlayer()">Create Player</a>
+	</ng-template>
+
+	  <font color red>{{ inputError }}</font>
+
+</body>
+</html>

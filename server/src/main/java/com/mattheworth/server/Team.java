@@ -50,11 +50,18 @@ public class Team {
 	private int defensiveRating;
 	
 	/**
-	 * The home team
+	 * The list of players on the team
 	 */
 	@OneToMany(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
 	@JoinColumn(name="team_id")
 	private List<Player> players = new ArrayList<>();
+	
+	/**
+	 * The coach of the team
+	 */
+//	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
+//	@JoinColumn(name="coach_id")
+//	private Player coach;
 	
 	// ===================================== Constructor ============================ //
 	

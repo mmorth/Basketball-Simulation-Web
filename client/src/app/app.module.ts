@@ -12,6 +12,7 @@ import { TeamListComponent } from './team-list/team-list.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 import { GameSimulationInputComponent } from './game-simulation-input/game-simulation-input.component';
 import { AppRoutingModule } from './/app-routing.module';
+import { PlayerInputComponent } from './player-input/player-input.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { AppRoutingModule } from './/app-routing.module';
     TeamDetailsComponent,
     TeamListComponent,
     NavigationBarComponent,
-    GameSimulationInputComponent
+    GameSimulationInputComponent,
+    PlayerInputComponent
   ],
   imports: [
     BrowserModule,

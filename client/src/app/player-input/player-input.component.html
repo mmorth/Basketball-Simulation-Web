@@ -13,17 +13,17 @@
 
 		<div class="form-group">
 			<label for="inputlg">Player Name (cannot change)</label>
-			<input id="playerName" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="teamName" placeholder="Player Name" value={{player.name}} ng-model="playerInputs" readonly>
+			<input id="playerName" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="player.name" placeholder="Player Name" value={{player.name}} ng-model="playerInputs" readonly>
 		</div>
 
 		<div class="form-group">
 			<label for="inputlg">Offensive Rating (must be between 1 and 100</label>
-			<input id="playerOffensiveRating" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="offensiveRating" placeholder="Offensive Rating" value={{player.offensiveRating}} ng-model="playerInputs">
+			<input id="playerOffensiveRating" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="player.offensiveRating" placeholder="Offensive Rating" value={{player.offensiveRating}} ng-model="playerInputs">
 		</div>
 
 		<div class="form-group">
 			<label for="inputlg">Defensive Rating (must be between 1 and 100)</label>
-			<input id="playerDefensiveRating" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="defensiveRating" placeholder="Defensive Rating" value={{player.defensiveRating}} ng-model="playerInputs">
+			<input id="playerDefensiveRating" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="player.defensiveRating" placeholder="Defensive Rating" value={{player.defensiveRating}} ng-model="playerInputs">
 		</div>
 
 		<a id="update-player-button" class="btn btn-primary" (click)="updatePlayer()">Update Player</a>

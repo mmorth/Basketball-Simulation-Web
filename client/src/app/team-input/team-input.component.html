@@ -38,7 +38,7 @@
 			</thead>
 			<tbody>
 				<tr *ngFor="let player of team.players">
-					<td><a routerLink="/team-details/{{team.id}}">{{player.name}}</a></td>
+					<td><a routerLink="/team-details/{{team.id}}/{{player.id}}">{{player.name}}</a></td>
 					<td>{{player.offensiveRating}}</td>
 					<td>{{player.defensiveRating}}</td>
 					<td>{{(player.offensiveRating+player.defensiveRating)/2}}
@@ -47,7 +47,7 @@
 		</table>
 
 		<a id="update-team-button" class="btn btn-primary" (click)="updateTeam()">Update Team</a>
-		<a id="create-player-button" class="btn btn-primary" (click)="updateTeam()">Create Player</a>
+		<a id="create-player-button" class="btn btn-primary" routerLink="/team-details/" + teamID + "/create">Create Player</a>
 		<a id="delete-input-button" class="btn btn-primary" (click)="deleteTeam()">Delete Team</a>
 
 	</div>

@@ -33,10 +33,10 @@ export class PlayerInputComponent implements OnInit {
   constructor(private route: ActivatedRoute, private playerService: PlayerService, private location: Location, private router: Router) { }
 
 	/**
-	 * Get the specified team if it exists when the user enters the page
+	 * Get the specified player if it exists when the user enters the page
 	 */
   ngOnInit(): void {
-    const id = +this.route.snapshot.paramMap.get('id');
+    const id = +this.route.snapshot.paramMap.get('playerID');
 
     if (!isNaN(id)) {
   	 this.getPlayer();
@@ -44,10 +44,10 @@ export class PlayerInputComponent implements OnInit {
   }
 
 	/**
-	 * Gets the team with the specified id
+	 * Gets the player with the specified id
 	 */
   getPlayer(): void {
-  	const id = +this.route.snapshot.paramMap.get('id');
+  	const id = +this.route.snapshot.paramMap.get('playerID');
   	this.playerService.getPlayer(id)
     .subscribe(player => {
     	this.player = player;
@@ -56,15 +56,17 @@ export class PlayerInputComponent implements OnInit {
   }
 
 	/**
-	 * Create the specified team based on the user's input
+	 * Create the specified player based on the user's input
 	 */
   createPlayer(): void {
+    const id = +this.route.snapshot.paramMap.get('teamID');
+
   	if (this.player.name.length > 0 && this.player.offensiveRating > 0 && this.player.offensiveRating <= 100 && this.player.defensiveRating > 0 && this.player.defensiveRating <= 100) {
   		this.playerService.createPlayer(this.player.id, this.player.name, this.player.offensiveRating, this.player.defensiveRating)
   		.subscribe(() => {
 				this.player = null;
 				this.inputError = "";
-				this.router.navigateByUrl('/team-details');
+				this.router.navigateByUrl('/team-details/' + id);
   		});
     } else {
     	this.inputError = "Invalid Input";
@@ -73,33 +75,36 @@ export class PlayerInputComponent implements OnInit {
   }
 
 	/**
-	 * Deletes the team with the specified id
+	 * Deletes the player with the specified id
 	 */
   deletePlayer(): void {
-  	const id = +this.route.snapshot.paramMap.get('id');
-  	this.playerService.deletePlayer(id, this.player.id)
+    const teamID = +this.route.snapshot.paramMap.get('teamID');
+    const playerID = +this.route.snapshot.paramMap.get('playerID');
+    
+  	this.playerService.deletePlayer(teamID, playerID)
   	.subscribe(
   		() => {
-				this.router.navigateByUrl('/team-details');
+				this.router.navigateByUrl('/team-details/' + teamID);
   		}
   	);
 
   }
 
 	/**
-	 * Update the team with the specified id
+	 * Update the player with the specified id
 	 */
   updatePlayer(): void {
-  	const id = +this.route.snapshot.paramMap.get('id');
+  	const teamID = +this.route.snapshot.paramMap.get('teamID');
+  	const playerID = +this.route.snapshot.paramMap.get('playerID');
 
   	if (this.player.offensiveRating > 0 && this.player.offensiveRating <= 100 && this.player.defensiveRating > 0 && this.player.defensiveRating <= 100) {
   	
-	  	this.playerService.updatePlayer(id, this.player.name, this.player.offensiveRating, this.player.defensiveRating)
+	  	this.playerService.updatePlayer(teamID, playerID, this.player.name, this.player.offensiveRating, this.player.defensiveRating)
 	  	.subscribe(
 	  		() => {
 	  			this.player = null;
 					this.inputError = "";
-					this.router.navigateByUrl('/team-details');
+					this.router.navigateByUrl('/team-details/' + teamID);
 	  		}
 	  	);	
 	  

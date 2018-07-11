@@ -29,7 +29,7 @@ export class PlayerService {
    * @param id The id of the team to get
    */
   getPlayer(id: number): Observable<Player> {
-  	return this.http.get<Player>('http://localhost:8080/api/teams/players' + id)
+  	return this.http.get<Player>('http://localhost:8080/api/players/' + id)
   }
 
   /**
@@ -60,8 +60,8 @@ export class PlayerService {
    * @param offRating The offensive rating of the player
    * @param defRating The defensive rating of the player
    */
-  updatePlayer(teamID: number, playerName: string, offRating: number, defRating: number) {
-  	return this.http.put('http://localhost:8080/api/teams/' + teamID,
+  updatePlayer(teamID: number, playerID: number, playerName: string, offRating: number, defRating: number) {
+  	return this.http.put('http://localhost:8080/api/teams/' + teamID + '/' + playerID,
   		JSON.stringify({ "name": playerName, "offensiveRating": offRating, "defensiveRating": defRating }), 
   		HEADERS
   	);

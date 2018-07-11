@@ -18,9 +18,9 @@ import { TeamService } from '../services/team.service';
 export class TeamInputComponent implements OnInit {
 
 	/**
-	 * The current team
+	 * The Team
 	 */
-  team: Team;
+	team: Team;
 
 	/**
 	 * The name of the team
@@ -55,7 +55,7 @@ export class TeamInputComponent implements OnInit {
 	 * Get the specified team if it exists when the user enters the page
 	 */
   ngOnInit(): void {
-    const id = +this.route.snapshot.paramMap.get('id');
+		const id = +this.route.snapshot.paramMap.get('id');
 
     if (!isNaN(id)) {
   	 this.getTeam();
@@ -69,7 +69,7 @@ export class TeamInputComponent implements OnInit {
   	const id = +this.route.snapshot.paramMap.get('id');
   	this.teamService.getTeam(id)
     .subscribe(team => {
-    	this.team = team;
+			this.team = team;
     	this.teamName = team.name; 
     	this.offensiveRating = team.offensiveRating; 
     	this.defensiveRating = team.defensiveRating
@@ -81,10 +81,13 @@ export class TeamInputComponent implements OnInit {
 	 * Create the specified team based on the user's input
 	 */
   createTeam(): void {
-  	if (this.team.name.length > 0 && this.team.offensiveRating > 0 && this.team.offensiveRating <= 100 && this.team.defensiveRating > 0 && this.team.defensiveRating <= 100) {
-  		this.teamService.createTeam(this.team.name, this.team.offensiveRating, this.team.defensiveRating)
+  	if (this.teamName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
+  		this.teamService.createTeam(this.teamName, this.offensiveRating, this.defensiveRating)
   		.subscribe(() => {
 				this.team = null;
+				this.teamName = ""; 
+				this.offensiveRating = 0; 
+				this.defensiveRating = 0;
 				this.inputError = "";
 				this.router.navigateByUrl('/team-details');
   		});
@@ -102,6 +105,10 @@ export class TeamInputComponent implements OnInit {
   	this.teamService.deleteTeam(id)
   	.subscribe(
   		() => {
+				this.team = null;
+				this.teamName = ""; 
+				this.offensiveRating = 0; 
+				this.defensiveRating = 0;
 				this.router.navigateByUrl('/team-details');
   		}
   	);
@@ -114,12 +121,15 @@ export class TeamInputComponent implements OnInit {
   updateTeam(): void {
   	const id = +this.route.snapshot.paramMap.get('id');
 
-  	if (this.team.offensiveRating > 0 && this.team.offensiveRating <= 100 && this.team.defensiveRating > 0 && this.team.defensiveRating <= 100) {
+  	if (this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
   	
-	  	this.teamService.updateTeam(id, this.team.name, this.team.offensiveRating, this.team.defensiveRating)
+	  	this.teamService.updateTeam(id, this.teamName, this.offensiveRating, this.defensiveRating)
 	  	.subscribe(
 	  		() => {
-	  			this.team = null;
+					this.team = null;
+					this.teamName = ""; 
+					this.offensiveRating = 0; 
+					this.defensiveRating = 0;
 					this.inputError = "";
 					this.router.navigateByUrl('/team-details');
 	  		}
@@ -128,6 +138,13 @@ export class TeamInputComponent implements OnInit {
 	} else {
 		this.inputError = "Invalid Input";
 	}
-  }
+	}
+	
+	/**
+	 * Creates a new player
+	 */
+	createPlayer(teamID: number): void {
+		this.router.navigateByUrl('/team-details/' + teamID + '/create');
+	}
 
 }

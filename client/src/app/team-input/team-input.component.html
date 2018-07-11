@@ -13,17 +13,17 @@
 
 		<div class="form-group">
 			<label for="inputsm">Team Name (cannot change)</label>
-			<input id="teamName" class="form-control input-sm" id="inputsm" type="text" [(ngModel)]="team.name" placeholder="Team Name" value={{team.name}} ng-model="teamInputs" readonly>
+			<input id="teamName" class="form-control input-sm" id="inputsm" type="text" [(ngModel)]="teamName" placeholder="Team Name" value={{team.name}} ng-model="teamInputs" readonly>
 		</div>
 
 		<div class="form-group">
 			<label for="inputsm">Offensive Rating (must be between 1 and 100</label>
-			<input id="teamOffensiveRating" class="form-control input-sm" id="inputsm" type="text" [(ngModel)]="team.offensiveRating" placeholder="Offensive Rating" value={{team.offensiveRating}} ng-model="teamInputs">
+			<input id="teamOffensiveRating" class="form-control input-sm" id="inputsm" type="text" [(ngModel)]="offensiveRating" placeholder="Offensive Rating" value={{team.offensiveRating}} ng-model="teamInputs">
 		</div>
 
 		<div class="form-group">
 			<label for="inputsm">Defensive Rating (must be between 1 and 100)</label>
-			<input id="teamDefensiveRating" class="form-control input-sm" id="inputsm" type="text" [(ngModel)]="team.defensiveRating" placeholder="Defensive Rating" value={{team.defensiveRating}} ng-model="teamInputs">
+			<input id="teamDefensiveRating" class="form-control input-sm" id="inputsm" type="text" [(ngModel)]="defensiveRating" placeholder="Defensive Rating" value={{team.defensiveRating}} ng-model="teamInputs">
 		</div>
 
 		<h2>Player List: </h2>
@@ -47,7 +47,7 @@
 		</table>
 
 		<a id="update-team-button" class="btn btn-primary" (click)="updateTeam()">Update Team</a>
-		<a id="create-player-button" class="btn btn-primary" routerLink="/team-details/" + teamID + "/create">Create Player</a>
+		<a id="create-player-button" class="btn btn-primary" (click)="createPlayer(team.id)">Create Player</a>
 		<a id="delete-input-button" class="btn btn-primary" (click)="deleteTeam()">Delete Team</a>
 
 	</div>
@@ -55,17 +55,17 @@
 	<ng-template #notTeam>
 		<div class="form-group">
 			<label for="inputsm">Team Name (must be greater than or equal to 1 character)</label>
-			<input id="teamName" class="form-control input-sm" id="inputsm" type="text" [(ngModel)]="team.name" placeholder="Team Name" ng-model="teamInputs">
+			<input id="teamName" class="form-control input-sm" id="inputsm" type="text" [(ngModel)]="teamName" placeholder="Team Name" ng-model="teamInputs">
 		</div>
 
 		<div class="form-group">
 			<label for="inputsm">Offensive Rating (must be between 1 and 100)</label>
-			<input id="teamOffensiveRating" class="form-control input-sm" id="inputsm" [(ngModel)]="team.offensiveRating" type="text" placeholder="Offensive Rating" ng-model="teamInputs">
+			<input id="teamOffensiveRating" class="form-control input-sm" id="inputsm" [(ngModel)]="offensiveRating" type="text" placeholder="Offensive Rating" ng-model="teamInputs">
 		</div>
 
 		<div class="form-group">
 			<label for="inputsm">Defensive Rating (must be between 1 and 100)</label>
-			<input id="teamDefensiveRating" class="form-control input-sm" id="inputsm" type="text" [(ngModel)]="team.defensiveRating" placeholder="Defensive Rating" ng-model="teamInputs">
+			<input id="teamDefensiveRating" class="form-control input-sm" id="inputsm" type="text" [(ngModel)]="defensiveRating" placeholder="Defensive Rating" ng-model="teamInputs">
 		</div>
 
 		<a id="create-team-button" class="btn btn-primary" (click)="createTeam()">Create Team</a>

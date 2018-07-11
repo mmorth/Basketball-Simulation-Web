@@ -16,7 +16,22 @@ export class PlayerInputComponent implements OnInit {
   	/**
 	 * The current player
 	 */
-  player: Player;
+	player: Player;
+	
+	/**
+	 * The name of the player
+	 */
+	playerName: string;
+
+	/**
+	 * The offensive rating of the player
+	 */
+	offensiveRating: number;
+
+	/**
+	 * The defensive rating of the player
+	 */
+	defensiveRating: number;
 
 	/**
 	 * Represents the error message displayed when the user has invalid input
@@ -50,7 +65,10 @@ export class PlayerInputComponent implements OnInit {
   	const id = +this.route.snapshot.paramMap.get('playerID');
   	this.playerService.getPlayer(id)
     .subscribe(player => {
-    	this.player = player;
+			this.player = player;
+			this.playerName = player.name;
+			this.offensiveRating = player.offensiveRating;
+			this.defensiveRating = player.defensiveRating;
     	}
     );
   }
@@ -61,10 +79,13 @@ export class PlayerInputComponent implements OnInit {
   createPlayer(): void {
     const id = +this.route.snapshot.paramMap.get('teamID');
 
-  	if (this.player.name.length > 0 && this.player.offensiveRating > 0 && this.player.offensiveRating <= 100 && this.player.defensiveRating > 0 && this.player.defensiveRating <= 100) {
-  		this.playerService.createPlayer(this.player.id, this.player.name, this.player.offensiveRating, this.player.defensiveRating)
+  	if (this.playerName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
+  		this.playerService.createPlayer(id, this.playerName, this.offensiveRating, this.defensiveRating)
   		.subscribe(() => {
 				this.player = null;
+				this.playerName = "";
+				this.offensiveRating = 0;
+				this.defensiveRating = 0;
 				this.inputError = "";
 				this.router.navigateByUrl('/team-details/' + id);
   		});
@@ -84,6 +105,10 @@ export class PlayerInputComponent implements OnInit {
   	this.playerService.deletePlayer(teamID, playerID)
   	.subscribe(
   		() => {
+				this.player = null;
+				this.playerName = "";
+				this.offensiveRating = 0;
+				this.defensiveRating = 0;
 				this.router.navigateByUrl('/team-details/' + teamID);
   		}
   	);
@@ -97,12 +122,15 @@ export class PlayerInputComponent implements OnInit {
   	const teamID = +this.route.snapshot.paramMap.get('teamID');
   	const playerID = +this.route.snapshot.paramMap.get('playerID');
 
-  	if (this.player.offensiveRating > 0 && this.player.offensiveRating <= 100 && this.player.defensiveRating > 0 && this.player.defensiveRating <= 100) {
+  	if (this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
   	
-	  	this.playerService.updatePlayer(teamID, playerID, this.player.name, this.player.offensiveRating, this.player.defensiveRating)
+	  	this.playerService.updatePlayer(teamID, playerID, this.playerName, this.offensiveRating, this.defensiveRating)
 	  	.subscribe(
 	  		() => {
-	  			this.player = null;
+					this.player = null;
+					this.playerName = "";
+					this.offensiveRating = 0;
+					this.defensiveRating = 0;
 					this.inputError = "";
 					this.router.navigateByUrl('/team-details/' + teamID);
 	  		}

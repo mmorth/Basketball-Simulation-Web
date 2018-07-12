@@ -76,8 +76,8 @@ public class TeamControllerTest {
         this.team = new Team();
  	   	this.team.setId(1);
  	    this.team.setName("awayTeam");
- 	    this.team.setOffensiveRating(100);
- 	    this.team.setDefensiveRating(100);
+ 	    this.team.setOffensiveRating();
+ 	    this.team.setDefensiveRating();
         this.team = teamRepository.save(this.team); 
     }
 

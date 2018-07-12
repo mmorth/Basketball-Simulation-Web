@@ -101,18 +101,19 @@ export class PlayerInputComponent implements OnInit {
   deletePlayer(): void {
     const teamID = +this.route.snapshot.paramMap.get('teamID');
     const playerID = +this.route.snapshot.paramMap.get('playerID');
-    
-  	this.playerService.deletePlayer(teamID, playerID)
-  	.subscribe(
-  		() => {
-				this.player = null;
-				this.playerName = "";
-				this.offensiveRating = 0;
-				this.defensiveRating = 0;
-				this.router.navigateByUrl('/team-details/' + teamID);
-  		}
-  	);
-
+		
+		if(window.confirm('Are sure you want to delete this player?')) {
+			this.playerService.deletePlayer(teamID, playerID)
+			.subscribe(
+				() => {
+					this.player = null;
+					this.playerName = "";
+					this.offensiveRating = 0;
+					this.defensiveRating = 0;
+					this.router.navigateByUrl('/team-details/' + teamID);
+				}
+			);
+		}
   }
 
 	/**

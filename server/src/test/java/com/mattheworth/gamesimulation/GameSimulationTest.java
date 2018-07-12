@@ -20,14 +20,14 @@ public class GameSimulationTest {
 	   awayTeam = new Team();
 	   awayTeam.setId(1);
 	   awayTeam.setName("awayTeam");
-	   awayTeam.setOffensiveRating(100);
-	   awayTeam.setDefensiveRating(100);
+	   awayTeam.setOffensiveRating();
+	   awayTeam.setDefensiveRating();
 	   
 	   homeTeam = new Team();
 	   homeTeam.setId(2);
 	   homeTeam.setName("homeTeam");
-	   homeTeam.setOffensiveRating(100);
-	   homeTeam.setDefensiveRating(100);
+	   homeTeam.setOffensiveRating();
+	   homeTeam.setDefensiveRating();
 	   
 	   gameSimulation = new GameSimulation(awayTeam, homeTeam);
    }

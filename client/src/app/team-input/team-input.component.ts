@@ -59,7 +59,11 @@ export class TeamInputComponent implements OnInit {
 
     if (!isNaN(id)) {
   	 this.getTeam();
-    }
+    } else {
+			this.teamName = "";
+			this.offensiveRating = 0;
+			this.defensiveRating = 0;
+		}
   }
 
 	/**
@@ -81,8 +85,8 @@ export class TeamInputComponent implements OnInit {
 	 * Create the specified team based on the user's input
 	 */
   createTeam(): void {
-  	if (this.teamName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
-  		this.teamService.createTeam(this.teamName, this.offensiveRating, this.defensiveRating)
+  	if (this.teamName.length > 0) {
+  		this.teamService.createTeam(this.teamName)
   		.subscribe(() => {
 				this.team = null;
 				this.teamName = ""; 
@@ -101,17 +105,20 @@ export class TeamInputComponent implements OnInit {
 	 * Deletes the team with the specified id
 	 */
   deleteTeam(): void {
-  	const id = +this.route.snapshot.paramMap.get('id');
-  	this.teamService.deleteTeam(id)
-  	.subscribe(
-  		() => {
-				this.team = null;
-				this.teamName = ""; 
-				this.offensiveRating = 0; 
-				this.defensiveRating = 0;
-				this.router.navigateByUrl('/team-details');
-  		}
-  	);
+		const id = +this.route.snapshot.paramMap.get('id');
+		
+		if(window.confirm('Are sure you want to delete this team?')){
+			this.teamService.deleteTeam(id)
+			.subscribe(
+				() => {
+					this.team = null;
+					this.teamName = ""; 
+					this.offensiveRating = 0; 
+					this.defensiveRating = 0;
+					this.router.navigateByUrl('/team-details');
+				}
+			);
+		 }
 
   }
 
@@ -120,24 +127,19 @@ export class TeamInputComponent implements OnInit {
 	 */
   updateTeam(): void {
   	const id = +this.route.snapshot.paramMap.get('id');
-
-  	if (this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
   	
-	  	this.teamService.updateTeam(id, this.teamName, this.offensiveRating, this.defensiveRating)
-	  	.subscribe(
-	  		() => {
-					this.team = null;
-					this.teamName = ""; 
-					this.offensiveRating = 0; 
-					this.defensiveRating = 0;
-					this.inputError = "";
-					this.router.navigateByUrl('/team-details');
-	  		}
-	  	);	
-	  
-	} else {
-		this.inputError = "Invalid Input";
-	}
+		this.teamService.updateTeam(id, this.teamName)
+		.subscribe(
+			() => {
+				this.team = null;
+				this.teamName = ""; 
+				this.offensiveRating = 0; 
+				this.defensiveRating = 0;
+				this.inputError = "";
+				this.router.navigateByUrl('/team-details');
+			}
+		);	
+
 	}
 	
 	/**

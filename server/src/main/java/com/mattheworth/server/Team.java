@@ -94,16 +94,32 @@ public class Team {
 		return offensiveRating;
 	}
 
-	public void setOffensiveRating(int offensiveRating) {
-		this.offensiveRating = offensiveRating;
+	public void setOffensiveRating() {
+		this.offensiveRating = 0;
+		
+		for (int i = 0; i < players.size(); i++) {
+			this.offensiveRating += players.get(i).getOffensiveRating();
+		}
+		
+		if (players.size() != 0) {
+			this.offensiveRating /= players.size();
+		}
 	}
 
 	public int getDefensiveRating() {
 		return defensiveRating;
 	}
 
-	public void setDefensiveRating(int defensiveRating) {
-		this.defensiveRating = defensiveRating;
+	public void setDefensiveRating() {
+		this.defensiveRating = 0;
+		
+		for (int i = 0; i < players.size(); i++) {
+			this.defensiveRating += players.get(i).getDefensiveRating();
+		}
+		
+		if (players.size() != 0) {
+			this.defensiveRating /= players.size();
+		}
 	}
 
 	public List<Player> getPlayers() {
@@ -112,16 +128,22 @@ public class Team {
 
 	public void setPlayers(List<Player> players) {
 		this.players = players;
+		this.setOffensiveRating();
+		this.setDefensiveRating();
 	}
 	
 	// ======================================== Logic Methods =============================================== //
 	
 	public void addPlayer(Player player) {
 		this.players.add(player);
+		this.setOffensiveRating();
+		this.setDefensiveRating();
 	}
 	
 	public void removePlayer(Player player) {
 		this.players.remove(player);
+		this.setOffensiveRating();
+		this.setDefensiveRating();
 	}
 
 }

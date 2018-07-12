@@ -36,6 +36,9 @@ public class TeamController {
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json") 
 	public @ResponseBody long createTeam(@RequestBody Team jsonTeam) {
 
+		jsonTeam.setOffensiveRating();
+		jsonTeam.setDefensiveRating();
+		
 		teamRepository.save(jsonTeam); 
 		
 		long teamID = jsonTeam.getId();
@@ -66,8 +69,8 @@ public class TeamController {
 	public @ResponseBody long updateTeam(@PathVariable long id, @RequestBody Team jsonTeam) {
 		Team updateTeam = teamRepository.findById(id).get();
 		
-		updateTeam.setOffensiveRating(jsonTeam.getOffensiveRating());
-		updateTeam.setDefensiveRating(jsonTeam.getDefensiveRating());
+		updateTeam.setOffensiveRating();
+		updateTeam.setDefensiveRating();
 		teamRepository.save(updateTeam);
 		
 		return id;

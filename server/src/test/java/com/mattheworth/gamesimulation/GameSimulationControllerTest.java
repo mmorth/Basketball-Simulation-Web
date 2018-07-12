@@ -84,21 +84,21 @@ public class GameSimulationControllerTest {
         this.team = new Team();
  	   	this.team.setId(1);
  	    this.team.setName("awayTeam");
- 	    this.team.setOffensiveRating(100);
- 	    this.team.setDefensiveRating(100);
+ 	    this.team.setOffensiveRating();
+ 	    this.team.setDefensiveRating();
         this.team = teamRepository.save(this.team); 
         
  	   Team awayTeam = new Team();
  	   awayTeam.setId(1);
  	   awayTeam.setName("awayTeam");
- 	   awayTeam.setOffensiveRating(100);
- 	   awayTeam.setDefensiveRating(100);
+ 	   awayTeam.setOffensiveRating();
+ 	   awayTeam.setDefensiveRating();
  	   
  	   Team homeTeam = new Team();
  	   homeTeam.setId(2);
  	   homeTeam.setName("homeTeam");
- 	   homeTeam.setOffensiveRating(100);
- 	   homeTeam.setDefensiveRating(100);
+ 	   homeTeam.setOffensiveRating();
+ 	   homeTeam.setDefensiveRating();
  	   
  	   gameSimulation = new GameSimulation(awayTeam, homeTeam);
     }

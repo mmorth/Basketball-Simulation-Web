@@ -9,5 +9,5 @@ export class Team {
 	offensiveRating: number;
 	defensiveRating: number;
 	players: Array<Player>;
-	// coach: Player;
+	coach: Player;
 }

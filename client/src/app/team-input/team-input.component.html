@@ -26,6 +26,29 @@
 			<input id="teamDefensiveRating" class="form-control input-sm" id="inputsm" type="text" [(ngModel)]="defensiveRating" placeholder="Defensive Rating" value={{team.defensiveRating}} ng-model="teamInputs" readonly>
 		</div>
 
+		<h2>Coach: </h2>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>Coach</th>
+					<th>Offensive Rating</th>
+					<th>Defensive Rating</th>
+					<th>Overall Rating</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngIf="team.coach">
+					<td><a routerLink="/team-details/{{team.id}}/{{team.coach.id}}/1">{{team.coach.name}}</a></td>
+					<td>{{team.coach.offensiveRating}}</td>
+					<td>{{team.coach.defensiveRating}}</td>
+					<td>{{(team.coach.offensiveRating+team.coach.defensiveRating)/2}}</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<a id="create-coach-button" class="btn btn-primary" (click)="createCoach(team.id)">Create Coach</a>
+		<br>
+
 		<h2>Player List: </h2>
 		<table class="table table-bordered">
 			<thead>
@@ -38,7 +61,7 @@
 			</thead>
 			<tbody>
 				<tr *ngFor="let player of team.players">
-					<td><a routerLink="/team-details/{{team.id}}/{{player.id}}">{{player.name}}</a></td>
+					<td><a routerLink="/team-details/{{team.id}}/{{player.id}}/0">{{player.name}}</a></td>
 					<td>{{player.offensiveRating}}</td>
 					<td>{{player.defensiveRating}}</td>
 					<td>{{(player.offensiveRating+player.defensiveRating)/2}}

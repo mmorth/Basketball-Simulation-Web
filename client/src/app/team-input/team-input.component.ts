@@ -35,12 +35,12 @@ export class TeamInputComponent implements OnInit {
 	/**
 	 * The defensive rating of the team
 	 */
-  defensiveRating: number;
+    defensiveRating: number;
 
 	/**
 	 * Represents the error message displayed when the user has invalid input
 	 */
-  inputError: string;
+    inputError: string;
 
 	/**
 	 * Constructs a new TeamInputComponent with the following injections
@@ -54,7 +54,7 @@ export class TeamInputComponent implements OnInit {
 	/**
 	 * Get the specified team if it exists when the user enters the page
 	 */
-  ngOnInit(): void {
+    ngOnInit(): void {
 		const id = +this.route.snapshot.paramMap.get('id');
 
     if (!isNaN(id)) {
@@ -146,7 +146,18 @@ export class TeamInputComponent implements OnInit {
 	 * Creates a new player
 	 */
 	createPlayer(teamID: number): void {
-		this.router.navigateByUrl('/team-details/' + teamID + '/create');
+		this.router.navigateByUrl('/team-details/' + teamID + '/create/0');
+	}
+
+		/**
+	 * Creates a new coach
+	 */
+	createCoach(teamID: number): void {
+		if (this.team.coach == null) {
+			this.router.navigateByUrl('/team-details/' + teamID + '/create/1');
+		} else {
+			this.inputError = "Coach already created";
+		}
 	}
 
 }

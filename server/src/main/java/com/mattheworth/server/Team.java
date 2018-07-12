@@ -59,9 +59,9 @@ public class Team {
 	/**
 	 * The coach of the team
 	 */
-//	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
-//	@JoinColumn(name="coach_id")
-//	private Player coach;
+	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
+	@JoinColumn(name="coach_id")
+	private Player coach;
 	
 	// ===================================== Constructor ============================ //
 	
@@ -132,8 +132,16 @@ public class Team {
 		this.setDefensiveRating();
 	}
 	
-	// ======================================== Logic Methods =============================================== //
+	public Player getCoach() {
+		return coach;
+	}
+
+	public void setCoach(Player coach) {
+		this.coach = coach;
+	}
 	
+	// ======================================== Logic Methods =============================================== //
+
 	public void addPlayer(Player player) {
 		this.players.add(player);
 		this.setOffensiveRating();

@@ -77,21 +77,40 @@ export class PlayerInputComponent implements OnInit {
 	 * Create the specified player based on the user's input
 	 */
   createPlayer(): void {
-    const id = +this.route.snapshot.paramMap.get('teamID');
+		const id = +this.route.snapshot.paramMap.get('teamID');
+		const pcid = +this.route.snapshot.paramMap.get('pcid');
 
-  	if (this.playerName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
-  		this.playerService.createPlayer(id, this.playerName, this.offensiveRating, this.defensiveRating)
-  		.subscribe(() => {
-				this.player = null;
-				this.playerName = "";
-				this.offensiveRating = 0;
-				this.defensiveRating = 0;
-				this.inputError = "";
-				this.router.navigateByUrl('/team-details/' + id);
-  		});
-    } else {
-    	this.inputError = "Invalid Input";
-    }
+		if (pcid === 0) {
+			if (this.playerName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
+				this.playerService.createPlayer(id, this.playerName, this.offensiveRating, this.defensiveRating)
+				.subscribe(() => {
+						this.player = null;
+						this.playerName = "";
+						this.offensiveRating = 0;
+						this.defensiveRating = 0;
+						this.inputError = "";
+						this.router.navigateByUrl('/team-details/' + id);
+				});
+			} else {
+				this.inputError = "Invalid Input";
+			}
+		}
+
+		if (pcid === 1) {
+			if (this.playerName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
+				this.playerService.createCoach(id, this.playerName, this.offensiveRating, this.defensiveRating)
+				.subscribe(() => {
+						this.player = null;
+						this.playerName = "";
+						this.offensiveRating = 0;
+						this.defensiveRating = 0;
+						this.inputError = "";
+						this.router.navigateByUrl('/team-details/' + id);
+				});
+			} else {
+				this.inputError = "Invalid Input";
+			}
+		}
 
   }
 
@@ -100,20 +119,40 @@ export class PlayerInputComponent implements OnInit {
 	 */
   deletePlayer(): void {
     const teamID = +this.route.snapshot.paramMap.get('teamID');
-    const playerID = +this.route.snapshot.paramMap.get('playerID');
+		const playerID = +this.route.snapshot.paramMap.get('playerID');
 		
-		if(window.confirm('Are sure you want to delete this player?')) {
-			this.playerService.deletePlayer(teamID, playerID)
-			.subscribe(
-				() => {
-					this.player = null;
-					this.playerName = "";
-					this.offensiveRating = 0;
-					this.defensiveRating = 0;
-					this.router.navigateByUrl('/team-details/' + teamID);
-				}
-			);
+		const pcid = +this.route.snapshot.paramMap.get('pcid');
+
+		if (pcid == 0) {
+			if(window.confirm('Are sure you want to delete this player?')) {
+				this.playerService.deletePlayer(teamID, playerID)
+				.subscribe(
+					() => {
+						this.player = null;
+						this.playerName = "";
+						this.offensiveRating = 0;
+						this.defensiveRating = 0;
+						this.router.navigateByUrl('/team-details/' + teamID);
+					}
+				);
+			}
 		}
+
+		if (pcid == 1) {
+			if(window.confirm('Are sure you want to delete this coach?')) {
+				this.playerService.deleteCoach(teamID, playerID)
+				.subscribe(
+					() => {
+						this.player = null;
+						this.playerName = "";
+						this.offensiveRating = 0;
+						this.defensiveRating = 0;
+						this.router.navigateByUrl('/team-details/' + teamID);
+					}
+				);
+			}
+		}
+	
   }
 
 	/**
@@ -121,25 +160,50 @@ export class PlayerInputComponent implements OnInit {
 	 */
   updatePlayer(): void {
   	const teamID = +this.route.snapshot.paramMap.get('teamID');
-  	const playerID = +this.route.snapshot.paramMap.get('playerID');
+		const playerID = +this.route.snapshot.paramMap.get('playerID');
+			
+		const pcid = +this.route.snapshot.paramMap.get('pcid');
 
-  	if (this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
-  	
-	  	this.playerService.updatePlayer(teamID, playerID, this.playerName, this.offensiveRating, this.defensiveRating)
-	  	.subscribe(
-	  		() => {
-					this.player = null;
-					this.playerName = "";
-					this.offensiveRating = 0;
-					this.defensiveRating = 0;
-					this.inputError = "";
-					this.router.navigateByUrl('/team-details/' + teamID);
-	  		}
-	  	);	
-	  
-	} else {
-		this.inputError = "Invalid Input";
-	}
-  }
+		if (pcid === 0) {
+			if (this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
+			
+				this.playerService.updatePlayer(teamID, playerID, this.playerName, this.offensiveRating, this.defensiveRating)
+				.subscribe(
+					() => {
+							this.player = null;
+							this.playerName = "";
+							this.offensiveRating = 0;
+							this.defensiveRating = 0;
+							this.inputError = "";
+							this.router.navigateByUrl('/team-details/' + teamID);
+					}
+				);	
+			
+			} else {
+				this.inputError = "Invalid Input";
+			}
+		}
+
+		if (pcid === 1) {
+			if (this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
+			
+				this.playerService.updateCoach(teamID, playerID, this.playerName, this.offensiveRating, this.defensiveRating)
+				.subscribe(
+					() => {
+							this.player = null;
+							this.playerName = "";
+							this.offensiveRating = 0;
+							this.defensiveRating = 0;
+							this.inputError = "";
+							this.router.navigateByUrl('/team-details/' + teamID);
+					}
+				);	
+			
+			} else {
+				this.inputError = "Invalid Input";
+			}
+		}
+
+}
 
 }

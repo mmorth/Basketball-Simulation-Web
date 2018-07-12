@@ -108,4 +108,60 @@ public class PlayerController {
 	public @ResponseBody Iterable<Player> getAllPlayers() {
 		return playerRepository.findAll();
 	}
+	
+	/**
+	 * Creates a new coach from the input json 
+	 * @param jsonPlayer The coach constructed from the input json
+	 * @return The id of the new coach created as json
+	 */
+	@RequestMapping(path="/teams/{teamID}/coach", method = RequestMethod.POST, produces = "application/json") 
+	public @ResponseBody long createCoach(@PathVariable long teamID, @RequestBody Player jsonCoach) {
+		Team team = teamRepository.findById(teamID).get();
+
+		playerRepository.save(jsonCoach);
+		
+		team.setCoach(jsonCoach);
+		teamRepository.save(team);
+		
+		long playerID = jsonCoach.getId();
+		
+		return playerID;
+	}
+	
+	/**
+	 * Deletes a coach with the given id
+	 * @param id The id of the coach to delete
+	 * @return The id of the deleted coach as json
+	 */
+	@RequestMapping(path="/teams/{teamID}/coach/{coachID}", method = RequestMethod.DELETE, produces = "application/json")
+	public @ResponseBody long deleteCoach(@PathVariable long teamID, @PathVariable long coachID) {
+		Team team = teamRepository.findById(teamID).get();
+		Player deleteCoach = playerRepository.findById(coachID).get();
+		team.setCoach(null);
+		
+		teamRepository.save(team);
+		playerRepository.delete(deleteCoach);
+		
+		return coachID;
+	}
+	
+	/**
+	 * Updates a coach from the input json
+	 * @param id The id of the coach to update
+	 * @param jsonCoach The Player object constructed from the input json
+	 * @return The id of the coach that was updated as json
+	 */
+	@RequestMapping(path="/teams/{teamID}/coach/{coachID}", method = RequestMethod.PUT, produces = "application/json")
+	public @ResponseBody long updateCoach(@PathVariable long teamID, @PathVariable long coachID, @RequestBody Player jsonCoach) {
+		Player updatePlayer = playerRepository.findById(coachID).get();
+		
+		updatePlayer.setOffensiveRating(jsonCoach.getOffensiveRating());
+		updatePlayer.setDefensiveRating(jsonCoach.getDefensiveRating());
+		playerRepository.save(updatePlayer);
+		
+		Team team = teamRepository.findById(teamID).get();
+		teamRepository.save(team);
+		
+		return coachID;
+	}
 }

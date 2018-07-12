@@ -13,7 +13,7 @@
 
 		<div class="form-group">
 			<label for="inputlg">Player Name (cannot change)</label>
-			<input id="playerName" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="playerName" placeholder="Player Name" value={{player.name}} ng-model="playerInputs" readonly>
+			<input id="playerName" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="playerName" placeholder="Name" value={{player.name}} ng-model="playerInputs" readonly>
 		</div>
 
 		<div class="form-group">
@@ -26,15 +26,15 @@
 			<input id="playerDefensiveRating" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="defensiveRating" placeholder="Defensive Rating" value={{player.defensiveRating}} ng-model="playerInputs">
 		</div>
 
-		<a id="update-player-button" class="btn btn-primary" (click)="updatePlayer()">Update Player</a>
-		<a id="delete-player-button" class="btn btn-primary" (click)="deletePlayer()">Delete Player</a>
+		<a id="update-player-button" class="btn btn-primary" (click)="updatePlayer()">Update Player / Coach</a>
+		<a id="delete-player-button" class="btn btn-primary" (click)="deletePlayer()">Delete Player / Coach</a>
 
 	</div>
 
 	<ng-template #notPlayer>
 		<div class="form-group">
 			<label for="inputlg">Player Name (must be greater than or equal to 1 character)</label>
-			<input id="playerName" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="playerName" placeholder="Player Name" ng-model="playerInputs">
+			<input id="playerName" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="playerName" placeholder="Name" ng-model="playerInputs">
 		</div>
 
 		<div class="form-group">
@@ -47,7 +47,7 @@
 			<input id="playerDefensiveRating" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="defensiveRating" placeholder="Defensive Rating" ng-model="playerInputs">
 		</div>
 
-		<a id="delete-team-button" class="btn btn-primary" (click)="createPlayer()">Create Player</a>
+		<a id="delete-team-button" class="btn btn-primary" (click)="createPlayer()">Create Player / Coach</a>
 	</ng-template>
 
 	  <font color red>{{ inputError }}</font>

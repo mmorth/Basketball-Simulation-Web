@@ -101,8 +101,12 @@ public class Team {
 			this.offensiveRating += players.get(i).getOffensiveRating();
 		}
 		
-		if (players.size() != 0) {
+		if (this.players.size() != 0) {
 			this.offensiveRating /= players.size();
+		}
+		
+		if (!(this.coach == null)) {
+			this.offensiveRating *= (1 + (this.coach.getOffensiveRating()/1000.0));
 		}
 	}
 
@@ -117,8 +121,12 @@ public class Team {
 			this.defensiveRating += players.get(i).getDefensiveRating();
 		}
 		
-		if (players.size() != 0) {
+		if (this.players.size() != 0) {
 			this.defensiveRating /= players.size();
+		}
+		
+		if (!(this.coach == null)) {
+			this.defensiveRating *= (1 + (this.coach.getDefensiveRating()/1000.0));
 		}
 	}
 
@@ -138,6 +146,8 @@ public class Team {
 
 	public void setCoach(Player coach) {
 		this.coach = coach;
+		this.setOffensiveRating();
+		this.setDefensiveRating();
 	}
 	
 	// ======================================== Logic Methods =============================================== //

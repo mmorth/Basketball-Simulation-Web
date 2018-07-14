@@ -79,7 +79,12 @@ public class Player {
 	/**
 	 * The number of possessions remaining in the game for the player
 	 */
-	private int possessionsPlayed;
+	private int possessionsRemaining;
+	
+	/**
+	 * The player's rotation minutes
+	 */
+	private int rotationMinutes;
 	
 	// ================================== Constructor========================================= //
 	
@@ -177,12 +182,20 @@ public class Player {
 		this.turnoversPerGame = turnoversPerGame;
 	}
 
-	public int getPossessionsPlayed() {
-		return possessionsPlayed;
+	public int getPossessionsRemaining() {
+		return possessionsRemaining;
 	}
 
-	public void setPossessionsPlayed(int possessionsPlayed) {
-		this.possessionsPlayed = possessionsPlayed;
+	public void setPossessionsRemaining(int possessionsRemaining) {
+		this.possessionsRemaining = possessionsRemaining;
+	}
+
+	public int getRotationMinutes() {
+		return rotationMinutes;
+	}
+
+	public void setRotationMinutes(int rotationMinutes) {
+		this.rotationMinutes = rotationMinutes;
 	}
 
 	public int getPosition() {
@@ -191,6 +204,21 @@ public class Player {
 
 	public void setPosition(int position) {
 		this.position = position;
+	}
+	
+	// ================================================= Logic Methods ==========================================
+	
+	/**
+	 * Resets the player's game stats
+	 */
+	public void resetPlayerGameStats() {
+		this.assistsPerGame = 0;
+		this.pointsPerGame = 0;
+		this.turnoversPerGame = 0;
+		this.reboundsPerGame = 0;
+		this.stealsPerGame = 0;
+		this.blocksPerGame = 0;
+		this.rotationMinutes = 0;
 	}
 	
 }

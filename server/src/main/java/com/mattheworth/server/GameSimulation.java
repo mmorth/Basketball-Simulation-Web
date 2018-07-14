@@ -256,7 +256,7 @@ public class GameSimulation {
 	
 			boolean[] scoreOutcomes = determineScoringOutcome(awayShooter, homeShotDefender, homeShooter, awayShotDefender, awayPasser, homePasser, passingOutcomes);
 	
-			reboundOutcomes = determineReboundingOutcome(awayPasser, homePassDefender, homePasser, awayPassDefender, scoreOutcomes);
+			reboundOutcomes = determineReboundingOutcome(awayRebounder, homeReboundDefender, homeRebounder, awayReboundDefender, scoreOutcomes);
 		} while (reboundOutcomes[0] | reboundOutcomes[1]);
 		
 		// Decrease the number of possessions to simulate and possessions remaining in
@@ -307,7 +307,17 @@ public class GameSimulation {
 		this.homeTeamScore = 0;
 
 		isOvertime = false;
-
+		
+		for (Player player: awayTeam.getPlayers()) {
+			player.resetPlayerGameStats();
+		}
+		
+		for (Player player: homeTeam.getPlayers()) {
+			player.resetPlayerGameStats();
+		}
+		
+		awayTeam.resetGameStats();
+		homeTeam.resetGameStats();
 	}
 	
 	/**
@@ -378,7 +388,7 @@ public class GameSimulation {
 		double runningPassTotal = 0;
 		
 		for (int i = 0; i < players.size(); i++) {
-			runningPassTotal += players.get(i).getOffensiveRating() / playerOffenseTotal;
+			runningPassTotal += players.get(i).getOffensiveRating() / (double) playerOffenseTotal;
 			
 			if (passSelector < runningPassTotal) {
 				return i;
@@ -400,7 +410,7 @@ public class GameSimulation {
 		double runningPassTotal = 0;
 		
 		for (int i = 0; i < players.size(); i++) {
-			runningPassTotal += players.get(i).getOffensiveRating() / playerOffenseTotal;
+			runningPassTotal += players.get(i).getOffensiveRating() / (double) playerOffenseTotal;
 			
 			if (passSelector < runningPassTotal) {
 				return i;
@@ -422,7 +432,7 @@ public class GameSimulation {
 		double runningPassTotal = 0;
 		
 		for (int i = 0; i < players.size(); i++) {
-			runningPassTotal += players.get(i).getOffensiveRating() / playerOffenseTotal;
+			runningPassTotal += players.get(i).getOffensiveRating() / (double) playerOffenseTotal;
 			
 			if (passSelector < runningPassTotal) {
 				return i;
@@ -458,7 +468,9 @@ public class GameSimulation {
 			} else {
 				passesOutcome[0] = false;
 				homeDefender.setStealsPerGame(homeDefender.getAssistsPerGame() + 1);
+				this.homeTeam.setStealsPerGame(this.homeTeam.getStealsPerGame() + 1);
 				awayOffense.setTurnoversPerGame(awayOffense.getTurnoversPerGame() + 1);
+				this.awayTeam.setTurnoversPerGame(this.awayTeam.getTurnoversPerGame() + 1);
 			}
 		}
 
@@ -475,7 +487,9 @@ public class GameSimulation {
 			} else {
 				passesOutcome[1] = false;
 				awayDefender.setStealsPerGame(awayDefender.getAssistsPerGame() + 1);
+				this.awayTeam.setStealsPerGame(this.awayTeam.getStealsPerGame() + 1);
 				homeOffense.setTurnoversPerGame(homeOffense.getTurnoversPerGame() + 1);
+				this.homeTeam.setTurnoversPerGame(this.homeTeam.getTurnoversPerGame() + 1);
 			}
 		}
 		
@@ -521,15 +535,17 @@ public class GameSimulation {
 
 			int awayTeamOffense = awayScorer.getOffensiveRating() - homeDefender.getDefensiveRating();
 
-			awayTeamScoreIncrease = determineScoreIncrease(awayTeamRandNum, 500 + awayTeamOffense, awayScorer, homeDefender);
+			awayTeamScoreIncrease = determineScoreIncrease(awayTeamRandNum, 500 + awayTeamOffense, awayScorer, homeDefender, awayTeam, homeTeam);
 
 			awayScorer.setPointsPerGame(awayScorer.getPointsPerGame() + awayTeamScoreIncrease);
+			this.awayTeam.setPointsPerGame(this.awayTeam.getPointsPerGame() + 1);
 			awayTeamScore += awayTeamScoreIncrease;
 			
 			if (awayTeamScoreIncrease > 0) {
 				scoreOutcomes[0] = true;
 				if (!awayScorer.equals(awayPasser)) {
 					awayPasser.setAssistsPerGame(awayPasser.getAssistsPerGame() + 1);
+					this.awayTeam.setAssistsPerGame(this.awayTeam.getAssistsPerGame() + 1);
 				}
 			}
 		}
@@ -542,8 +558,9 @@ public class GameSimulation {
 			
 			int homeTeamOffense = homeScorer.getOffensiveRating() - awayDefender.getDefensiveRating();
 
-			homeTeamScoreIncrease = determineScoreIncrease(homeTeamRandNum, 500 + homeTeamOffense, homeScorer, awayDefender);
+			homeTeamScoreIncrease = determineScoreIncrease(homeTeamRandNum, 500 + homeTeamOffense, homeScorer, awayDefender, homeTeam, awayTeam);
 
+			this.homeTeam.setPointsPerGame(this.homeTeam.getPointsPerGame() + 1);
 			homeScorer.setPointsPerGame(homeScorer.getPointsPerGame() + homeTeamScoreIncrease);
 			homeTeamScore += homeTeamScoreIncrease;
 			
@@ -551,6 +568,7 @@ public class GameSimulation {
 				scoreOutcomes[1] = true;
 				if (!homeScorer.equals(homePasser)) {
 					homePasser.setAssistsPerGame(homePasser.getAssistsPerGame() + 1);
+					this.homeTeam.setAssistsPerGame(this.homeTeam.getAssistsPerGame() + 1);
 				}
 			}
 		}
@@ -559,12 +577,16 @@ public class GameSimulation {
 	}
 	
 	/**
-	 * Determines how much a given team will score
-	 * @param randNum The random number associated with that team
-	 * @param teamRatio The ratio of the team's offensive to defensive rating
-	 * @return The score increase for the team
+	 * Determines how much both teams will score for the given possession
+	 * @param randNum The random team numbers
+	 * @param teamRatio The ratio of the offensive team to the defensive team
+	 * @param offensePlayer The shooter
+	 * @param defensePlayer The defender
+	 * @param offenseTeam The offensive team
+	 * @param defenseTeam The defensive team
+	 * @return
 	 */
-	public int determineScoreIncrease(int randNum, int teamRatio, Player offensePlayer, Player defensePlayer) {
+	public int determineScoreIncrease(int randNum, int teamRatio, Player offensePlayer, Player defensePlayer, Team offenseTeam, Team defenseTeam) {
 		int teamScoreIncrease;
 
 		int teamScoreDecision = randNum * teamRatio;
@@ -579,8 +601,8 @@ public class GameSimulation {
 			teamScoreIncrease = 0;
 		} else {
 			teamScoreIncrease = 0;
-			offensePlayer.setTurnoversPerGame(offensePlayer.getTurnoversPerGame() + 1);
 			defensePlayer.setBlocksPerGame(defensePlayer.getBlocksPerGame() + 1);
+			defenseTeam.setBlocksPerGame(defenseTeam.getBlocksPerGame() + 1);
 		}
 
 		return teamScoreIncrease;
@@ -600,7 +622,7 @@ public class GameSimulation {
 		boolean reboundsOutcome[] = { false, false };
 
 		// Determine the rebound result for the away team
-		if (shotOutcomes[0]) {
+		if (!shotOutcomes[0]) {
 			int awayTeamRandNum = rand.nextInt(100);
 
 			int awayTeamOffense = awayOffense.getOffensiveRating() - homeDefender.getDefensiveRating();
@@ -610,13 +632,15 @@ public class GameSimulation {
 			if (awayTeamReboundSuccess) {
 				reboundsOutcome[0] = true;
 				awayOffense.setReboundsPerGame(awayOffense.getReboundsPerGame() + 1);
+				this.awayTeam.setReboundsPerGame(this.awayTeam.getReboundsPerGame() + 1);
 			} else {
 				homeDefender.setReboundsPerGame(homeDefender.getReboundsPerGame() + 1);
+				this.homeTeam.setReboundsPerGame(this.homeTeam.getReboundsPerGame() + 1);
 			}
 		}
 
 		// Determine the rebound result for the home team
-		if (shotOutcomes[1]) {
+		if (!shotOutcomes[1]) {
 			int homeTeamRandNum = rand.nextInt(100);
 			
 			int homeTeamOffense = homeOffense.getOffensiveRating() - awayDefender.getDefensiveRating();
@@ -626,8 +650,10 @@ public class GameSimulation {
 			if (homeTeamReboundSuccess) {
 				reboundsOutcome[1] = true;
 				homeOffense.setReboundsPerGame(homeOffense.getReboundsPerGame() + 1);
+				this.homeTeam.setReboundsPerGame(this.homeTeam.getReboundsPerGame() + 1);
 			} else {
 				awayDefender.setReboundsPerGame(awayDefender.getReboundsPerGame() + 1);
+				this.awayTeam.setReboundsPerGame(this.awayTeam.getReboundsPerGame() + 1);
 			}
 		}
 		
@@ -788,20 +814,20 @@ public class GameSimulation {
 		this.homeTeamOvertimeScore = homeTeamOvertimeScore;
 	}
 
-//	public List<Player> getAwayPlayers() {
-//		return awayPlayers;
-//	}
-//
-//	public void setAwayPlayers(List<Player> awayPlayers) {
-//		this.awayPlayers = awayPlayers;
-//	}
-//
-//	public List<Player> getHomePlayers() {
-//		return homePlayers;
-//	}
-//
-//	public void setHomePlayers(List<Player> homePlayers) {
-//		this.homePlayers = homePlayers;
-//	}
+	public List<Player> getAwayPlayers() {
+		return awayPlayers;
+	}
+
+	public void setAwayPlayers(List<Player> awayPlayers) {
+		this.awayPlayers = awayPlayers;
+	}
+
+	public List<Player> getHomePlayers() {
+		return homePlayers;
+	}
+
+	public void setHomePlayers(List<Player> homePlayers) {
+		this.homePlayers = homePlayers;
+	}
 
 }

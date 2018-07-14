@@ -264,5 +264,17 @@ public class Team {
 		this.setOffensiveRating();
 		this.setDefensiveRating();
 	}
+	
+	/**
+	 * Resets the player's game stats
+	 */
+	public void resetGameStats() {
+		this.assistsPerGame = 0;
+		this.pointsPerGame = 0;
+		this.turnoversPerGame = 0;
+		this.reboundsPerGame = 0;
+		this.stealsPerGame = 0;
+		this.blocksPerGame = 0;
+	}
 
 }

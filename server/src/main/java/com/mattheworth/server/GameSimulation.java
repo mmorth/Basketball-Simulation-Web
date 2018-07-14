@@ -1,6 +1,9 @@
 package com.mattheworth.server;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +14,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  * A class that represents a basketball simulation
@@ -42,6 +49,22 @@ public class GameSimulation {
 	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
 	@JoinColumn(name="home_team_id")
 	private Team homeTeam;
+	
+	/**
+	 * The players in the game for the away team
+	 */
+	@OneToMany(cascade=CascadeType.MERGE)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JoinColumn(name="away_game_sim_id")
+	private List<Player> awayPlayers = new ArrayList<>();
+	
+	/**
+	 * The players in the game for the home team
+	 */
+	@OneToMany(cascade=CascadeType.MERGE)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JoinColumn(name="home_game_sim_id")
+	private List<Player> homePlayers = new ArrayList<>();
 	
 	/**
 	 * The number of possession remaining
@@ -201,9 +224,41 @@ public class GameSimulation {
 	 * @return The number of possessions remaining
 	 */
 	public int simulatePossession(int quarter, int possessions) {
-		// Determine the points scored for each team
-		determineScoringOutcome();
-
+		// Determine who will pass, shoot, and rebound for each team for this possession
+		int awayPassPlayers = determinePasser(determineAwayOffense(), (ArrayList<Player>) awayPlayers);
+		Player awayPasser = awayPlayers.get(awayPassPlayers);
+		Player homePassDefender = homePlayers.get(awayPassPlayers);
+		
+		int homePassPlayers = determinePasser(determineHomeOffense(), (ArrayList<Player>) homePlayers);
+		Player homePasser = homePlayers.get(homePassPlayers);
+		Player awayPassDefender = awayPlayers.get(homePassPlayers);
+		
+		int awayScorePlayers = determineScorer(determineAwayOffense(), (ArrayList<Player>) awayPlayers);
+		Player awayShooter = awayPlayers.get(awayScorePlayers);
+		Player homeShotDefender = homePlayers.get(awayScorePlayers);
+		
+		int homeScorePlayers = determineScorer(determineHomeOffense(), (ArrayList<Player>) homePlayers);
+		Player homeShooter = homePlayers.get(homeScorePlayers);
+		Player awayShotDefender = awayPlayers.get(homeScorePlayers);
+		
+		int awayReboundPlayers = determineRebounder(determineAwayOffense(), (ArrayList<Player>) awayPlayers);
+		Player awayRebounder = awayPlayers.get(awayReboundPlayers);
+		Player homeReboundDefender = homePlayers.get(awayReboundPlayers);
+		
+		int homeReboundPlayers = determineRebounder(determineHomeOffense(), (ArrayList<Player>) homePlayers);
+		Player homeRebounder = homePlayers.get(homeReboundPlayers);
+		Player awayReboundDefender = awayPlayers.get(homeReboundPlayers);
+		
+		boolean[] reboundOutcomes = { true, true };
+		
+		do {
+			boolean[] passingOutcomes = determinePassingOutcome(awayPasser, homePassDefender, homePasser, awayPassDefender, reboundOutcomes);
+	
+			boolean[] scoreOutcomes = determineScoringOutcome(awayShooter, homeShotDefender, homeShooter, awayShotDefender, awayPasser, homePasser, passingOutcomes);
+	
+			reboundOutcomes = determineReboundingOutcome(awayPasser, homePassDefender, homePasser, awayPassDefender, scoreOutcomes);
+		} while (reboundOutcomes[0] | reboundOutcomes[1]);
+		
 		// Decrease the number of possessions to simulate and possessions remaining in
 		// the game
 		possessionsRemaining--;
@@ -230,57 +285,6 @@ public class GameSimulation {
 	}
 
 	/**
-	 * Determines how much each team will score for the current possession
-	 */
-	public void determineScoringOutcome() {
-		Random rand = new Random();
-		
-		int awayTeamScoreIncrease = 0;
-		int homeTeamScoreIncrease = 0;
-
-		// Determine the score increase for the away team
-		int awayTeamRandNum = rand.nextInt(100);
-
-		int awayTeamOffense = awayTeam.getOffensiveRating() - homeTeam.getDefensiveRating();
-		int homeTeamOffense = homeTeam.getOffensiveRating() - awayTeam.getDefensiveRating();
-
-		awayTeamScoreIncrease = determineScoreIncrease(awayTeamRandNum, 500 + awayTeamOffense);
-
-		awayTeamScore += awayTeamScoreIncrease;
-
-		// Determine the score increase for the home team
-		int homeTeamRandNum = rand.nextInt(100);
-
-		homeTeamScoreIncrease = determineScoreIncrease(homeTeamRandNum, 500 + homeTeamOffense);
-
-		homeTeamScore += homeTeamScoreIncrease;
-	}
-
-	/**
-	 * Determines how much a given team will score
-	 * @param randNum The random number associated with that team
-	 * @param teamRatio The ratio of the team's offensive to defensive rating
-	 * @return The score increase for the team
-	 */
-	public int determineScoreIncrease(int randNum, int teamRatio) {
-		int teamScoreIncrease;
-
-		int teamScoreDecision = randNum * teamRatio;
-
-		if (teamScoreDecision > 45000) {
-			teamScoreIncrease = 3;
-		} else if (teamScoreDecision > 32500) {
-			teamScoreIncrease = 2;
-		} else if (teamScoreDecision > 25000) {
-			teamScoreIncrease = 1;
-		} else {
-			teamScoreIncrease = 0;
-		}
-
-		return teamScoreIncrease;
-	}
-
-	/**
 	 * Resets the game simulation
 	 */
 	public void resetGame() {
@@ -304,6 +308,346 @@ public class GameSimulation {
 
 		isOvertime = false;
 
+	}
+	
+	/**
+	 * Determines the away team's total offensive rating for the players on the court
+	 * @return The away team's total offensive rating for the players on the court
+	 */
+	public int determineAwayOffense() {
+		int totalOffense = 0;
+		
+		for (Player player: awayPlayers) {
+			totalOffense += player.getOffensiveRating();
+		}
+		
+		return totalOffense;
+	}
+	
+	/**
+	 * Determines the away team's total defensive rating for the players on the court
+	 * @return The away team's total defensive rating for the players on the court
+	 */
+	public int determineAwayDefense() {
+		int totalOffense = 0;
+		
+		for (Player player: awayPlayers) {
+			totalOffense += player.getDefensiveRating();
+		}
+		
+		return totalOffense;
+	}
+	
+	/**
+	 * Determines the home team's total offensive rating for the players on the court
+	 * @return The home team's total offensive rating for the players on the court
+	 */
+	public int determineHomeOffense() {
+		int totalOffense = 0;
+		
+		for (Player player: homePlayers) {
+			totalOffense += player.getOffensiveRating();
+		}
+		
+		return totalOffense;
+	}
+	
+	/**
+	 * Determines the home team's total defensive rating for the players on the court
+	 * @return The home team's total defensive rating for the players on the court
+	 */
+	public int determineHomeDefense() {
+		int totalOffense = 0;
+		
+		for (Player player: homePlayers) {
+			totalOffense += player.getDefensiveRating();
+		}
+		
+		return totalOffense;
+	}
+	
+	/**
+	 * Determines the player who passes the ball and defends
+	 * @param playerOffenseTotal The total offensive rating for the team with ball
+	 * @return The integer of the player who passes the ball
+	 */
+	public int determinePasser(int playerOffenseTotal, ArrayList<Player> players) {
+		Random rand = new Random();
+		double passSelector = rand.nextDouble();
+		
+		double runningPassTotal = 0;
+		
+		for (int i = 0; i < players.size(); i++) {
+			runningPassTotal += players.get(i).getOffensiveRating() / playerOffenseTotal;
+			
+			if (passSelector < runningPassTotal) {
+				return i;
+			}
+		}
+		
+		return 0;
+	}
+	
+	/**
+	 * Determines the player shoots the ball and defends
+	 * @param playerOffenseTotal The total offensive rating for the team with ball
+	 * @return The integer of the player who shoots the ball
+	 */
+	public int determineScorer(int playerOffenseTotal, ArrayList<Player> players) {
+		Random rand = new Random();
+		double passSelector = rand.nextDouble();
+		
+		double runningPassTotal = 0;
+		
+		for (int i = 0; i < players.size(); i++) {
+			runningPassTotal += players.get(i).getOffensiveRating() / playerOffenseTotal;
+			
+			if (passSelector < runningPassTotal) {
+				return i;
+			}
+		}
+		
+		return 0;
+	}
+	
+	/**
+	 * Determines the player rebounds the ball and defends
+	 * @param playerOffenseTotal The total offensive rating for the team with ball
+	 * @return The integer of the player who rebounds the ball
+	 */
+	public int determineRebounder(int playerOffenseTotal, ArrayList<Player> players) {
+		Random rand = new Random();
+		double passSelector = rand.nextDouble();
+		
+		double runningPassTotal = 0;
+		
+		for (int i = 0; i < players.size(); i++) {
+			runningPassTotal += players.get(i).getOffensiveRating() / playerOffenseTotal;
+			
+			if (passSelector < runningPassTotal) {
+				return i;
+			}
+		}
+		
+		return 0;
+	}
+	
+	/**
+	 * Determines the outcome of the pass
+	 * @param awayOffense The away team's passer
+	 * @param homeDefender The home team's defender
+ 	 * @param homeOffense The home team's passer
+	 * @param awayDefender The away team's defender
+	 * @return The pass outcomes for each team
+	 */
+	public boolean[] determinePassingOutcome(Player awayOffense, Player homeDefender, Player homeOffense, Player awayDefender, boolean[] reboundOutcomes) {
+		Random rand = new Random();
+		
+		boolean passesOutcome[] = { false, false };
+
+		// Determine the pass result for the away team
+		if (reboundOutcomes[0]) {
+			int awayTeamRandNum = rand.nextInt(100);
+
+			int awayTeamOffense = awayOffense.getOffensiveRating() - homeDefender.getDefensiveRating();
+
+			boolean awayTeamPassSuccess = determinePassIncrease(awayTeamRandNum, 500 + awayTeamOffense);
+			
+			if (awayTeamPassSuccess) {
+				passesOutcome[0] = true;
+			} else {
+				passesOutcome[0] = false;
+				homeDefender.setStealsPerGame(homeDefender.getAssistsPerGame() + 1);
+				awayOffense.setTurnoversPerGame(awayOffense.getTurnoversPerGame() + 1);
+			}
+		}
+
+		// Determine the pass result for the home team
+		if (reboundOutcomes[1]) {
+			int homeTeamRandNum = rand.nextInt(100);
+
+			int homeTeamOffense = homeOffense.getOffensiveRating() - awayDefender.getDefensiveRating();
+
+			boolean homeTeamPassSuccess = determinePassIncrease(homeTeamRandNum, 500 + homeTeamOffense);
+			
+			if (homeTeamPassSuccess) {
+				passesOutcome[1] = true;
+			} else {
+				passesOutcome[1] = false;
+				awayDefender.setStealsPerGame(awayDefender.getAssistsPerGame() + 1);
+				homeOffense.setTurnoversPerGame(homeOffense.getTurnoversPerGame() + 1);
+			}
+		}
+		
+		return passesOutcome;
+	}
+	
+	/**
+	 * Determines the outcome of the pass for the current possessions
+	 * @param randNum The random number associated with that team
+	 * @param teamRatio The ratio of the team's offensive to defensive rating
+	 * @return Whether or not the team with the ball successfully completes the pass
+	 */
+	public boolean determinePassIncrease(int randNum, int teamRatio) {
+		int teamScoreDecision = randNum * teamRatio;
+
+		if (teamScoreDecision > 5000) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Determines how much each team will score for the given possession
+	 * @param awayScorer The away team's shooter
+	 * @param homeDefender The home team's defender
+	 * @param homeScorer The home team's shooter
+	 * @param awayDefender The away team's defender
+	 * @param awayPasser The away team's passer
+	 * @param homePasser The home team's passer
+	 * @return Whether or not either team scored
+	 */
+	public boolean[] determineScoringOutcome(Player awayScorer, Player homeDefender, Player homeScorer, Player awayDefender, Player awayPasser, Player homePasser, boolean[] passOutcomes) {
+		Random rand = new Random();
+		
+		boolean[] scoreOutcomes = { false, false };
+
+		// Determine the score increase for the away team
+		if (passOutcomes[0]) {
+			int awayTeamScoreIncrease = 0;
+			
+			int awayTeamRandNum = rand.nextInt(100);
+
+			int awayTeamOffense = awayScorer.getOffensiveRating() - homeDefender.getDefensiveRating();
+
+			awayTeamScoreIncrease = determineScoreIncrease(awayTeamRandNum, 500 + awayTeamOffense, awayScorer, homeDefender);
+
+			awayScorer.setPointsPerGame(awayScorer.getPointsPerGame() + awayTeamScoreIncrease);
+			awayTeamScore += awayTeamScoreIncrease;
+			
+			if (awayTeamScoreIncrease > 0) {
+				scoreOutcomes[0] = true;
+				if (!awayScorer.equals(awayPasser)) {
+					awayPasser.setAssistsPerGame(awayPasser.getAssistsPerGame() + 1);
+				}
+			}
+		}
+
+		// Determine the score increase for the home team
+		if (passOutcomes[1]) {
+			int homeTeamScoreIncrease = 0;
+			
+			int homeTeamRandNum = rand.nextInt(100);
+			
+			int homeTeamOffense = homeScorer.getOffensiveRating() - awayDefender.getDefensiveRating();
+
+			homeTeamScoreIncrease = determineScoreIncrease(homeTeamRandNum, 500 + homeTeamOffense, homeScorer, awayDefender);
+
+			homeScorer.setPointsPerGame(homeScorer.getPointsPerGame() + homeTeamScoreIncrease);
+			homeTeamScore += homeTeamScoreIncrease;
+			
+			if (homeTeamScoreIncrease > 0) {
+				scoreOutcomes[1] = true;
+				if (!homeScorer.equals(homePasser)) {
+					homePasser.setAssistsPerGame(homePasser.getAssistsPerGame() + 1);
+				}
+			}
+		}
+		
+		return scoreOutcomes;
+	}
+	
+	/**
+	 * Determines how much a given team will score
+	 * @param randNum The random number associated with that team
+	 * @param teamRatio The ratio of the team's offensive to defensive rating
+	 * @return The score increase for the team
+	 */
+	public int determineScoreIncrease(int randNum, int teamRatio, Player offensePlayer, Player defensePlayer) {
+		int teamScoreIncrease;
+
+		int teamScoreDecision = randNum * teamRatio;
+
+		if (teamScoreDecision > 45000) {
+			teamScoreIncrease = 3;
+		} else if (teamScoreDecision > 32500) {
+			teamScoreIncrease = 2;
+		} else if (teamScoreDecision > 25000) {
+			teamScoreIncrease = 1;
+		} else if (teamScoreDecision > 5000) {
+			teamScoreIncrease = 0;
+		} else {
+			teamScoreIncrease = 0;
+			offensePlayer.setTurnoversPerGame(offensePlayer.getTurnoversPerGame() + 1);
+			defensePlayer.setBlocksPerGame(defensePlayer.getBlocksPerGame() + 1);
+		}
+
+		return teamScoreIncrease;
+	}
+	
+	/**
+	 * Determines the rebounding outcome for the current possession
+	 * @param awayOffense The away team's offensive player
+	 * @param homeDefender The home team's defender
+	 * @param homeOffense The home team's offensive player
+	 * @param awayDefender The away team's defender
+	 * @return The rebound outcome for each team
+	 */
+	public boolean[] determineReboundingOutcome(Player awayOffense, Player homeDefender, Player homeOffense, Player awayDefender, boolean[] shotOutcomes) {
+		Random rand = new Random();
+		
+		boolean reboundsOutcome[] = { false, false };
+
+		// Determine the rebound result for the away team
+		if (shotOutcomes[0]) {
+			int awayTeamRandNum = rand.nextInt(100);
+
+			int awayTeamOffense = awayOffense.getOffensiveRating() - homeDefender.getDefensiveRating();
+
+			boolean awayTeamReboundSuccess = determineReboundIncrease(awayTeamRandNum, 500 + awayTeamOffense);
+			
+			if (awayTeamReboundSuccess) {
+				reboundsOutcome[0] = true;
+				awayOffense.setReboundsPerGame(awayOffense.getReboundsPerGame() + 1);
+			} else {
+				homeDefender.setReboundsPerGame(homeDefender.getReboundsPerGame() + 1);
+			}
+		}
+
+		// Determine the rebound result for the home team
+		if (shotOutcomes[1]) {
+			int homeTeamRandNum = rand.nextInt(100);
+			
+			int homeTeamOffense = homeOffense.getOffensiveRating() - awayDefender.getDefensiveRating();
+
+			boolean homeTeamReboundSuccess = determineReboundIncrease(homeTeamRandNum, 500 + homeTeamOffense);
+			
+			if (homeTeamReboundSuccess) {
+				reboundsOutcome[1] = true;
+				homeOffense.setReboundsPerGame(homeOffense.getReboundsPerGame() + 1);
+			} else {
+				awayDefender.setReboundsPerGame(awayDefender.getReboundsPerGame() + 1);
+			}
+		}
+		
+		return reboundsOutcome;
+	}
+	
+	/**
+	 * Determines how much a given team will rebound
+	 * @param randNum The random number associated with that team
+	 * @param teamRatio The ratio of the team's offensive to defensive rating
+	 * @return An indicator for whether or not the offensive team got the rebound
+	 */
+	public boolean determineReboundIncrease(int randNum, int teamRatio) {
+		int teamScoreDecision = randNum * teamRatio;
+
+		if (teamScoreDecision > 40000) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	// ====================================== Getters and Setters ============================ //
@@ -443,5 +787,21 @@ public class GameSimulation {
 	public void setHomeTeamOvertimeScore(int homeTeamOvertimeScore) {
 		this.homeTeamOvertimeScore = homeTeamOvertimeScore;
 	}
+
+//	public List<Player> getAwayPlayers() {
+//		return awayPlayers;
+//	}
+//
+//	public void setAwayPlayers(List<Player> awayPlayers) {
+//		this.awayPlayers = awayPlayers;
+//	}
+//
+//	public List<Player> getHomePlayers() {
+//		return homePlayers;
+//	}
+//
+//	public void setHomePlayers(List<Player> homePlayers) {
+//		this.homePlayers = homePlayers;
+//	}
 
 }

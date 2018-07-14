@@ -22,6 +22,13 @@ public class Player {
 	 */
 	private String name;
 	
+	// General Ratings
+	
+	/**
+	 * The overall rating of the player
+	 */
+	private int overallRating;
+	
 	/**
 	 * The offensive rating of the player
 	 */
@@ -31,6 +38,48 @@ public class Player {
 	 * The defensive rating of theplayer
 	 */
 	private int defensiveRating;
+	
+	/**
+	 * The position the player player
+	 */
+	private int position;
+	
+	// Game Stats
+	
+	/**
+	 * The player's points per game
+	 */
+	private int pointsPerGame;
+	
+	/**
+	 * The player's rebounds per game
+	 */
+	private int reboundsPerGame;
+	
+	/**
+	 * The player's assists per game
+	 */
+	private int assistsPerGame;
+	
+	/**
+	 * The player's block per game
+	 */
+	private int blocksPerGame;
+	
+	/**
+	 * The player's steals per game
+	 */
+	private int stealsPerGame;
+	
+	/**
+	 * The player's turnovers per game
+	 */
+	private int turnoversPerGame;
+	
+	/**
+	 * The number of possessions remaining in the game for the player
+	 */
+	private int possessionsPlayed;
 	
 	// ================================== Constructor========================================= //
 	
@@ -70,6 +119,78 @@ public class Player {
 
 	public void setDefensiveRating(int defensiveRating) {
 		this.defensiveRating = defensiveRating;
+	}
+
+	public int getOverallRating() {
+		return overallRating;
+	}
+
+	public void setOverallRating(int overallRating) {
+		this.overallRating = overallRating;
+	}
+
+	public int getPointsPerGame() {
+		return pointsPerGame;
+	}
+
+	public void setPointsPerGame(int pointsPerGame) {
+		this.pointsPerGame = pointsPerGame;
+	}
+
+	public int getReboundsPerGame() {
+		return reboundsPerGame;
+	}
+
+	public void setReboundsPerGame(int reboundsPerGame) {
+		this.reboundsPerGame = reboundsPerGame;
+	}
+
+	public int getAssistsPerGame() {
+		return assistsPerGame;
+	}
+
+	public void setAssistsPerGame(int assistsPerGame) {
+		this.assistsPerGame = assistsPerGame;
+	}
+
+	public int getBlocksPerGame() {
+		return blocksPerGame;
+	}
+
+	public void setBlocksPerGame(int blocksPerGame) {
+		this.blocksPerGame = blocksPerGame;
+	}
+
+	public int getStealsPerGame() {
+		return stealsPerGame;
+	}
+
+	public void setStealsPerGame(int stealsPerGame) {
+		this.stealsPerGame = stealsPerGame;
+	}
+
+	public int getTurnoversPerGame() {
+		return turnoversPerGame;
+	}
+
+	public void setTurnoversPerGame(int turnoversPerGame) {
+		this.turnoversPerGame = turnoversPerGame;
+	}
+
+	public int getPossessionsPlayed() {
+		return possessionsPlayed;
+	}
+
+	public void setPossessionsPlayed(int possessionsPlayed) {
+		this.possessionsPlayed = possessionsPlayed;
+	}
+
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
 	}
 	
 }

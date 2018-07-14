@@ -40,6 +40,11 @@ public class Team {
 	private String name;
 	
 	/**
+	 * The team's overall rating
+	 */
+	private int overallRating;
+	
+	/**
 	 * The team's offensive rating
 	 */
 	private int offensiveRating;
@@ -62,6 +67,38 @@ public class Team {
 	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
 	@JoinColumn(name="coach_id")
 	private Player coach;
+	
+	// The team's game stats
+	
+	/**
+	 * The player's points per game
+	 */
+	private int pointsPerGame;
+	
+	/**
+	 * The player's rebounds per game
+	 */
+	private int reboundsPerGame;
+	
+	/**
+	 * The player's assists per game
+	 */
+	private int assistsPerGame;
+	
+	/**
+	 * The player's block per game
+	 */
+	private int blocksPerGame;
+	
+	/**
+	 * The player's steals per game
+	 */
+	private int stealsPerGame;
+	
+	/**
+	 * The player's turnovers per game
+	 */
+	private int turnoversPerGame;
 	
 	// ===================================== Constructor ============================ //
 	
@@ -148,6 +185,70 @@ public class Team {
 		this.coach = coach;
 		this.setOffensiveRating();
 		this.setDefensiveRating();
+	}
+
+	public int getOverallRating() {
+		return overallRating;
+	}
+
+	public void setOverallRating(int overallRating) {
+		this.overallRating = overallRating;
+	}
+
+	public int getPointsPerGame() {
+		return pointsPerGame;
+	}
+
+	public void setPointsPerGame(int pointsPerGame) {
+		this.pointsPerGame = pointsPerGame;
+	}
+
+	public int getReboundsPerGame() {
+		return reboundsPerGame;
+	}
+
+	public void setReboundsPerGame(int reboundsPerGame) {
+		this.reboundsPerGame = reboundsPerGame;
+	}
+
+	public int getAssistsPerGame() {
+		return assistsPerGame;
+	}
+
+	public void setAssistsPerGame(int assistsPerGame) {
+		this.assistsPerGame = assistsPerGame;
+	}
+
+	public int getBlocksPerGame() {
+		return blocksPerGame;
+	}
+
+	public void setBlocksPerGame(int blocksPerGame) {
+		this.blocksPerGame = blocksPerGame;
+	}
+
+	public int getStealsPerGame() {
+		return stealsPerGame;
+	}
+
+	public void setStealsPerGame(int stealsPerGame) {
+		this.stealsPerGame = stealsPerGame;
+	}
+
+	public int getTurnoversPerGame() {
+		return turnoversPerGame;
+	}
+
+	public void setTurnoversPerGame(int turnoversPerGame) {
+		this.turnoversPerGame = turnoversPerGame;
+	}
+
+	public void setOffensiveRating(int offensiveRating) {
+		this.offensiveRating = offensiveRating;
+	}
+
+	public void setDefensiveRating(int defensiveRating) {
+		this.defensiveRating = defensiveRating;
 	}
 	
 	// ======================================== Logic Methods =============================================== //

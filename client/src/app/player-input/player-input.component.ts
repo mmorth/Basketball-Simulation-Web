@@ -34,6 +34,21 @@ export class PlayerInputComponent implements OnInit {
 	defensiveRating: number;
 
 	/**
+	 * The position of the team
+	 */
+	position: number;
+
+	/**
+	 * Determines whether the player is a starter
+	 */
+	isStarter: boolean;
+
+	/**
+	 * Determines the rotation minutes of the player
+	 */
+	rotationMinutes: number;
+
+	/**
 	 * Represents the error message displayed when the user has invalid input
 	 */
   inputError: string;
@@ -69,6 +84,9 @@ export class PlayerInputComponent implements OnInit {
 			this.playerName = player.name;
 			this.offensiveRating = player.offensiveRating;
 			this.defensiveRating = player.defensiveRating;
+			this.position = player.position;
+			this.rotationMinutes = player.rotationMinutes;
+			this.isStarter = player.isStarter;
     	}
     );
   }
@@ -81,13 +99,16 @@ export class PlayerInputComponent implements OnInit {
 		const pcid = +this.route.snapshot.paramMap.get('pcid');
 
 		if (pcid === 0) {
-			if (this.playerName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
-				this.playerService.createPlayer(id, this.playerName, this.offensiveRating, this.defensiveRating)
+			if (this.playerName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position >= 1 && this.position <= 5 && this.rotationMinutes >= 0 && this.rotationMinutes <= 100) {
+				this.playerService.createPlayer(id, this.playerName, this.offensiveRating, this.defensiveRating, this.position, this.isStarter, this.rotationMinutes)
 				.subscribe(() => {
 						this.player = null;
 						this.playerName = "";
 						this.offensiveRating = 0;
 						this.defensiveRating = 0;
+						this.position = 0;
+						this.rotationMinutes = 0;
+						this.isStarter = false;
 						this.inputError = "";
 						this.router.navigateByUrl('/team-details/' + id);
 				});
@@ -97,13 +118,16 @@ export class PlayerInputComponent implements OnInit {
 		}
 
 		if (pcid === 1) {
-			if (this.playerName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
-				this.playerService.createCoach(id, this.playerName, this.offensiveRating, this.defensiveRating)
+			if (this.playerName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position >= 1 && this.position <= 5) {
+				this.playerService.createCoach(id, this.playerName, this.offensiveRating, this.defensiveRating, this.position)
 				.subscribe(() => {
 						this.player = null;
 						this.playerName = "";
 						this.offensiveRating = 0;
 						this.defensiveRating = 0;
+						this.position = 0;
+						this.rotationMinutes = 0;
+						this.isStarter = false;
 						this.inputError = "";
 						this.router.navigateByUrl('/team-details/' + id);
 				});
@@ -132,6 +156,10 @@ export class PlayerInputComponent implements OnInit {
 						this.playerName = "";
 						this.offensiveRating = 0;
 						this.defensiveRating = 0;
+						this.position = 0;
+						this.rotationMinutes = 0;
+						this.isStarter = false;
+						this.inputError = "";
 						this.router.navigateByUrl('/team-details/' + teamID);
 					}
 				);
@@ -147,6 +175,9 @@ export class PlayerInputComponent implements OnInit {
 						this.playerName = "";
 						this.offensiveRating = 0;
 						this.defensiveRating = 0;
+						this.position = 0;
+						this.rotationMinutes = 0;
+						this.isStarter = false;
 						this.router.navigateByUrl('/team-details/' + teamID);
 					}
 				);
@@ -165,17 +196,20 @@ export class PlayerInputComponent implements OnInit {
 		const pcid = +this.route.snapshot.paramMap.get('pcid');
 
 		if (pcid === 0) {
-			if (this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
+			if (this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position >= 1 && this.position <= 5 && this.rotationMinutes >= 0 && this.rotationMinutes <= 100) {
 			
-				this.playerService.updatePlayer(teamID, playerID, this.playerName, this.offensiveRating, this.defensiveRating)
+				this.playerService.updatePlayer(teamID, playerID, this.playerName, this.offensiveRating, this.defensiveRating, this.position, this.isStarter, this.rotationMinutes)
 				.subscribe(
 					() => {
-							this.player = null;
-							this.playerName = "";
-							this.offensiveRating = 0;
-							this.defensiveRating = 0;
-							this.inputError = "";
-							this.router.navigateByUrl('/team-details/' + teamID);
+						this.player = null;
+						this.playerName = "";
+						this.offensiveRating = 0;
+						this.defensiveRating = 0;
+						this.position = 0;
+						this.rotationMinutes = 0;
+						this.isStarter = false;
+						this.inputError = "";
+						this.router.navigateByUrl('/team-details/' + teamID);
 					}
 				);	
 			
@@ -185,17 +219,20 @@ export class PlayerInputComponent implements OnInit {
 		}
 
 		if (pcid === 1) {
-			if (this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
+			if (this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position >= 1 && this.position <= 5) {
 			
-				this.playerService.updateCoach(teamID, playerID, this.playerName, this.offensiveRating, this.defensiveRating)
+				this.playerService.updateCoach(teamID, playerID, this.playerName, this.offensiveRating, this.defensiveRating, this.position)
 				.subscribe(
 					() => {
-							this.player = null;
-							this.playerName = "";
-							this.offensiveRating = 0;
-							this.defensiveRating = 0;
-							this.inputError = "";
-							this.router.navigateByUrl('/team-details/' + teamID);
+						this.player = null;
+						this.playerName = "";
+						this.offensiveRating = 0;
+						this.defensiveRating = 0;
+						this.position = 0;
+						this.rotationMinutes = 0;
+						this.isStarter = false;
+						this.inputError = "";
+						this.router.navigateByUrl('/team-details/' + teamID);
 					}
 				);	
 			

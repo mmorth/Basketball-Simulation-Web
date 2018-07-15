@@ -6,4 +6,15 @@ export class Player {
 	name: string;
 	offensiveRating: number;
 	defensiveRating: number;
+	overallRating: number;
+	position: number;
+	isStarter: boolean;
+	rotationMinutes: number;
+	possessionsPlayed: number;
+	pointsPerGame: number;
+	reboundsPerGame: number;
+	assistsPerGame: number;
+	blocksPerGame: number;
+	stealsPerGame: number;
+	turnoversPerGame: number;
 }

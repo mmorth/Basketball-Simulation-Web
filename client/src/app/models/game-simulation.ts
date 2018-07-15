@@ -1,4 +1,5 @@
 import { Team } from './team';
+import { Player } from './player';
 
 /**
  * Represents the GameSimulation object received from the back-end
@@ -21,4 +22,6 @@ export class GameSimulation {
 	homeTeamThirdQuarterScore: number;
 	homeTeamFourthQuarterScore: number;
 	homeTeamOvertimeScore: number;
+	awayPlayers: Array<Player>;
+	homePlayers: Array<Player>;
 }

@@ -38,9 +38,9 @@ export class PlayerService {
    * @param offRating The offensive rating of the player
    * @param defRating The defensive rating of the player
    */
-  createPlayer(teamNumber: number, playerName: string, offRating: number, defRating: number) {
+  createPlayer(teamNumber: number, playerName: string, offRating: number, defRating: number, position: number, isStarter: boolean, rotationMinutes: number) {
   	return this.http.post('http://localhost:8080/api/teams/' + teamNumber + '/players',
-  		JSON.stringify({ "name": playerName, "offensiveRating": offRating, "defensiveRating": defRating }), 
+  		JSON.stringify({ "name": playerName, "offensiveRating": offRating, "defensiveRating": defRating, "position": position, "isStarter": isStarter, "rotationMinutes": rotationMinutes, "possessionsPlayed": 0 }), 
   		HEADERS
   	);
   }
@@ -60,9 +60,9 @@ export class PlayerService {
    * @param offRating The offensive rating of the player
    * @param defRating The defensive rating of the player
    */
-  updatePlayer(teamID: number, playerID: number, playerName: string, offRating: number, defRating: number) {
+  updatePlayer(teamID: number, playerID: number, playerName: string, offRating: number, defRating: number, position: number, isStarter: boolean, rotationMinutes: number) {
   	return this.http.put('http://localhost:8080/api/teams/' + teamID + '/' + playerID,
-  		JSON.stringify({ "name": playerName, "offensiveRating": offRating, "defensiveRating": defRating }), 
+  		JSON.stringify({ "name": playerName, "offensiveRating": offRating, "defensiveRating": defRating, "position": position, "isStarter": isStarter, "rotationMinutes": rotationMinutes, "possessionsPlayed": 0 }), 
   		HEADERS
   	);
   }
@@ -74,9 +74,9 @@ export class PlayerService {
    * @param offRating The offensive rating of the coach
    * @param defRating The defensive rating of the coach
    */
-  createCoach(teamNumber: number, coachName: string, offRating: number, defRating: number) {
+  createCoach(teamNumber: number, coachName: string, offRating: number, defRating: number, position: number) {
   	return this.http.post('http://localhost:8080/api/teams/' + teamNumber + '/coach',
-  		JSON.stringify({ "name": coachName, "offensiveRating": offRating, "defensiveRating": defRating }), 
+  		JSON.stringify({ "name": coachName, "offensiveRating": offRating, "defensiveRating": defRating, "position": position }), 
   		HEADERS
   	);
   }
@@ -96,9 +96,9 @@ export class PlayerService {
    * @param offRating The offensive rating of the coach
    * @param defRating The defensive rating of the coach
    */
-  updateCoach(teamID: number, coachID: number, coachName: string, offRating: number, defRating: number) {
+  updateCoach(teamID: number, coachID: number, coachName: string, offRating: number, defRating: number, position: number) {
   	return this.http.put('http://localhost:8080/api/teams/' + teamID + '/coach/' + coachID,
-  		JSON.stringify({ "name": coachName, "offensiveRating": offRating, "defensiveRating": defRating }), 
+  		JSON.stringify({ "name": coachName, "offensiveRating": offRating, "defensiveRating": defRating, "position": position }), 
   		HEADERS
   	);
   }

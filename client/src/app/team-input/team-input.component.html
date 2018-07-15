@@ -81,16 +81,6 @@
 			<input id="teamName" class="form-control input-sm" id="inputsm" type="text" [(ngModel)]="teamName" placeholder="Team Name" ng-model="teamInputs">
 		</div>
 
-		<div class="form-group">
-			<label for="inputsm">Offensive Rating (must be between 0 and 100)</label>
-			<input id="teamOffensiveRating" class="form-control input-sm" id="inputsm" [(ngModel)]="offensiveRating" type="text" placeholder="Offensive Rating" ng-model="teamInputs" readonly>
-		</div>
-
-		<div class="form-group">
-			<label for="inputsm">Defensive Rating (must be between 0 and 100)</label>
-			<input id="teamDefensiveRating" class="form-control input-sm" id="inputsm" type="text" [(ngModel)]="defensiveRating" placeholder="Defensive Rating" ng-model="teamInputs" readonly>
-		</div>
-
 		<a id="create-team-button" class="btn btn-primary" (click)="createTeam()">Create Team</a>
 	</ng-template>
 

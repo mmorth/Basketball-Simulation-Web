@@ -175,6 +175,7 @@ public class Team {
 		this.players = players;
 		this.setOffensiveRating();
 		this.setDefensiveRating();
+		this.setOverallRating();
 	}
 	
 	public Player getCoach() {
@@ -185,14 +186,15 @@ public class Team {
 		this.coach = coach;
 		this.setOffensiveRating();
 		this.setDefensiveRating();
+		this.setOverallRating();
 	}
 
 	public int getOverallRating() {
 		return overallRating;
 	}
 
-	public void setOverallRating(int overallRating) {
-		this.overallRating = overallRating;
+	public void setOverallRating() {
+		this.overallRating =  (this.getOffensiveRating() + this.getDefensiveRating()) / 2;
 	}
 
 	public int getPointsPerGame() {
@@ -257,12 +259,14 @@ public class Team {
 		this.players.add(player);
 		this.setOffensiveRating();
 		this.setDefensiveRating();
+		this.setOverallRating();
 	}
 	
 	public void removePlayer(Player player) {
 		this.players.remove(player);
 		this.setOffensiveRating();
 		this.setDefensiveRating();
+		this.setOverallRating();
 	}
 	
 	/**

@@ -35,9 +35,9 @@ public class TeamController {
 	 */
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json") 
 	public @ResponseBody long createTeam(@RequestBody Team jsonTeam) {
-
 		jsonTeam.setOffensiveRating();
 		jsonTeam.setDefensiveRating();
+		jsonTeam.resetGameStats();
 		
 		teamRepository.save(jsonTeam); 
 		

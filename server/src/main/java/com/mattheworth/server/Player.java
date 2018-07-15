@@ -1,5 +1,6 @@
 package com.mattheworth.server;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,7 +36,7 @@ public class Player {
 	private int offensiveRating;
 	
 	/**
-	 * The defensive rating of theplayer
+	 * The defensive rating of the player
 	 */
 	private int defensiveRating;
 	
@@ -43,6 +44,12 @@ public class Player {
 	 * The position the player player
 	 */
 	private int position;
+	
+	/**
+	 * Signifies whether this player is a starter or not
+	 */
+	@Column(nullable = false, columnDefinition = "TINYINT(1)")
+	private boolean isStarter;
 	
 	// Game Stats
 	
@@ -116,6 +123,7 @@ public class Player {
 
 	public void setOffensiveRating(int offensiveRating) {
 		this.offensiveRating = offensiveRating;
+		setOverallRating();
 	}
 
 	public int getDefensiveRating() {
@@ -124,14 +132,15 @@ public class Player {
 
 	public void setDefensiveRating(int defensiveRating) {
 		this.defensiveRating = defensiveRating;
+		setOverallRating();
 	}
 
 	public int getOverallRating() {
 		return overallRating;
 	}
 
-	public void setOverallRating(int overallRating) {
-		this.overallRating = overallRating;
+	public void setOverallRating() {
+		this.overallRating = (this.offensiveRating + this.defensiveRating) / 2;
 	}
 
 	public int getPointsPerGame() {
@@ -205,9 +214,17 @@ public class Player {
 	public void setPosition(int position) {
 		this.position = position;
 	}
+
+	public boolean isStarter() {
+		return isStarter;
+	}
+
+	public void setStarter(boolean isStarter) {
+		this.isStarter = isStarter;
+	}
 	
 	// ================================================= Logic Methods ==========================================
-	
+
 	/**
 	 * Resets the player's game stats
 	 */
@@ -218,7 +235,7 @@ public class Player {
 		this.reboundsPerGame = 0;
 		this.stealsPerGame = 0;
 		this.blocksPerGame = 0;
-		this.rotationMinutes = 0;
+		this.possessionsRemaining = this.rotationMinutes;
 	}
 	
 }

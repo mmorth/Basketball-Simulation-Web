@@ -175,6 +175,19 @@ public class GameSimulation {
 	// ========================================= Logic Methods ========================== //
 	
 	/**
+	 * Sets the starters for the home and away team for the simulation
+	 */
+	public void setStartingPlayers() {
+		for (Player player : awayTeam.getPlayers()) {
+			awayPlayers.add(player);
+		}
+		
+		for (Player player : homeTeam.getPlayers()) {
+			homePlayers.add(player);
+		}
+	}
+	
+	/**
 	 * Simulations the given number of possessions
 	 * @param possessions The number of possessions to simulate
 	 */
@@ -318,6 +331,8 @@ public class GameSimulation {
 		
 		awayTeam.resetGameStats();
 		homeTeam.resetGameStats();
+		
+		setStartingPlayers();
 	}
 	
 	/**

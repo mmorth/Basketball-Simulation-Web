@@ -2,6 +2,8 @@ package com.mattheworth.server;
 
 import java.util.Optional;
 
+import javax.swing.plaf.synth.SynthSeparatorUI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +45,8 @@ public class PlayerController {
 	public @ResponseBody long createPlayer(@PathVariable long teamID, @RequestBody Player jsonPlayer) {
 		Team team = teamRepository.findById(teamID).get();
 
+		jsonPlayer.resetPlayerGameStats();
+		
 		playerRepository.save(jsonPlayer);
 		
 		team.addPlayer(jsonPlayer);
@@ -85,6 +89,9 @@ public class PlayerController {
 		playerRepository.save(updatePlayer);
 		
 		Team team = teamRepository.findById(teamID).get();
+		team.setOffensiveRating();
+		team.setDefensiveRating();
+		System.out.println(team.getOffensiveRating() + ": " + team.getDefensiveRating());
 		teamRepository.save(team);
 		
 		return playerID;

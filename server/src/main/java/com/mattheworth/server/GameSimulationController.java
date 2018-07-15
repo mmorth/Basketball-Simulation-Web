@@ -42,6 +42,7 @@ public class GameSimulationController {
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody GameSimulation createGameSimulation(@RequestBody GameSimulation gameSimulation) {
 
+		gameSimulation.resetGame();
 		gameSimulationRepository.save(gameSimulation);
 		
 		return gameSimulationRepository.findById(gameSimulation.getId()).get();

@@ -46,10 +46,9 @@ public class Player {
 	private int position;
 	
 	/**
-	 * Signifies whether this player is a starter or not
+	 * The player's role on the team
 	 */
-	@Column(nullable = false, columnDefinition = "TINYINT(1)")
-	private boolean isStarter;
+	private String role;
 	
 	// Game Stats
 	
@@ -215,12 +214,12 @@ public class Player {
 		this.position = position;
 	}
 
-	public boolean isStarter() {
-		return isStarter;
+	public String getRole() {
+		return role;
 	}
 
-	public void setStarter(boolean isStarter) {
-		this.isStarter = isStarter;
+	public void setRole(String role) {
+		this.role = role;
 	}
 	
 	// ================================================= Logic Methods ==========================================

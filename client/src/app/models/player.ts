@@ -8,7 +8,7 @@ export class Player {
 	defensiveRating: number;
 	overallRating: number;
 	position: number;
-	isStarter: boolean;
+	role: string;
 	rotationMinutes: number;
 	possessionsPlayed: number;
 	pointsPerGame: number;

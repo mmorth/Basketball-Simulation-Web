@@ -26,21 +26,39 @@
 			<input id="playerDefensiveRating" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="defensiveRating" placeholder="Defensive Rating" value={{player.defensiveRating}} ng-model="playerInputs">
 		</div>
 
-		<div class="form-group">
+		<!-- <div class="form-group">
 			<label for="inputlg">Position (must be between 1 and 5: 1 = PG, 2 = SG, 3 = SF, 4 = PF, 5 = C)</label>
 			<input id="playerDefensiveRating" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="position" placeholder="Position" value={{player.position}} ng-model="playerInputs">
-		</div>
+		</div> -->
+
+		<div class="form-group">
+				<label for="sel1">Position:</label>
+				<select class="form-control" id="sel1">
+				  <option (click)="setPosition(0)">Coach</option>
+				  <option (click)="setPosition(1)">Point Guard</option>
+				  <option (click)="setPosition(2)">Shooting Guard</option>
+				  <option (click)="setPosition(3)">Small Forward</option>
+				  <option (click)="setPosition(4)">Power Forward</option>
+				  <option (click)="setPosition(5)">Center</option>
+				</select>
+			  </div> 
 
 		<div class="form-group">
 			<label for="inputlg">Rotation Minutes (must be between 0 and 100)</label>
 			<input id="playerDefensiveRating" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="rotationMinutes" placeholder="Rotation Possessions" value={{player.rotationMinutes}} ng-model="playerInputs">
 		</div>
 
-		<form #f="ngForm">
-			<label for="inputlg">Starter </label>
-			<label class="radio-inline"><input type="radio" value=true name="starter" [(ngModel)]="isStarter"> Starter</label>
-			<label class="radio-inline"><input type="radio" value=false name="starter" [(ngModel)]="isStarter"> Bench</label>
-		  </form>
+		<div class="form-group">
+				<label for="sel1">Player Role:</label>
+				<select class="form-control" id="sel1">
+				  <option (click)="setRole('coach')">Coach</option>
+				  <option (click)="setRole('starter')">Starter</option>
+				  <option (click)="setRole('sixth man')">Sixth Man</option>
+				  <option (click)="setRole('role player')">Role Player</option>
+				  <option (click)="setRole('prospect')">Prospect</option>
+				  <option (click)="setRole('bench warmer')">Bench Warmer</option>
+				</select>
+			  </div> 
 
 		<a id="update-player-button" class="btn btn-primary" (click)="updatePlayer()">Update Player / Coach</a>
 		<a id="delete-player-button" class="btn btn-primary" (click)="deletePlayer()">Delete Player / Coach</a>
@@ -63,10 +81,22 @@
 			<input id="playerDefensiveRating" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="defensiveRating" placeholder="Defensive Rating" ng-model="playerInputs">
 		</div>
 	
-		<div class="form-group">
+		<!-- <div class="form-group">
 			<label for="inputlg">Position (must be between 1 and 5: 1 = PG, 2 = SG, 3 = SF, 4 = PF, 5 = C)</label>
 			<input id="playerDefensiveRating" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="position" placeholder="Position" ng-model="playerInputs">
-		</div>
+		</div> -->
+
+		<div class="form-group">
+				<label for="sel1">Position:</label>
+				<select class="form-control" id="sel1">
+				  <option (click)="setPosition(0)">Coach</option>
+				  <option (click)="setPosition(1)">Point Guard</option>
+				  <option (click)="setPosition(2)">Shooting Guard</option>
+				  <option (click)="setPosition(3)">Small Forward</option>
+				  <option (click)="setPosition(4)">Power Forward</option>
+				  <option (click)="setPosition(5)">Center</option>
+				</select>
+			  </div> 
 
 		<div class="form-group">
 			<label for="inputlg">Rotation Minutes (must be between 0 and 100)</label>
@@ -79,7 +109,7 @@
 			<label class="radio-inline"><input type="radio" name="optradio" ng-model="isStarter">Bench</label>
 		</div>
 
-		<a id="delete-team-button" class="btn btn-primary" (click)="createPlayer()">Create Player / Coach</a>
+		<a id="create-player-button" class="btn btn-primary" (click)="createPlayer()">Create Player / Coach</a>
 	</ng-template>
 
 	  <font color red>{{ inputError }}</font>

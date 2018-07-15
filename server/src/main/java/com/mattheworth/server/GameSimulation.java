@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -53,17 +54,13 @@ public class GameSimulation {
 	/**
 	 * The players in the game for the away team
 	 */
-	@OneToMany(cascade=CascadeType.MERGE)
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@JoinColumn(name="away_game_sim_id")
+	@Transient
 	private List<Player> awayPlayers = new ArrayList<>();
 	
 	/**
 	 * The players in the game for the home team
 	 */
-	@OneToMany(cascade=CascadeType.MERGE)
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@JoinColumn(name="home_game_sim_id")
+	@Transient
 	private List<Player> homePlayers = new ArrayList<>();
 	
 	/**
@@ -179,11 +176,15 @@ public class GameSimulation {
 	 */
 	public void setStartingPlayers() {
 		for (Player player : awayTeam.getPlayers()) {
-			awayPlayers.add(player);
+			if (player.getRole().equals("player")) {
+				awayPlayers.add(player);
+			}
 		}
 		
 		for (Player player : homeTeam.getPlayers()) {
-			homePlayers.add(player);
+			if (player.getRole().equals("player")) {
+				awayPlayers.add(player);
+			}
 		}
 	}
 	

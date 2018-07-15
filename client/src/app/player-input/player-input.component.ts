@@ -39,9 +39,9 @@ export class PlayerInputComponent implements OnInit {
 	position: number;
 
 	/**
-	 * Determines whether the player is a starter
+	 * The player's role on the team
 	 */
-	isStarter: boolean;
+	playerRole: string;
 
 	/**
 	 * Determines the rotation minutes of the player
@@ -70,8 +70,23 @@ export class PlayerInputComponent implements OnInit {
 
     if (!isNaN(id)) {
   	 this.getPlayer();
-    }
-  }
+		}
+		
+	}
+	
+	/**
+	 * Sets the position of the player
+	 */
+	setPosition(inputPosition: number) {
+		this.position = inputPosition;
+	}
+
+	/**
+	 * Sets the role of the player / coach
+	 */
+	setRole(inputRole: string) {
+		this.playerRole = inputRole;
+	}
 
 	/**
 	 * Gets the player with the specified id
@@ -86,7 +101,7 @@ export class PlayerInputComponent implements OnInit {
 			this.defensiveRating = player.defensiveRating;
 			this.position = player.position;
 			this.rotationMinutes = player.rotationMinutes;
-			this.isStarter = player.isStarter;
+			this.playerRole = player.role;
     	}
     );
   }
@@ -100,7 +115,7 @@ export class PlayerInputComponent implements OnInit {
 
 		if (pcid === 0) {
 			if (this.playerName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position >= 1 && this.position <= 5 && this.rotationMinutes >= 0 && this.rotationMinutes <= 100) {
-				this.playerService.createPlayer(id, this.playerName, this.offensiveRating, this.defensiveRating, this.position, this.isStarter, this.rotationMinutes)
+				this.playerService.createPlayer(id, this.playerName, this.offensiveRating, this.defensiveRating, this.position, this.playerRole, this.rotationMinutes)
 				.subscribe(() => {
 						this.player = null;
 						this.playerName = "";
@@ -108,7 +123,7 @@ export class PlayerInputComponent implements OnInit {
 						this.defensiveRating = 0;
 						this.position = 0;
 						this.rotationMinutes = 0;
-						this.isStarter = false;
+						this.playerRole = "";
 						this.inputError = "";
 						this.router.navigateByUrl('/team-details/' + id);
 				});
@@ -127,7 +142,7 @@ export class PlayerInputComponent implements OnInit {
 						this.defensiveRating = 0;
 						this.position = 0;
 						this.rotationMinutes = 0;
-						this.isStarter = false;
+						this.playerRole = "";
 						this.inputError = "";
 						this.router.navigateByUrl('/team-details/' + id);
 				});
@@ -158,7 +173,7 @@ export class PlayerInputComponent implements OnInit {
 						this.defensiveRating = 0;
 						this.position = 0;
 						this.rotationMinutes = 0;
-						this.isStarter = false;
+						this.playerRole = "";
 						this.inputError = "";
 						this.router.navigateByUrl('/team-details/' + teamID);
 					}
@@ -177,7 +192,7 @@ export class PlayerInputComponent implements OnInit {
 						this.defensiveRating = 0;
 						this.position = 0;
 						this.rotationMinutes = 0;
-						this.isStarter = false;
+						this.playerRole = "";
 						this.router.navigateByUrl('/team-details/' + teamID);
 					}
 				);
@@ -198,7 +213,7 @@ export class PlayerInputComponent implements OnInit {
 		if (pcid === 0) {
 			if (this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position >= 1 && this.position <= 5 && this.rotationMinutes >= 0 && this.rotationMinutes <= 100) {
 			
-				this.playerService.updatePlayer(teamID, playerID, this.playerName, this.offensiveRating, this.defensiveRating, this.position, this.isStarter, this.rotationMinutes)
+				this.playerService.updatePlayer(teamID, playerID, this.playerName, this.offensiveRating, this.defensiveRating, this.position, this.playerRole, this.rotationMinutes)
 				.subscribe(
 					() => {
 						this.player = null;
@@ -207,7 +222,7 @@ export class PlayerInputComponent implements OnInit {
 						this.defensiveRating = 0;
 						this.position = 0;
 						this.rotationMinutes = 0;
-						this.isStarter = false;
+						this.playerRole = "";
 						this.inputError = "";
 						this.router.navigateByUrl('/team-details/' + teamID);
 					}
@@ -230,7 +245,7 @@ export class PlayerInputComponent implements OnInit {
 						this.defensiveRating = 0;
 						this.position = 0;
 						this.rotationMinutes = 0;
-						this.isStarter = false;
+						this.playerRole = "";
 						this.inputError = "";
 						this.router.navigateByUrl('/team-details/' + teamID);
 					}

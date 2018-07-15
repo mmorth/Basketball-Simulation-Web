@@ -46,6 +46,7 @@ public class PlayerController {
 		Team team = teamRepository.findById(teamID).get();
 
 		jsonPlayer.resetPlayerGameStats();
+		jsonPlayer.setOverallRating();
 		
 		playerRepository.save(jsonPlayer);
 		
@@ -83,15 +84,17 @@ public class PlayerController {
 	@RequestMapping(path="/teams/{teamID}/{playerID}", method = RequestMethod.PUT, produces = "application/json")
 	public @ResponseBody long updatePlayer(@PathVariable long teamID, @PathVariable long playerID, @RequestBody Player jsonPlayer) {
 		Player updatePlayer = playerRepository.findById(playerID).get();
+		Team team = teamRepository.findById(teamID).get();
 		
 		updatePlayer.setOffensiveRating(jsonPlayer.getOffensiveRating());
 		updatePlayer.setDefensiveRating(jsonPlayer.getDefensiveRating());
+		updatePlayer.setPosition(jsonPlayer.getPosition());
+		updatePlayer.setRotationMinutes(jsonPlayer.getRotationMinutes());
+		updatePlayer.setRole(jsonPlayer.getRole());
+		updatePlayer.resetPlayerGameStats();
+		updatePlayer.setOverallRating();
 		playerRepository.save(updatePlayer);
-		
-		Team team = teamRepository.findById(teamID).get();
-		team.setOffensiveRating();
-		team.setDefensiveRating();
-		System.out.println(team.getOffensiveRating() + ": " + team.getDefensiveRating());
+
 		teamRepository.save(team);
 		
 		return playerID;

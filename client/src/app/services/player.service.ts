@@ -38,9 +38,9 @@ export class PlayerService {
    * @param offRating The offensive rating of the player
    * @param defRating The defensive rating of the player
    */
-  createPlayer(teamNumber: number, playerName: string, offRating: number, defRating: number, position: number, isStarter: boolean, rotationMinutes: number) {
+  createPlayer(teamNumber: number, playerName: string, offRating: number, defRating: number, position: number, playerRole: string, rotationMinutes: number) {
   	return this.http.post('http://localhost:8080/api/teams/' + teamNumber + '/players',
-  		JSON.stringify({ "name": playerName, "offensiveRating": offRating, "defensiveRating": defRating, "position": position, "isStarter": isStarter, "rotationMinutes": rotationMinutes, "possessionsPlayed": 0 }), 
+  		JSON.stringify({ "name": playerName, "offensiveRating": offRating, "defensiveRating": defRating, "position": position, "playerRole": playerRole, "rotationMinutes": rotationMinutes, "possessionsPlayed": 0 }), 
   		HEADERS
   	);
   }
@@ -60,9 +60,9 @@ export class PlayerService {
    * @param offRating The offensive rating of the player
    * @param defRating The defensive rating of the player
    */
-  updatePlayer(teamID: number, playerID: number, playerName: string, offRating: number, defRating: number, position: number, isStarter: boolean, rotationMinutes: number) {
-  	return this.http.put('http://localhost:8080/api/teams/' + teamID + '/' + playerID,
-  		JSON.stringify({ "name": playerName, "offensiveRating": offRating, "defensiveRating": defRating, "position": position, "isStarter": isStarter, "rotationMinutes": rotationMinutes, "possessionsPlayed": 0 }), 
+  updatePlayer(teamID: number, playerID: number, playerName: string, offRating: number, defRating: number, position: number, playerRole: String, rotationMinutes: number) {
+    return this.http.put('http://localhost:8080/api/teams/' + teamID + '/' + playerID,
+  		JSON.stringify({ "name": playerName, "offensiveRating": offRating, "defensiveRating": defRating, "position": position, "role": playerRole, "rotationMinutes": rotationMinutes, "possessionsPlayed": 0 }), 
   		HEADERS
   	);
   }

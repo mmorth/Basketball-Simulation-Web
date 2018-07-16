@@ -51,7 +51,17 @@ export class PlayerInputComponent implements OnInit {
 	/**
 	 * Represents the error message displayed when the user has invalid input
 	 */
-  inputError: string;
+	inputError: string;
+	
+	/**
+	 * Stores the position options for the players dropdown
+	 */
+	positions: number[] = [1, 2, 3, 4, 5];
+
+	/**
+	 * Stores the player role options for the players dropdown
+	 */
+	roles: string[] = ["Coach", "Starter", "Sixth Man", "Role Player", "Prospect", "Bench Warmer"];
 
 	/**
 	 * Constructs a new TeamInputComponent with the following injections
@@ -86,6 +96,7 @@ export class PlayerInputComponent implements OnInit {
 	 */
 	setRole(inputRole: string) {
 		this.playerRole = inputRole;
+		console.log(this.playerRole)
 	}
 
 	/**
@@ -113,8 +124,10 @@ export class PlayerInputComponent implements OnInit {
 		const id = +this.route.snapshot.paramMap.get('teamID');
 		const pcid = +this.route.snapshot.paramMap.get('pcid');
 
+		// Create a player
 		if (pcid === 0) {
-			if (this.playerName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position >= 1 && this.position <= 5 && this.rotationMinutes >= 0 && this.rotationMinutes <= 100) {
+			console.log(this.playerRole)
+			if (this.playerName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position >= 1 && this.position <= 5 && this.rotationMinutes >= 0 && this.rotationMinutes <= 100 && this.playerRole.length > 0) {
 				this.playerService.createPlayer(id, this.playerName, this.offensiveRating, this.defensiveRating, this.position, this.playerRole, this.rotationMinutes)
 				.subscribe(() => {
 						this.player = null;
@@ -132,8 +145,9 @@ export class PlayerInputComponent implements OnInit {
 			}
 		}
 
+		// Create a coach
 		if (pcid === 1) {
-			if (this.playerName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position >= 1 && this.position <= 5) {
+			if (this.playerName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position == 1) {
 				this.playerService.createCoach(id, this.playerName, this.offensiveRating, this.defensiveRating, this.position)
 				.subscribe(() => {
 						this.player = null;
@@ -162,6 +176,7 @@ export class PlayerInputComponent implements OnInit {
 		
 		const pcid = +this.route.snapshot.paramMap.get('pcid');
 
+		// Delete a player
 		if (pcid == 0) {
 			if(window.confirm('Are sure you want to delete this player?')) {
 				this.playerService.deletePlayer(teamID, playerID)
@@ -181,6 +196,7 @@ export class PlayerInputComponent implements OnInit {
 			}
 		}
 
+		// Delete a coach
 		if (pcid == 1) {
 			if(window.confirm('Are sure you want to delete this coach?')) {
 				this.playerService.deleteCoach(teamID, playerID)
@@ -210,8 +226,9 @@ export class PlayerInputComponent implements OnInit {
 			
 		const pcid = +this.route.snapshot.paramMap.get('pcid');
 
+		// Update a player
 		if (pcid === 0) {
-			if (this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position >= 1 && this.position <= 5 && this.rotationMinutes >= 0 && this.rotationMinutes <= 100) {
+			if (this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position >= 1 && this.position <= 5 && this.rotationMinutes >= 0 && this.rotationMinutes <= 100 && this.playerRole.length > 0) {
 			
 				this.playerService.updatePlayer(teamID, playerID, this.playerName, this.offensiveRating, this.defensiveRating, this.position, this.playerRole, this.rotationMinutes)
 				.subscribe(
@@ -233,6 +250,7 @@ export class PlayerInputComponent implements OnInit {
 			}
 		}
 
+		// Update a coach
 		if (pcid === 1) {
 			if (this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position >= 1 && this.position <= 5) {
 			

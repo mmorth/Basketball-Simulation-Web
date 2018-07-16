@@ -40,7 +40,7 @@ export class PlayerService {
    */
   createPlayer(teamNumber: number, playerName: string, offRating: number, defRating: number, position: number, playerRole: string, rotationMinutes: number) {
   	return this.http.post('http://localhost:8080/api/teams/' + teamNumber + '/players',
-  		JSON.stringify({ "name": playerName, "offensiveRating": offRating, "defensiveRating": defRating, "position": position, "playerRole": playerRole, "rotationMinutes": rotationMinutes, "possessionsPlayed": 0 }), 
+  		JSON.stringify({ "name": playerName, "offensiveRating": offRating, "defensiveRating": defRating, "position": position, "role": playerRole, "rotationMinutes": rotationMinutes, "possessionsPlayed": 0 }), 
   		HEADERS
   	);
   }

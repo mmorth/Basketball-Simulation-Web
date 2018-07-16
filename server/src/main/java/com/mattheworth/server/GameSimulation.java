@@ -176,13 +176,13 @@ public class GameSimulation {
 	 */
 	public void setStartingPlayers() {
 		for (Player player : awayTeam.getPlayers()) {
-			if (player.getRole().equals("player")) {
+			if (player.getRole().equals("Starter")) {
 				awayPlayers.add(player);
 			}
 		}
 		
 		for (Player player : homeTeam.getPlayers()) {
-			if (player.getRole().equals("player")) {
+			if (player.getRole().equals("Starter")) {
 				awayPlayers.add(player);
 			}
 		}

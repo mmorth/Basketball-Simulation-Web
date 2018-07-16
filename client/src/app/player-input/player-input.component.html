@@ -26,20 +26,11 @@
 			<input id="playerDefensiveRating" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="defensiveRating" placeholder="Defensive Rating" value={{player.defensiveRating}} ng-model="playerInputs">
 		</div>
 
-		<!-- <div class="form-group">
-			<label for="inputlg">Position (must be between 1 and 5: 1 = PG, 2 = SG, 3 = SF, 4 = PF, 5 = C)</label>
-			<input id="playerDefensiveRating" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="position" placeholder="Position" value={{player.position}} ng-model="playerInputs">
-		</div> -->
-
 		<div class="form-group">
-				<label for="sel1">Position:</label>
-				<select class="form-control" id="sel1">
-				  <option (click)="setPosition(0)">Coach</option>
-				  <option (click)="setPosition(1)">Point Guard</option>
-				  <option (click)="setPosition(2)">Shooting Guard</option>
-				  <option (click)="setPosition(3)">Small Forward</option>
-				  <option (click)="setPosition(4)">Power Forward</option>
-				  <option (click)="setPosition(5)">Center</option>
+				<label for="sel1">Position (1=PG, 2=SG, 3=SF, 4=PF, 5=C):</label>
+				<select class="form-control" [(ngModel)]="position" id="sel1">
+				  <option value="" disabled selected>Select a position</option>
+				  <option *ngFor="let pos of positions" [value]="pos">{{pos}}</option>
 				</select>
 			  </div> 
 
@@ -50,13 +41,9 @@
 
 		<div class="form-group">
 				<label for="sel1">Player Role:</label>
-				<select class="form-control" id="sel1">
-				  <option (click)="setRole('coach')">Coach</option>
-				  <option (click)="setRole('starter')">Starter</option>
-				  <option (click)="setRole('sixth man')">Sixth Man</option>
-				  <option (click)="setRole('role player')">Role Player</option>
-				  <option (click)="setRole('prospect')">Prospect</option>
-				  <option (click)="setRole('bench warmer')">Bench Warmer</option>
+				<select class="form-control" [(ngModel)]="playerRole" id="sel1">
+				  <option value="" disabled selected>Select a player role</option>
+				  <option *ngFor="let role of roles" [value]="role">{{role}}</option>
 				</select>
 			  </div> 
 
@@ -80,15 +67,11 @@
 			<label for="inputlg">Defensive Rating (must be between 1 and 100)</label>
 			<input id="playerDefensiveRating" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="defensiveRating" placeholder="Defensive Rating" ng-model="playerInputs">
 		</div>
-	
-		<!-- <div class="form-group">
-			<label for="inputlg">Position (must be between 1 and 5: 1 = PG, 2 = SG, 3 = SF, 4 = PF, 5 = C)</label>
-			<input id="playerDefensiveRating" class="form-control input-lg" id="inputlg" type="text" [(ngModel)]="position" placeholder="Position" ng-model="playerInputs">
-		</div> -->
 
 		<div class="form-group">
 				<label for="sel1">Position:</label>
 				<select class="form-control" id="sel1">
+				  <option value="" disabled selected>Select a position</option>
 				  <option (click)="setPosition(0)">Coach</option>
 				  <option (click)="setPosition(1)">Point Guard</option>
 				  <option (click)="setPosition(2)">Shooting Guard</option>
@@ -104,10 +87,17 @@
 		</div>
 
 		<div class="form-group">
-			<label for="inputlg">Starter</label>
-			<label class="radio-inline"><input type="radio" name="optradio" ng-model="isStarter">Starter</label>
-			<label class="radio-inline"><input type="radio" name="optradio" ng-model="isStarter">Bench</label>
-		</div>
+				<label for="sel1">Player Role:</label>
+				<select class="form-control" id="sel1">
+				  <option value="" disabled selected>Select a player role</option>
+				  <option (click)="setRole('coach')">Coach</option>
+				  <option (click)="setRole('starter')">Starter</option>
+				  <option (click)="setRole('sixth man')">Sixth Man</option>
+				  <option (click)="setRole('role player')">Role Player</option>
+				  <option (click)="setRole('prospect')">Prospect</option>
+				  <option (click)="setRole('bench warmer')">Bench Warmer</option>
+				</select>
+			  </div> 
 
 		<a id="create-player-button" class="btn btn-primary" (click)="createPlayer()">Create Player / Coach</a>
 	</ng-template>

@@ -170,9 +170,17 @@ public class PlayerController {
 		
 		updatePlayer.setOffensiveRating(jsonCoach.getOffensiveRating());
 		updatePlayer.setDefensiveRating(jsonCoach.getDefensiveRating());
+		updatePlayer.setPosition(jsonCoach.getPosition());
+		updatePlayer.setRotationMinutes(jsonCoach.getRotationMinutes());
+		updatePlayer.setRole(jsonCoach.getRole());
+		updatePlayer.resetPlayerGameStats();
+		updatePlayer.setOverallRating();
 		playerRepository.save(updatePlayer);
 		
 		Team team = teamRepository.findById(teamID).get();
+		team.setOffensiveRating();
+		team.setDefensiveRating();
+		team.setOverallRating();
 		teamRepository.save(team);
 		
 		return coachID;

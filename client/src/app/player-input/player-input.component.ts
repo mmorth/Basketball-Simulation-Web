@@ -61,12 +61,12 @@ export class PlayerInputComponent implements OnInit {
 	/**
 	 * Stores the position options for the players dropdown
 	 */
-	positions: number[] = [0, 1, 2, 3, 4, 5];
+	positions: number[] = [1, 2, 3, 4, 5];
 
 	/**
 	 * Stores the player role options for the players dropdown
 	 */
-	roles: string[] = ["Coach", "Starter", "Sixth Man", "Role Player", "Prospect", "Bench Warmer"];
+	roles: string[] = ["Starter", "Sixth Man", "Role Player", "Prospect", "Bench Warmer"];
 
 	/**
 	 * Constructs a new TeamInputComponent with the following injections
@@ -154,8 +154,8 @@ export class PlayerInputComponent implements OnInit {
 
 		// Create a coach
 		if (pcid === 1) {
-			if (this.playerName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position == 0) {
-				this.playerService.createCoach(id, this.playerName, this.offensiveRating, this.defensiveRating, 0)
+			if (this.playerName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
+				this.playerService.createCoach(id, this.playerName, this.offensiveRating, this.defensiveRating, 0, "Coach", 100)
 				.subscribe(() => {
 						this.player = null;
 						this.playerName = "";
@@ -259,9 +259,9 @@ export class PlayerInputComponent implements OnInit {
 
 		// Update a coach
 		if (pcid === 1) {
-			if (this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position == 0) {
+			if (this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
 			
-				this.playerService.updateCoach(teamID, playerID, this.playerName, this.offensiveRating, this.defensiveRating, 0)
+				this.playerService.updateCoach(teamID, playerID, this.playerName, this.offensiveRating, this.defensiveRating, 0, "Coach", 100)
 				.subscribe(
 					() => {
 						this.player = null;

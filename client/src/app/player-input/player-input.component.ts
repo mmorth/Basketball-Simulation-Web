@@ -52,11 +52,16 @@ export class PlayerInputComponent implements OnInit {
 	 * Represents the error message displayed when the user has invalid input
 	 */
 	inputError: string;
+
+	/**
+	 * Determines whether a coach or a player is selected
+	 */
+	pcid: number;
 	
 	/**
 	 * Stores the position options for the players dropdown
 	 */
-	positions: number[] = [1, 2, 3, 4, 5];
+	positions: number[] = [0, 1, 2, 3, 4, 5];
 
 	/**
 	 * Stores the player role options for the players dropdown
@@ -81,6 +86,8 @@ export class PlayerInputComponent implements OnInit {
     if (!isNaN(id)) {
   	 this.getPlayer();
 		}
+
+		this.pcid = +this.route.snapshot.paramMap.get('pcid');
 		
 	}
 	
@@ -147,8 +154,8 @@ export class PlayerInputComponent implements OnInit {
 
 		// Create a coach
 		if (pcid === 1) {
-			if (this.playerName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position == 1) {
-				this.playerService.createCoach(id, this.playerName, this.offensiveRating, this.defensiveRating, this.position)
+			if (this.playerName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position == 0) {
+				this.playerService.createCoach(id, this.playerName, this.offensiveRating, this.defensiveRating, 0)
 				.subscribe(() => {
 						this.player = null;
 						this.playerName = "";
@@ -252,9 +259,9 @@ export class PlayerInputComponent implements OnInit {
 
 		// Update a coach
 		if (pcid === 1) {
-			if (this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position >= 1 && this.position <= 5) {
+			if (this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position == 0) {
 			
-				this.playerService.updateCoach(teamID, playerID, this.playerName, this.offensiveRating, this.defensiveRating, this.position)
+				this.playerService.updateCoach(teamID, playerID, this.playerName, this.offensiveRating, this.defensiveRating, 0)
 				.subscribe(
 					() => {
 						this.player = null;

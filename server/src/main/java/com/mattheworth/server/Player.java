@@ -92,6 +92,16 @@ public class Player {
 	 */
 	private int rotationMinutes;
 	
+	/**
+	 * The player's stamina
+	 */
+	private int stamina;
+	
+	/**
+	 * The player's remaining stamina
+	 */
+	private int remainingStamina;
+	
 	// ================================== Constructor========================================= //
 	
 	public Player() {
@@ -220,6 +230,22 @@ public class Player {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+	
+	public int getStamina() {
+		return stamina;
+	}
+
+	public void setStamina(int stamina) {
+		this.stamina = stamina;
+	}
+
+	public int getRemainingStamina() {
+		return remainingStamina;
+	}
+
+	public void setRemainingStamina(int remainingStamina) {
+		this.remainingStamina = remainingStamina;
 	}
 	
 	// ================================================= Logic Methods ==========================================

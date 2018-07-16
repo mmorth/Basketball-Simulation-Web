@@ -95,6 +95,9 @@ public class PlayerController {
 		updatePlayer.setOverallRating();
 		playerRepository.save(updatePlayer);
 
+		team.setOffensiveRating();
+		team.setDefensiveRating();
+		team.setOverallRating();
 		teamRepository.save(team);
 		
 		return playerID;

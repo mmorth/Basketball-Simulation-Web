@@ -57,6 +57,10 @@ export class PlayerInputComponent implements OnInit {
 	 * Determines whether a coach or a player is selected
 	 */
 	pcid: number;
+
+	/**
+	 * 
+	 */
 	
 	/**
 	 * Stores the position options for the players dropdown
@@ -133,9 +137,8 @@ export class PlayerInputComponent implements OnInit {
 
 		// Create a player
 		if (pcid === 0) {
-			console.log(this.playerRole)
 			if (this.playerName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position >= 1 && this.position <= 5 && this.rotationMinutes >= 0 && this.rotationMinutes <= 100 && this.playerRole.length > 0) {
-				this.playerService.createPlayer(id, this.playerName, this.offensiveRating, this.defensiveRating, this.position, this.playerRole, this.rotationMinutes)
+				this.playerService.createPlayer(id, this.playerName, this.offensiveRating, this.defensiveRating, this.position, this.playerRole, this.rotationMinutes, 100, 0)
 				.subscribe(() => {
 						this.player = null;
 						this.playerName = "";
@@ -155,7 +158,7 @@ export class PlayerInputComponent implements OnInit {
 		// Create a coach
 		if (pcid === 1) {
 			if (this.playerName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
-				this.playerService.createCoach(id, this.playerName, this.offensiveRating, this.defensiveRating, 0, "Coach", 100)
+				this.playerService.createCoach(id, this.playerName, this.offensiveRating, this.defensiveRating, 0, "Coach", 100, this.player.stamina, this.player.remainingStamina, this.player.positionPlay)
 				.subscribe(() => {
 						this.player = null;
 						this.playerName = "";
@@ -235,20 +238,24 @@ export class PlayerInputComponent implements OnInit {
 
 		// Update a player
 		if (pcid === 0) {
-			if (this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position >= 1 && this.position <= 5 && this.rotationMinutes >= 0 && this.rotationMinutes <= 100 && this.playerRole.length > 0) {
+			if (this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position >= 1 && this.position <= 5 && this.rotationMinutes >= 0 && this.rotationMinutes <= 100 && this.playerRole.length > 0 && this.player.stamina >= 0 && this.player.stamina <= 100) {
 			
-				this.playerService.updatePlayer(teamID, playerID, this.playerName, this.offensiveRating, this.defensiveRating, this.position, this.playerRole, this.rotationMinutes)
+				this.playerService.updatePlayer(teamID, playerID, this.playerName, this.offensiveRating, this.defensiveRating, this.position, this.playerRole, this.rotationMinutes, this.player.stamina, this.player.positionPlay)
 				.subscribe(
-					() => {
-						this.player = null;
-						this.playerName = "";
-						this.offensiveRating = 0;
-						this.defensiveRating = 0;
-						this.position = 0;
-						this.rotationMinutes = 0;
-						this.playerRole = "";
-						this.inputError = "";
-						this.router.navigateByUrl('/team-details/' + teamID);
+					validChange => {
+						if (validChange) {
+							this.player = null;
+							this.playerName = "";
+							this.offensiveRating = 0;
+							this.defensiveRating = 0;
+							this.position = 0;
+							this.rotationMinutes = 0;
+							this.playerRole = "";
+							this.inputError = "";
+							this.router.navigateByUrl('/team-details/' + teamID);
+						} else {
+							this.inputError = "Invalid Change."
+						}
 					}
 				);	
 			
@@ -261,7 +268,7 @@ export class PlayerInputComponent implements OnInit {
 		if (pcid === 1) {
 			if (this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
 			
-				this.playerService.updateCoach(teamID, playerID, this.playerName, this.offensiveRating, this.defensiveRating, 0, "Coach", 100)
+				this.playerService.updateCoach(teamID, playerID, this.playerName, this.offensiveRating, this.defensiveRating, 0, "Coach", 100, this.player.stamina, this.player.positionPlay)
 				.subscribe(
 					() => {
 						this.player = null;

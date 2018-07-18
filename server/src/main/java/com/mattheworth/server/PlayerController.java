@@ -82,7 +82,7 @@ public class PlayerController {
 	 * @return The id of the player that was updated as json
 	 */
 	@RequestMapping(path="/teams/{teamID}/{playerID}", method = RequestMethod.PUT, produces = "application/json")
-	public @ResponseBody long updatePlayer(@PathVariable long teamID, @PathVariable long playerID, @RequestBody Player jsonPlayer) {
+	public @ResponseBody boolean updatePlayer(@PathVariable long teamID, @PathVariable long playerID, @RequestBody Player jsonPlayer) {
 		Player updatePlayer = playerRepository.findById(playerID).get();
 		Team team = teamRepository.findById(teamID).get();
 		
@@ -90,9 +90,18 @@ public class PlayerController {
 		updatePlayer.setDefensiveRating(jsonPlayer.getDefensiveRating());
 		updatePlayer.setPosition(jsonPlayer.getPosition());
 		updatePlayer.setRotationMinutes(jsonPlayer.getRotationMinutes());
-		updatePlayer.setRole(jsonPlayer.getRole());
 		updatePlayer.resetPlayerGameStats();
 		updatePlayer.setOverallRating();
+		
+		boolean validChange = true;
+		
+		if (team.validPlayerUpdates(updatePlayer.getId(), jsonPlayer.getRole(), jsonPlayer.getPosition())) {
+			updatePlayer.setRole(jsonPlayer.getRole());
+			updatePlayer.setPositionPlay(jsonPlayer.getPositionPlay());
+		} else {
+			validChange = false;
+		}
+		
 		playerRepository.save(updatePlayer);
 
 		team.setOffensiveRating();
@@ -100,7 +109,7 @@ public class PlayerController {
 		team.setOverallRating();
 		teamRepository.save(team);
 		
-		return playerID;
+		return validChange;
 	}
 	
 	/**

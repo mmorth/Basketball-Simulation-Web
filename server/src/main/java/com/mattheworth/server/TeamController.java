@@ -1,16 +1,15 @@
 package com.mattheworth.server;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * A class that handles REST API requests sent from the front-end
@@ -93,5 +92,21 @@ public class TeamController {
 	@RequestMapping(method = RequestMethod.GET)
 	public @ResponseBody Iterable<Team> getAllTeams() {
 		return teamRepository.findAll();
+	}
+	
+	/**
+	 * Sorts the team's players by player role and position
+	 * @param id The id of the team
+	 * @return The sorted list of players for the team
+	 */
+	@RequestMapping(path="/{id}/sort/players", method = RequestMethod.GET)
+	public @ResponseBody List<Player> sortPlayerPositions(@PathVariable long id) {
+		Team team = teamRepository.findById(id).get();
+		
+		team.sortPlayers();
+		
+		teamRepository.save(team);
+		
+		return team.getPlayers();
 	}
 }

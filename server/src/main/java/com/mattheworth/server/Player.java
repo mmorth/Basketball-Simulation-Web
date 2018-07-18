@@ -1,5 +1,7 @@
 package com.mattheworth.server;
 
+import java.util.Comparator;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,6 +46,11 @@ public class Player {
 	 * The position the player player
 	 */
 	private int position;
+	
+	/**
+	 * The position the player is currently playing
+	 */
+	private int positionPlay;
 	
 	/**
 	 * The player's role on the team
@@ -96,11 +103,6 @@ public class Player {
 	 * The player's stamina
 	 */
 	private int stamina;
-	
-	/**
-	 * The player's remaining stamina
-	 */
-	private int remainingStamina;
 	
 	// ================================== Constructor========================================= //
 	
@@ -239,13 +241,13 @@ public class Player {
 	public void setStamina(int stamina) {
 		this.stamina = stamina;
 	}
-
-	public int getRemainingStamina() {
-		return remainingStamina;
+	
+	public int getPositionPlay() {
+		return positionPlay;
 	}
 
-	public void setRemainingStamina(int remainingStamina) {
-		this.remainingStamina = remainingStamina;
+	public void setPositionPlay(int positionPlay) {
+		this.positionPlay = positionPlay;
 	}
 	
 	// ================================================= Logic Methods ==========================================
@@ -261,6 +263,25 @@ public class Player {
 		this.stealsPerGame = 0;
 		this.blocksPerGame = 0;
 		this.possessionsRemaining = this.rotationMinutes;
+	}
+	
+	/**
+	 * Maps a numeric value to the player role for the comparator sorting
+	 * @param playerRole The role of the player
+	 * @return Returns 1 for Starter, 2 for Sixth Man, 3 for Role Player, 4 for Prospect, and 5 for Bench Warmer
+	 */
+	public int numericPlayerRole(String playerRole) {
+		if (playerRole.equals("Starter")) {
+			return 1;
+		} else if (playerRole.equals("Sixth Man")) {
+			return 2;
+		}  else if (playerRole.equals("Role Player")) {
+			return 3;
+		} else if (playerRole.equals("Prospect")) {
+			return 4;
+		} else {
+			return 5;
+		}
 	}
 	
 }

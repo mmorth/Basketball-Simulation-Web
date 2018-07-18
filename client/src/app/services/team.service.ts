@@ -3,6 +3,7 @@ import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Team } from '../models/team';
+import { Player } from '../models/player';
 
 const HEADERS: any = { headers: { 'Content-Type': 'application/json' }};
 
@@ -69,6 +70,15 @@ export class TeamService {
   		JSON.stringify({ "name": teamName }), 
   		HEADERS
   	);
+  }
+
+  /**
+   * Makes a REST API call to sorts the players on the team with the given id from the back-end database
+   * @param teamID The team id
+   * @param team The team to sort
+   */
+  sortPlayers(teamID: number): Observable<Array<Player>> {
+    return this.http.get<Array<Player>>('http://localhost:8080/api/teams/' + teamID + '/sort/players');
   }
 
 }

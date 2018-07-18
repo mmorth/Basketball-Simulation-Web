@@ -3,6 +3,8 @@ package com.mattheworth.server;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -280,5 +282,51 @@ public class Team {
 		this.stealsPerGame = 0;
 		this.blocksPerGame = 0;
 	}
+	
+	/**
+	 * Sorts the team's players by their player role and position played
+	 */
+	public void sortPlayers() {
+		Collections.sort(this.players, new SortPlayers());
+	}
+	
+	/**
+	 * Determines whether the update to the player's role or position is valid and allowed
+	 * @param playerID The id of the player
+	 * @param playerRole The role of the player
+	 * @param position The position of the player
+	 * @return Whether or not the changes to the player's role or position are valid
+	 */
+	public boolean validPlayerUpdates(long playerID, String playerRole, int position) {
+		int numStarters = 0;
+		
+		for (Player player: this.players) {
+			if (playerID != player.getId() && playerRole == "Starter") {
+				if (position == player.getPositionPlay()) {
+					return false;
+				}
+				numStarters++;
+			}
+			
+		}
+		
+		return numStarters < 5;
+	}
 
+}
+
+class SortPlayers implements Comparator<Player>{
+
+	@Override
+	public int compare(Player player1, Player player2) {
+		int player1NumPlayerRole = player1.numericPlayerRole(player1.getRole());
+		int player2NumPlayerRole = player2.numericPlayerRole(player2.getRole());
+		
+		if (player1NumPlayerRole < player2NumPlayerRole || (player1NumPlayerRole == player2NumPlayerRole && player1.getPositionPlay() < player2.getPositionPlay())) {
+			return -1;
+		} else {
+			return 1;
+		}
+	}
+	
 }

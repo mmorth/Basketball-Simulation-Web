@@ -10,7 +10,9 @@ export class Player {
 	position: number;
 	role: string;
 	rotationMinutes: number;
-	possessionsPlayed: number;
+	stamina: number;
+	remainingStamina: number;
+	positionPlay: number;
 	pointsPerGame: number;
 	reboundsPerGame: number;
 	assistsPerGame: number;

@@ -59,6 +59,7 @@
 					<th>Offensive Rating</th>
 					<th>Defensive Rating</th>
 					<th>Overall Rating</th>
+					<th>Game Position</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -68,7 +69,15 @@
 					<td>{{player.role}}</td>
 					<td>{{player.offensiveRating}}</td>
 					<td>{{player.defensiveRating}}</td>
-					<td>{{(player.offensiveRating+player.defensiveRating)/2}}
+					<td>{{(player.offensiveRating+player.defensiveRating)/2}}</td>
+					<td>
+						<div class="form-group">
+							<select class="form-control" [(ngModel)]="player.positionPlay" id="sel1">
+								<option value="" disabled selected>Select a position</option>
+								<option *ngFor="let pos of positions" [value]="pos" (click)="updatePosition(player)">{{pos}}</option>
+							</select>
+							</div> 
+					</td>
 				</tr>
 			</tbody>
 		</table>
@@ -92,7 +101,7 @@
 					<td>{{player.role}}</td>
 					<td>{{player.offensiveRating}}</td>
 					<td>{{player.defensiveRating}}</td>
-					<td>{{(player.offensiveRating+player.defensiveRating)/2}}
+					<td>{{(player.offensiveRating+player.defensiveRating)/2}}</td>
 				</tr>
 			</tbody>
 		</table>

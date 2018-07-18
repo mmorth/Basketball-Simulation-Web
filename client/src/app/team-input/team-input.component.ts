@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 
 import { Team } from '../models/team';
 import { TeamService } from '../services/team.service';
+import { Player } from '../models/player';
+import { PlayerService } from '../services/player.service';
 
 @Component({
   selector: 'app-team-input',
@@ -40,7 +42,12 @@ export class TeamInputComponent implements OnInit {
 	/**
 	 * Represents the error message displayed when the user has invalid input
 	 */
-    inputError: string;
+	inputError: string;
+		
+	/**
+	 * Stores the position options for the players dropdown
+	 */
+	positions: number[] = [1, 2, 3, 4, 5];
 
 	/**
 	 * Constructs a new TeamInputComponent with the following injections
@@ -49,7 +56,7 @@ export class TeamInputComponent implements OnInit {
 	 * @param location Inject Location into the component
 	 * @param router Inject Router into the component
 	 */
-  constructor(private route: ActivatedRoute, private teamService: TeamService, private location: Location, private router: Router) { }
+  constructor(private route: ActivatedRoute, private playerService: PlayerService, private teamService: TeamService, private location: Location, private router: Router) { }
 
 	/**
 	 * Get the specified team if it exists when the user enters the page
@@ -58,13 +65,35 @@ export class TeamInputComponent implements OnInit {
 		const id = +this.route.snapshot.paramMap.get('id');
 
     if (!isNaN(id)) {
-  	 this.getTeam();
+	   this.getTeam();
     } else {
 			this.teamName = "";
 			this.offensiveRating = 0;
 			this.defensiveRating = 0;
 		}
-  }
+	}
+	
+	/**
+	 * Updates the position of the player
+	 * @param player The player to update the position for
+	 */
+	updatePosition(player: Player): void {
+			this.playerService.updatePlayer(this.team.id, player.id, player.name, player.offensiveRating, player.defensiveRating, player.position, player.role, player.rotationMinutes, player.stamina, player.positionPlay)
+			.subscribe(validChange => {
+				if (validChange) {
+					this.sortPlayers();
+				} else {
+					this.inputError = "Invalid Change."
+				}
+			 });
+	}
+
+	sortPlayers(): void {
+		this.teamService.sortPlayers(this.team.id)
+		.subscribe( players => {
+			this.team.players = players;
+		 });
+	}  
 
 	/**
 	 * Gets the team with the specified id
@@ -76,7 +105,8 @@ export class TeamInputComponent implements OnInit {
 			this.team = team;
     	this.teamName = team.name; 
     	this.offensiveRating = team.offensiveRating; 
-    	this.defensiveRating = team.defensiveRating
+		this.defensiveRating = team.defensiveRating;
+		this.sortPlayers();
     	}
     );
   }

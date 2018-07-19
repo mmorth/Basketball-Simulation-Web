@@ -42,20 +42,31 @@ public class PlayerController {
 	 * @return The id of the new player created as json
 	 */
 	@RequestMapping(path="/teams/{teamID}/players", method = RequestMethod.POST, produces = "application/json") 
-	public @ResponseBody long createPlayer(@PathVariable long teamID, @RequestBody Player jsonPlayer) {
+	public @ResponseBody boolean createPlayer(@PathVariable long teamID, @RequestBody Player jsonPlayer) {
+		boolean validCreate = true;
+		
 		Team team = teamRepository.findById(teamID).get();
-
-		jsonPlayer.resetPlayerGameStats();
-		jsonPlayer.setOverallRating();
 		
-		playerRepository.save(jsonPlayer);
+		if (team.validPlayerRole(jsonPlayer.getId(), jsonPlayer.getRole())) {
+			jsonPlayer.resetPlayerGameStats();
+			jsonPlayer.setOverallRating();
+			
+			int gamePosition = team.determineDefaultGamePosition(jsonPlayer.getId(), jsonPlayer.getRole());
+			
+			System.out.println(gamePosition);
+			if (gamePosition != -1) {
+				jsonPlayer.setPositionPlay(gamePosition);
+			}
+			
+			playerRepository.save(jsonPlayer);
+			
+			team.addPlayer(jsonPlayer);
+			teamRepository.save(team);
+		} else {
+			validCreate = false;
+		}
 		
-		team.addPlayer(jsonPlayer);
-		teamRepository.save(team);
-		
-		long playerID = jsonPlayer.getId();
-		
-		return playerID;
+		return validCreate;
 	}
 	
 	/**
@@ -90,17 +101,24 @@ public class PlayerController {
 		updatePlayer.setDefensiveRating(jsonPlayer.getDefensiveRating());
 		updatePlayer.setPosition(jsonPlayer.getPosition());
 		updatePlayer.setRotationMinutes(jsonPlayer.getRotationMinutes());
+		updatePlayer.setStamina(jsonPlayer.getStamina());
 		updatePlayer.resetPlayerGameStats();
 		updatePlayer.setOverallRating();
 		
 		boolean validChange = true;
 		
-		if (team.validPlayerUpdates(updatePlayer.getId(), jsonPlayer.getRole(), jsonPlayer.getPosition())) {
+		if (team.validPlayerRole(updatePlayer.getId(), jsonPlayer.getRole())) {
 			updatePlayer.setRole(jsonPlayer.getRole());
-			updatePlayer.setPositionPlay(jsonPlayer.getPositionPlay());
+			
+			if (updatePlayer.getRole().equals("Starter")) {
+				team.determineDefaultGamePosition(updatePlayer.getId(), updatePlayer.getRole());
+			}
 		} else {
 			validChange = false;
 		}
+		
+		team.changeGamePosition(updatePlayer.getId(), updatePlayer.getRole(), jsonPlayer.getPositionPlay(), updatePlayer.getPositionPlay());
+		updatePlayer.setPositionPlay(jsonPlayer.getPositionPlay());
 		
 		playerRepository.save(updatePlayer);
 

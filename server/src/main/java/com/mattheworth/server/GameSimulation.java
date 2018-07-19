@@ -3,7 +3,6 @@ package com.mattheworth.server;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,11 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  * A class that represents a basketball simulation
@@ -183,7 +178,35 @@ public class GameSimulation {
 		
 		for (Player player : homeTeam.getPlayers()) {
 			if (player.getRole().equals("Starter")) {
-				awayPlayers.add(player);
+				homePlayers.add(player);
+			}
+		}
+	}
+	
+	/**
+	 * Returns the update player's ratings taking into account position and stamina reductions.
+	 */
+	public int updatePlayerRating(Player player, int playerRating) {
+		return (int) ((player.getStamina()/100.0) * (1-Math.abs(player.getPosition()-player.getPositionPlay())*.05) * playerRating);
+	}
+	
+	/**
+	 * Updates the player's stamina ratings
+	 */
+	public void updatePlayerStaminas() {
+		for (Player player: awayTeam.getPlayers()) {
+			if (!player.getRole().equals("Starter")) {
+				player.setStamina(player.getStamina() + 5);
+			} else {
+				player.setStamina(player.getStamina() - 1);
+			}
+		}
+		
+		for (Player player: homeTeam.getPlayers()) {
+			if (!player.getRole().equals("Starter")) {
+				player.setStamina(player.getStamina() + 5);
+			} else {
+				player.setStamina(player.getStamina() - 1);
 			}
 		}
 	}
@@ -278,6 +301,8 @@ public class GameSimulation {
 		possessionsRemaining--;
 		possessions--;
 		
+		updatePlayerStaminas();
+		
 		if (quarter == 1) {
 			awayTeamFirstQuarterScore = awayTeamScore;
 			homeTeamFirstQuarterScore = homeTeamScore;
@@ -344,7 +369,7 @@ public class GameSimulation {
 		int totalOffense = 0;
 		
 		for (Player player: awayPlayers) {
-			totalOffense += player.getOffensiveRating();
+			totalOffense += updatePlayerRating(player, player.getOffensiveRating());
 		}
 		
 		return totalOffense;
@@ -358,7 +383,7 @@ public class GameSimulation {
 		int totalOffense = 0;
 		
 		for (Player player: awayPlayers) {
-			totalOffense += player.getDefensiveRating();
+			totalOffense += updatePlayerRating(player, player.getDefensiveRating());
 		}
 		
 		return totalOffense;
@@ -372,7 +397,7 @@ public class GameSimulation {
 		int totalOffense = 0;
 		
 		for (Player player: homePlayers) {
-			totalOffense += player.getOffensiveRating();
+			totalOffense += updatePlayerRating(player, player.getOffensiveRating());
 		}
 		
 		return totalOffense;
@@ -386,7 +411,7 @@ public class GameSimulation {
 		int totalOffense = 0;
 		
 		for (Player player: homePlayers) {
-			totalOffense += player.getDefensiveRating();
+			totalOffense += updatePlayerRating(player, player.getDefensiveRating());
 		}
 		
 		return totalOffense;
@@ -404,7 +429,7 @@ public class GameSimulation {
 		double runningPassTotal = 0;
 		
 		for (int i = 0; i < players.size(); i++) {
-			runningPassTotal += players.get(i).getOffensiveRating() / (double) playerOffenseTotal;
+			runningPassTotal += updatePlayerRating(players.get(i), players.get(i).getOffensiveRating()) / (double) playerOffenseTotal;
 			
 			if (passSelector < runningPassTotal) {
 				return i;
@@ -426,7 +451,7 @@ public class GameSimulation {
 		double runningPassTotal = 0;
 		
 		for (int i = 0; i < players.size(); i++) {
-			runningPassTotal += players.get(i).getOffensiveRating() / (double) playerOffenseTotal;
+			runningPassTotal += updatePlayerRating(players.get(i), players.get(i).getOffensiveRating()) / (double) playerOffenseTotal;
 			
 			if (passSelector < runningPassTotal) {
 				return i;
@@ -448,7 +473,7 @@ public class GameSimulation {
 		double runningPassTotal = 0;
 		
 		for (int i = 0; i < players.size(); i++) {
-			runningPassTotal += players.get(i).getOffensiveRating() / (double) playerOffenseTotal;
+			runningPassTotal += updatePlayerRating(players.get(i), players.get(i).getOffensiveRating()) / (double) playerOffenseTotal;
 			
 			if (passSelector < runningPassTotal) {
 				return i;
@@ -475,7 +500,7 @@ public class GameSimulation {
 		if (reboundOutcomes[0]) {
 			int awayTeamRandNum = rand.nextInt(100);
 
-			int awayTeamOffense = awayOffense.getOffensiveRating() - homeDefender.getDefensiveRating();
+			int awayTeamOffense = updatePlayerRating(awayOffense, awayOffense.getOffensiveRating()) - updatePlayerRating(homeDefender, homeDefender.getDefensiveRating());
 
 			boolean awayTeamPassSuccess = determinePassIncrease(awayTeamRandNum, 500 + awayTeamOffense);
 			
@@ -494,7 +519,7 @@ public class GameSimulation {
 		if (reboundOutcomes[1]) {
 			int homeTeamRandNum = rand.nextInt(100);
 
-			int homeTeamOffense = homeOffense.getOffensiveRating() - awayDefender.getDefensiveRating();
+			int homeTeamOffense = updatePlayerRating(homeOffense, homeOffense.getOffensiveRating()) - updatePlayerRating(awayDefender, awayDefender.getDefensiveRating());
 
 			boolean homeTeamPassSuccess = determinePassIncrease(homeTeamRandNum, 500 + homeTeamOffense);
 			
@@ -549,7 +574,7 @@ public class GameSimulation {
 			
 			int awayTeamRandNum = rand.nextInt(100);
 
-			int awayTeamOffense = awayScorer.getOffensiveRating() - homeDefender.getDefensiveRating();
+			int awayTeamOffense = updatePlayerRating(awayScorer, awayScorer.getOffensiveRating()) - updatePlayerRating(homeDefender, homeDefender.getDefensiveRating());
 
 			awayTeamScoreIncrease = determineScoreIncrease(awayTeamRandNum, 500 + awayTeamOffense, awayScorer, homeDefender, awayTeam, homeTeam);
 
@@ -572,7 +597,7 @@ public class GameSimulation {
 			
 			int homeTeamRandNum = rand.nextInt(100);
 			
-			int homeTeamOffense = homeScorer.getOffensiveRating() - awayDefender.getDefensiveRating();
+			int homeTeamOffense = updatePlayerRating(homeScorer, homeScorer.getOffensiveRating()) - updatePlayerRating(awayDefender, awayDefender.getDefensiveRating());
 
 			homeTeamScoreIncrease = determineScoreIncrease(homeTeamRandNum, 500 + homeTeamOffense, homeScorer, awayDefender, homeTeam, awayTeam);
 
@@ -641,7 +666,7 @@ public class GameSimulation {
 		if (!shotOutcomes[0]) {
 			int awayTeamRandNum = rand.nextInt(100);
 
-			int awayTeamOffense = awayOffense.getOffensiveRating() - homeDefender.getDefensiveRating();
+			int awayTeamOffense = updatePlayerRating(awayOffense, awayOffense.getOffensiveRating()) - updatePlayerRating(homeDefender, homeDefender.getDefensiveRating());
 
 			boolean awayTeamReboundSuccess = determineReboundIncrease(awayTeamRandNum, 500 + awayTeamOffense);
 			
@@ -659,7 +684,7 @@ public class GameSimulation {
 		if (!shotOutcomes[1]) {
 			int homeTeamRandNum = rand.nextInt(100);
 			
-			int homeTeamOffense = homeOffense.getOffensiveRating() - awayDefender.getDefensiveRating();
+			int homeTeamOffense = updatePlayerRating(homeOffense, homeOffense.getOffensiveRating()) - updatePlayerRating(awayDefender, awayDefender.getDefensiveRating());
 
 			boolean homeTeamReboundSuccess = determineReboundIncrease(homeTeamRandNum, 500 + homeTeamOffense);
 			

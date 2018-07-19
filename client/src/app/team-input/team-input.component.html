@@ -63,13 +63,13 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let player of team.players" [hidden]="player.role!='Starter'">
+				<tr *ngFor="let player of team.players" [hidden]="player.role!='Starter'" >
 					<td><a routerLink="/team-details/{{team.id}}/{{player.id}}/0">{{player.name}}</a></td>
 					<td>{{player.position}}</td>
 					<td>{{player.role}}</td>
-					<td>{{player.offensiveRating}}</td>
-					<td>{{player.defensiveRating}}</td>
-					<td>{{(player.offensiveRating+player.defensiveRating)/2}}</td>
+					<td>{{ updatePlayerRating(player, player.offensiveRating) }}</td>
+					<td>{{ updatePlayerRating(player, player.defensiveRating) }}</td>
+					<td>{{ updatePlayerRating(player, player.overallRating) }}</td>
 					<td>
 						<div class="form-group">
 							<select class="form-control" [(ngModel)]="player.positionPlay" id="sel1">
@@ -81,6 +81,8 @@
 				</tr>
 			</tbody>
 		</table>
+
+		<font color="red">{{ inputError }}</font> 
 
 		<h2>Bench: </h2>
 		<table class="table table-bordered">
@@ -120,9 +122,9 @@
 		</div>
 
 		<a id="create-team-button" class="btn btn-primary" (click)="createTeam()">Create Team</a>
-	</ng-template>
 
-	  <font color="red">{{ inputError }}</font> 
+		<font color="red">{{ inputError }}</font> 
+	</ng-template>
 
 </body>
 </html>

@@ -107,7 +107,6 @@ export class PlayerInputComponent implements OnInit {
 	 */
 	setRole(inputRole: string) {
 		this.playerRole = inputRole;
-		console.log(this.playerRole)
 	}
 
 	/**
@@ -139,7 +138,8 @@ export class PlayerInputComponent implements OnInit {
 		if (pcid === 0) {
 			if (this.playerName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100 && this.position >= 1 && this.position <= 5 && this.rotationMinutes >= 0 && this.rotationMinutes <= 100 && this.playerRole.length > 0) {
 				this.playerService.createPlayer(id, this.playerName, this.offensiveRating, this.defensiveRating, this.position, this.playerRole, this.rotationMinutes, 100, 0)
-				.subscribe(() => {
+				.subscribe(validCreate => {
+					if (validCreate) {
 						this.player = null;
 						this.playerName = "";
 						this.offensiveRating = 0;
@@ -149,6 +149,9 @@ export class PlayerInputComponent implements OnInit {
 						this.playerRole = "";
 						this.inputError = "";
 						this.router.navigateByUrl('/team-details/' + id);
+					} else {
+						this.inputError = "Invalid Player Role. There are already 5 starters."
+					}
 				});
 			} else {
 				this.inputError = "Invalid Input";

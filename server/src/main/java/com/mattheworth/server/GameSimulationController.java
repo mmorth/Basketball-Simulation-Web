@@ -43,9 +43,16 @@ public class GameSimulationController {
 	public @ResponseBody GameSimulation createGameSimulation(@RequestBody GameSimulation gameSimulation) {
 
 		gameSimulation.resetGame();
+		Team awayTeam = teamRepository.findById(gameSimulation.getAwayTeam().getId()).get();
+		Team homeTeam = teamRepository.findById(gameSimulation.getHomeTeam().getId()).get();
+		
+		gameSimulation.setAwayTeam(awayTeam);
+		gameSimulation.setHomeTeam(homeTeam);
+		gameSimulation.setStartingPlayers();
+		
 		gameSimulationRepository.save(gameSimulation);
 		
-		return gameSimulationRepository.findById(gameSimulation.getId()).get();
+		return gameSimulation;
 	}
 	
 	/**
@@ -76,6 +83,8 @@ public class GameSimulationController {
 		gameSimulation.setAwayTeam(newAwayTeam);
 		gameSimulation.resetGame();
 		
+		gameSimulation.setStartingPlayers();
+		
 		gameSimulationRepository.save(gameSimulation);
 		
 		return gameSimulation;
@@ -95,6 +104,8 @@ public class GameSimulationController {
 		
 		gameSimulation.setHomeTeam(newHomeTeam);
 		gameSimulation.resetGame();
+		
+		gameSimulation.setStartingPlayers();
 		
 		gameSimulationRepository.save(gameSimulation);
 		

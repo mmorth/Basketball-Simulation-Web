@@ -263,6 +263,7 @@ public class Player {
 		this.stealsPerGame = 0;
 		this.blocksPerGame = 0;
 		this.possessionsRemaining = this.rotationMinutes;
+		this.stamina = 100;
 	}
 	
 	/**

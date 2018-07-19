@@ -20,10 +20,10 @@ export class GameSimulationService {
   	return this.http.post<GameSimulation>('http://localhost:8080/api/game-simulation/',
   		JSON.stringify({ 
   		"awayTeam": {
-  			"id": 233
+  			"id": 9
   		}, 
   		"homeTeam": {
-  			"id": 234
+  			"id": 1
   		}, 
   		"possessionsRemaining": 99, 
   		"isOvertime": false, 

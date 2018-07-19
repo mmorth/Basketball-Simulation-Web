@@ -37,7 +37,12 @@ export class TeamInputComponent implements OnInit {
 	/**
 	 * The defensive rating of the team
 	 */
-    defensiveRating: number;
+	defensiveRating: number;
+	
+	/**
+	 * The overall rating of the team
+	 */
+	overallRating: number;
 
 	/**
 	 * Represents the error message displayed when the user has invalid input
@@ -82,12 +87,48 @@ export class TeamInputComponent implements OnInit {
 			.subscribe(validChange => {
 				if (validChange) {
 					this.sortPlayers();
+					this.inputError = "";
 				} else {
-					this.inputError = "Invalid Change."
+					this.sortPlayers();
+					this.inputError = "Invalid player game position. There is already a starter with that position."
 				}
 			 });
 	}
 
+	updatePlayerRating(player: Player, playerRating: number): number {
+		console.log()
+		console.log(player)
+		console.log(player.stamina)
+		return ((player.stamina/100.0) * (1-Math.abs(player.position-player.positionPlay)*.05)) * playerRating;
+	}
+
+	/**
+	 * Updates the displayed offensive rating of the player
+	 * @param player The player to update the displayed rating of 
+	 */
+	updatedOffensiveRating(player: Player): void {
+		this.offensiveRating = ((player.stamina/100.0) * (1-Math.abs(player.position-player.positionPlay)*.05)) * player.offensiveRating;
+	}
+
+	/**
+	 * Updates the displayed defensive rating of the player
+	 * @param player The player to update the displayed rating of 
+	 */
+	updatedDefensiveRating(player: Player): void {
+		this.offensiveRating = ((player.stamina/100.0) * (1-Math.abs(player.position-player.positionPlay)*.05)) * player.offensiveRating;
+	}
+
+	/**
+	 * Updates the displayed overall rating of the player
+	 * @param player The player to update the displayed rating of 
+	 */	
+	updatedOverallRating(player: Player): void {
+		this.offensiveRating = ((player.stamina/100.0) * (1-Math.abs(player.position-player.positionPlay)*.05)) * player.offensiveRating;
+	}
+
+	/**
+	 * Sorts the players by their player role and game position
+	 */
 	sortPlayers(): void {
 		this.teamService.sortPlayers(this.team.id)
 		.subscribe( players => {

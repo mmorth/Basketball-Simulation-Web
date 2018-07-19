@@ -291,26 +291,66 @@ public class Team {
 	}
 	
 	/**
-	 * Determines whether the update to the player's role or position is valid and allowed
-	 * @param playerID The id of the player
-	 * @param playerRole The role of the player
-	 * @param position The position of the player
-	 * @return Whether or not the changes to the player's role or position are valid
+	 * Determines whether the new player role is valid (checks that there are no more than 5 starters(
+	 * @param playerID The id of the new player
+	 * @param playerRole The role of the new player
+	 * @return Whether the new player role is valid
 	 */
-	public boolean validPlayerUpdates(long playerID, String playerRole, int position) {
+	public boolean validPlayerRole(long playerID, String playerRole) {
 		int numStarters = 0;
 		
 		for (Player player: this.players) {
-			if (playerID != player.getId() && playerRole == "Starter") {
-				if (position == player.getPositionPlay()) {
-					return false;
-				}
+			if (playerID != player.getId() && playerRole.equals("Starter") && player.getRole().equals("Starter")) {
 				numStarters++;
 			}
 			
 		}
 		
 		return numStarters < 5;
+	}
+	
+	/**
+	 * Changes the game position of players
+	 * @param playerID The id of the player to change the position of
+	 * @param playerRole The role of the player
+	 * @param newPosition The new game position
+	 * @param oldPosition The old game position
+	 */
+	public void changeGamePosition(long playerID, String playerRole, int newPosition, int oldPosition) {
+		for (Player player: this.players) {
+			if (playerID != player.getId() && playerRole.equals("Starter") && player.getRole().equals("Starter")) {
+				if (newPosition == player.getPositionPlay()) {
+					player.setPositionPlay(oldPosition);
+				}
+			}
+			
+		}
+		
+	}
+	
+	/**
+	 * Determines the default game position for the new starter
+	 * @param playerID The id of the player to find the position of
+	 * @param playerRole The role of the new player
+	 * @return The position the player will play
+	 */
+	public int determineDefaultGamePosition(long playerID, String playerRole) {
+		boolean positionsFilled[] = { false, false, false, false, false, false };
+		
+		for (int i = 0; i < players.size(); i++) {
+			if (playerID != players.get(i).getId() && playerRole.equals("Starter") && players.get(i).getRole().equals("Starter")) {
+				positionsFilled[players.get(i).getPositionPlay()] = true;
+			}
+			
+		}
+		
+		for (int i = 0; i < positionsFilled.length; i++) {
+			if (positionsFilled[i] == false && i != 0) {
+				return i;
+			}
+		}
+		
+		return -1;
 	}
 
 }

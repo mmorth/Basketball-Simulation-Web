@@ -31,6 +31,12 @@ export class GameSimulationComponent implements OnInit {
   homeTeamID: number;
 
   /**
+   * Controls which stat page gets displayed on the bottom of the page
+   * 1=Team Stats, 2=Away Players, 3=Home Players
+   */
+  statDisplay: number;
+
+  /**
    * Constructs a new GameSimulationComponet object
    * @param gameSimulationService Inject the GameSimulationService into the component
    * @param teamService Inject the TeamService into the component
@@ -42,6 +48,7 @@ export class GameSimulationComponent implements OnInit {
    */
   ngOnInit() {
     this.createSimulation();
+    this.statDisplay = 1;
   }
 
   /**
@@ -52,13 +59,20 @@ export class GameSimulationComponent implements OnInit {
   }
 
   /**
+   * Changes which stat is displayed at the bottom of the page based on what button the user clicks
+   * @param stat The new stat to display
+   */
+  changeStatDisplay(stat: number) {
+    this.statDisplay = stat;
+  }
+
+  /**
    * Creates a new game simulation
    */
   createSimulation(): void {
 	  this.gameSimulationService.createGameSimulation(this.awayTeamID, this.homeTeamID)
 		.subscribe(gameSimulation => {
         this.getSimulation(gameSimulation.id);
-        console.log(gameSimulation)
     	}
     );
   }

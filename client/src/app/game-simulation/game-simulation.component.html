@@ -5,9 +5,124 @@
 
 <nav>
     <div class="btn-group btn-group-justified">
-        <a class="btn btn-primary" routerLink="/game-simulation">Team Stats</a>
-        <a class="btn btn-primary" routerLink="/team-details">Away Team Stats</a>
-        <a class="btn btn-primary" routerLink="/team-details/create">Home Team Stats</a>
+        <a class="btn btn-primary" (click)="changeStatDisplay(1)">Team Stats</a>
+        <a class="btn btn-primary" (click)="changeStatDisplay(2)">Away Team Stats</a>
+        <a class="btn btn-primary" (click)="changeStatDisplay(3)">Home Team Stats</a>
     </div>
 </nav>
-<router-outlet></router-outlet>
+
+<div class="row" *ngIf="statDisplay==1">
+    <div class="col-sm-12">
+        <div class="container">
+            <br>
+            <h2>Team Stats: </h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr *ngIf="gameSimulation">
+                        <th>Stats</th>
+                        <th>{{ gameSimulation.awayTeam.name }}</th>
+                        <th>{{ gameSimulation.homeTeam.name }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="gameSimulation">
+                        <td>Points</td>
+                        <td>{{ gameSimulation.awayTeam.pointsPerGame }}</td>
+                        <td>{{ gameSimulation.homeTeam.pointsPerGame }}</td>
+                    </tr>
+                    <tr *ngIf="gameSimulation">
+                        <td>Rebounds</td>
+                        <td>{{ gameSimulation.awayTeam.reboundsPerGame }}</td>
+                        <td>{{ gameSimulation.homeTeam.reboundsPerGame }}</td>
+                    </tr>
+                    <tr *ngIf="gameSimulation">
+                        <td>Assists</td>
+                        <td>{{ gameSimulation.awayTeam.assistsPerGame }}</td>
+                        <td>{{ gameSimulation.homeTeam.assistsPerGame }}</td>
+                    </tr>
+                    <tr *ngIf="gameSimulation">
+                        <td>Blocks</td>
+                        <td>{{ gameSimulation.awayTeam.blocksPerGame }}</td>
+                        <td>{{ gameSimulation.homeTeam.blocksPerGame }}</td>
+                    </tr>
+                    <tr *ngIf="gameSimulation">
+                        <td>Steals</td>
+                        <td>{{ gameSimulation.awayTeam.stealsPerGame }}</td>
+                        <td>{{ gameSimulation.homeTeam.stealsPerGame }}</td>
+                    </tr>
+                    <tr *ngIf="gameSimulation">
+                        <td>Turnovers</td>
+                        <td>{{ gameSimulation.awayTeam.turnoversPerGame }}</td>
+                        <td>{{ gameSimulation.homeTeam.turnoversPerGame }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="statDisplay==2">
+    <div class="col-sm-12">
+        <div class="container">
+            <br>
+            <h2>Away Team Player Stats: </h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr *ngIf="gameSimulation">
+                        <th>Player</th>
+                        <th>Points</th>
+                        <th>Rebounds</th>
+                        <th>Assists</th>
+                        <th>Blocks</th>
+                        <th>Steals</th>
+                        <th>Turnovers</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let player of gameSimulation.awayTeam.players">
+                        <td>{{ player.name }}</td>
+                        <td>{{ player.pointsPerGame }}</td>
+                        <td>{{ player.reboundsPerGame }}</td>
+                        <td>{{ player.assistsPerGame }}</td>
+                        <td>{{ player.blocksPerGame }}</td>
+                        <td>{{ player.stealsPerGame }}</td>
+                        <td>{{ player.turnoversPerGame }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="statDisplay==3">
+        <div class="col-sm-12">
+            <div class="container">
+                <br>
+                <h2>Home Team Player Stats: </h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr *ngIf="gameSimulation">
+                            <th>Player</th>
+                            <th>Points</th>
+                            <th>Rebounds</th>
+                            <th>Assists</th>
+                            <th>Blocks</th>
+                            <th>Steals</th>
+                            <th>Turnovers</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let player of gameSimulation.homeTeam.players">
+                            <td>{{ player.name }}</td>
+                            <td>{{ player.pointsPerGame }}</td>
+                            <td>{{ player.reboundsPerGame }}</td>
+                            <td>{{ player.assistsPerGame }}</td>
+                            <td>{{ player.blocksPerGame }}</td>
+                            <td>{{ player.stealsPerGame }}</td>
+                            <td>{{ player.turnoversPerGame }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>

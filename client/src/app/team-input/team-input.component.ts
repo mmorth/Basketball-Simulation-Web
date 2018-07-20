@@ -96,9 +96,6 @@ export class TeamInputComponent implements OnInit {
 	}
 
 	updatePlayerRating(player: Player, playerRating: number): number {
-		console.log()
-		console.log(player)
-		console.log(player.stamina)
 		return ((player.stamina/100.0) * (1-Math.abs(player.position-player.positionPlay)*.05)) * playerRating;
 	}
 

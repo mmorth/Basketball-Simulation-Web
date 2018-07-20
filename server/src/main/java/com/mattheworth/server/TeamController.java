@@ -26,6 +26,12 @@ public class TeamController {
 	 */
 	@Autowired
 	private TeamRepository teamRepository;
+	
+	/**
+	 * Handles Player object requests with the database
+	 */
+	@Autowired
+	private PlayerRepository playerRepository;
 
 	/**
 	 * Creates a new team from the input json 
@@ -82,7 +88,17 @@ public class TeamController {
 	 */
 	@RequestMapping(path="/{id}", method = RequestMethod.GET)
 	public @ResponseBody Team getTeam(@PathVariable long id) {
-		return teamRepository.findById(id).get();
+		Team team = teamRepository.findById(id).get();
+		team.resetGameStats();
+		
+		for (Player player: team.getPlayers()) {
+			player.resetPlayerGameStats();
+			playerRepository.save(player);
+		}
+		
+		teamRepository.save(team);
+		
+		return team;
 	}
 	
 	/**
@@ -91,7 +107,19 @@ public class TeamController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public @ResponseBody Iterable<Team> getAllTeams() {
-		return teamRepository.findAll();
+		Iterable<Team> teams = teamRepository.findAll();
+		
+		for (Team team: teams) {
+			team.resetGameStats();
+			teamRepository.save(team);
+			
+			for (Player player: team.getPlayers()) {
+				player.resetPlayerGameStats();
+				playerRepository.save(player);
+			}
+		}
+		
+		return teams;
 	}
 	
 	/**

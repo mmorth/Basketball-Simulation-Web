@@ -46,10 +46,15 @@ public class GameSimulationController {
 		Team awayTeam = teamRepository.findById(gameSimulation.getAwayTeam().getId()).get();
 		Team homeTeam = teamRepository.findById(gameSimulation.getHomeTeam().getId()).get();
 		
+		awayTeam.resetGameStats();
+		homeTeam.resetGameStats();
+		
 		gameSimulation.setAwayTeam(awayTeam);
 		gameSimulation.setHomeTeam(homeTeam);
 		gameSimulation.setStartingPlayers();
 		
+		teamRepository.save(awayTeam);
+		teamRepository.save(homeTeam);
 		gameSimulationRepository.save(gameSimulation);
 		
 		return gameSimulation;
@@ -120,6 +125,7 @@ public class GameSimulationController {
 	@RequestMapping(path="/{id}/simulate-possession", method = RequestMethod.GET)
 	public @ResponseBody GameSimulation simulatePossession(@PathVariable long id) {
 		GameSimulation gameSimulation = gameSimulationRepository.findById(id).get();
+		gameSimulation.setStartingPlayers();
 		
 		gameSimulation.simulationPossession(1);
 		
@@ -136,6 +142,7 @@ public class GameSimulationController {
 	@RequestMapping(path="/{id}/simulate-quarter", method = RequestMethod.GET)
 	public @ResponseBody GameSimulation simulateQuarter(@PathVariable long id) {
 		GameSimulation gameSimulation = gameSimulationRepository.findById(id).get();
+		gameSimulation.setStartingPlayers();
 		
 		gameSimulation.simulationPossession((gameSimulation.getPossessionsRemaining()%25) + 1);
 		
@@ -152,6 +159,7 @@ public class GameSimulationController {
 	@RequestMapping(path="/{id}/simulate-game", method = RequestMethod.GET)
 	public @ResponseBody GameSimulation simulateGame(@PathVariable long id) {
 		GameSimulation gameSimulation = gameSimulationRepository.findById(id).get();
+		gameSimulation.setStartingPlayers();
 		
 		gameSimulation.simulationPossession(gameSimulation.getPossessionsRemaining() + 1);
 		
@@ -168,6 +176,7 @@ public class GameSimulationController {
 	@RequestMapping(path="/{id}/reset-simulation", method = RequestMethod.GET)
 	public @ResponseBody GameSimulation resetSimulation(@PathVariable long id) {
 		GameSimulation gameSimulation = gameSimulationRepository.findById(id).get();
+		gameSimulation.setStartingPlayers();
 		
 		gameSimulation.resetGame();
 		

@@ -257,7 +257,7 @@ public class GameSimulation {
 	/**
 	 * Simulates the given number of possessions and calculates the points scored for each quarter for each team
 	 * @param quarter The quarter the simulation is in
-	 * @param possessions the number of possessions to simlate
+	 * @param possessions the number of possessions to simulate
 	 * @return The number of possessions remaining
 	 */
 	public int simulatePossession(int quarter, int possessions) {
@@ -579,10 +579,10 @@ public class GameSimulation {
 			awayTeamScoreIncrease = determineScoreIncrease(awayTeamRandNum, 500 + awayTeamOffense, awayScorer, homeDefender, awayTeam, homeTeam);
 
 			awayScorer.setPointsPerGame(awayScorer.getPointsPerGame() + awayTeamScoreIncrease);
-			this.awayTeam.setPointsPerGame(this.awayTeam.getPointsPerGame() + 1);
+			this.awayTeam.setPointsPerGame(this.awayTeam.getPointsPerGame() + awayTeamScoreIncrease);
 			awayTeamScore += awayTeamScoreIncrease;
 			
-			if (awayTeamScoreIncrease > 0) {
+			if (awayTeamScoreIncrease > 1) {
 				scoreOutcomes[0] = true;
 				if (!awayScorer.equals(awayPasser)) {
 					awayPasser.setAssistsPerGame(awayPasser.getAssistsPerGame() + 1);
@@ -601,11 +601,11 @@ public class GameSimulation {
 
 			homeTeamScoreIncrease = determineScoreIncrease(homeTeamRandNum, 500 + homeTeamOffense, homeScorer, awayDefender, homeTeam, awayTeam);
 
-			this.homeTeam.setPointsPerGame(this.homeTeam.getPointsPerGame() + 1);
+			this.homeTeam.setPointsPerGame(this.homeTeam.getPointsPerGame() + homeTeamScoreIncrease);
 			homeScorer.setPointsPerGame(homeScorer.getPointsPerGame() + homeTeamScoreIncrease);
 			homeTeamScore += homeTeamScoreIncrease;
 			
-			if (homeTeamScoreIncrease > 0) {
+			if (homeTeamScoreIncrease > 1) {
 				scoreOutcomes[1] = true;
 				if (!homeScorer.equals(homePasser)) {
 					homePasser.setAssistsPerGame(homePasser.getAssistsPerGame() + 1);
@@ -636,9 +636,9 @@ public class GameSimulation {
 			teamScoreIncrease = 3;
 		} else if (teamScoreDecision > 32500) {
 			teamScoreIncrease = 2;
-		} else if (teamScoreDecision > 25000) {
+		} else if (teamScoreDecision > 22500) {
 			teamScoreIncrease = 1;
-		} else if (teamScoreDecision > 5000) {
+		} else if (teamScoreDecision > 2500) {
 			teamScoreIncrease = 0;
 		} else {
 			teamScoreIncrease = 0;
@@ -670,14 +670,19 @@ public class GameSimulation {
 
 			boolean awayTeamReboundSuccess = determineReboundIncrease(awayTeamRandNum, 500 + awayTeamOffense);
 			
-			if (awayTeamReboundSuccess) {
-				reboundsOutcome[0] = true;
-				awayOffense.setReboundsPerGame(awayOffense.getReboundsPerGame() + 1);
-				this.awayTeam.setReboundsPerGame(this.awayTeam.getReboundsPerGame() + 1);
-			} else {
-				homeDefender.setReboundsPerGame(homeDefender.getReboundsPerGame() + 1);
-				this.homeTeam.setReboundsPerGame(this.homeTeam.getReboundsPerGame() + 1);
+			double rebound = rand.nextDouble();
+			
+			if (rebound > .4) {
+				if (awayTeamReboundSuccess) {
+					reboundsOutcome[0] = true;
+					awayOffense.setReboundsPerGame(awayOffense.getReboundsPerGame() + 1);
+					this.awayTeam.setReboundsPerGame(this.awayTeam.getReboundsPerGame() + 1);
+				} else {
+					homeDefender.setReboundsPerGame(homeDefender.getReboundsPerGame() + 1);
+					this.homeTeam.setReboundsPerGame(this.homeTeam.getReboundsPerGame() + 1);
+				}
 			}
+		
 		}
 
 		// Determine the rebound result for the home team
@@ -688,14 +693,19 @@ public class GameSimulation {
 
 			boolean homeTeamReboundSuccess = determineReboundIncrease(homeTeamRandNum, 500 + homeTeamOffense);
 			
-			if (homeTeamReboundSuccess) {
-				reboundsOutcome[1] = true;
-				homeOffense.setReboundsPerGame(homeOffense.getReboundsPerGame() + 1);
-				this.homeTeam.setReboundsPerGame(this.homeTeam.getReboundsPerGame() + 1);
-			} else {
-				awayDefender.setReboundsPerGame(awayDefender.getReboundsPerGame() + 1);
-				this.awayTeam.setReboundsPerGame(this.awayTeam.getReboundsPerGame() + 1);
+			double rebound = rand.nextDouble();
+			
+			if (rebound > .4) {
+				if (homeTeamReboundSuccess) {
+					reboundsOutcome[1] = true;
+					homeOffense.setReboundsPerGame(homeOffense.getReboundsPerGame() + 1);
+					this.homeTeam.setReboundsPerGame(this.homeTeam.getReboundsPerGame() + 1);
+				} else {
+					awayDefender.setReboundsPerGame(awayDefender.getReboundsPerGame() + 1);
+					this.awayTeam.setReboundsPerGame(this.awayTeam.getReboundsPerGame() + 1);
+				}
 			}
+			
 		}
 		
 		return reboundsOutcome;

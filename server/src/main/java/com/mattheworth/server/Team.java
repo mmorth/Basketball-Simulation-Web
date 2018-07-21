@@ -257,6 +257,10 @@ public class Team {
 	
 	// ======================================== Logic Methods =============================================== //
 
+	/**
+	 * Adds a player to the team
+	 * @param player The player
+	 */
 	public void addPlayer(Player player) {
 		this.players.add(player);
 		this.setOffensiveRating();
@@ -264,6 +268,10 @@ public class Team {
 		this.setOverallRating();
 	}
 	
+	/**
+	 * Removes a player from the team
+	 * @param player The player
+	 */
 	public void removePlayer(Player player) {
 		this.players.remove(player);
 		this.setOffensiveRating();
@@ -390,6 +398,11 @@ public class Team {
 
 }
 
+/**
+ * Sorts the players by role and position
+ * @author mmorth
+ *
+ */
 class SortPlayers implements Comparator<Player>{
 
 	@Override
@@ -406,6 +419,11 @@ class SortPlayers implements Comparator<Player>{
 	
 }
 
+/**
+ * Sorts the players by rotation minutes
+ * @author mmorth
+ *
+ */
 class SortPlayersRotation implements Comparator<Player>{
 
 	@Override
@@ -419,6 +437,11 @@ class SortPlayersRotation implements Comparator<Player>{
 	
 }
 
+/**
+ * Sorts the players by their position
+ * @author mmorth
+ *
+ */
 class SortPlayersPosition implements Comparator<Player>{
 
 	@Override

@@ -4,17 +4,17 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Player } from '../models/player';
 
-const HEADERS: any = { headers: { 'Content-Type': 'application/json' }};
+const HEADERS: any = { headers: { 'Content-Type': 'application/json' } };
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlayerService {
 
-    /**
-   * Constructs a new service
-   * @param http Inject http into the service
-   */
+  /**
+ * Constructs a new service
+ * @param http Inject http into the service
+ */
   constructor(private http: HttpClient) { }
 
   /**
@@ -28,8 +28,8 @@ export class PlayerService {
    * Makes a REST API call to get a team with the specified id from the back-end database
    * @param id The id of the team to get
    */
-  getPlayer(id: number): Observable<Player> {
-  	return this.http.get<Player>('http://localhost:8080/api/players/' + id)
+  getPlayer(playerID: number): Observable<Player> {
+    return this.http.get<Player>('http://localhost:8080/api/players/' + playerID)
   }
 
   /**
@@ -38,11 +38,12 @@ export class PlayerService {
    * @param offRating The offensive rating of the player
    * @param defRating The defensive rating of the player
    */
-  createPlayer(teamNumber: number, playerName: string, offRating: number, defRating: number, position: number, playerRole: string, rotationMinutes: number, stamina: number, positionPlay: number) {
-  	return this.http.post('http://localhost:8080/api/teams/' + teamNumber + '/players',
-  		JSON.stringify({ "name": playerName, "offensiveRating": offRating, "defensiveRating": defRating, "position": position, "role": playerRole, "rotationMinutes": rotationMinutes, "possessionsPlayed": 0, "stamina": stamina, "positionPlay": positionPlay }), 
-  		HEADERS
-  	);
+  createPlayer(teamNumber: number, player: Player) {
+    console.log(JSON.stringify(player))
+    return this.http.post('http://localhost:8080/api/teams/' + teamNumber + '/players',
+      JSON.parse(JSON.stringify(player)),
+      HEADERS
+    );
   }
 
   /**
@@ -50,7 +51,7 @@ export class PlayerService {
    * @param playerID The id of the player to delete
    */
   deletePlayer(teamID: number, playerID: number) {
-  	return this.http.delete('http://localhost:8080/api/teams/' + teamID + '/' + playerID);
+    return this.http.delete('http://localhost:8080/api/teams/' + teamID + '/' + playerID);
   }
 
   /**
@@ -60,14 +61,14 @@ export class PlayerService {
    * @param offRating The offensive rating of the player
    * @param defRating The defensive rating of the player
    */
-  updatePlayer(teamID: number, playerID: number, playerName: string, offRating: number, defRating: number, position: number, playerRole: String, rotationMinutes: number, stamina: number, positionPlay: number): Observable<boolean> {
+  updatePlayer(teamID: number, playerID: number, player: Player): Observable<boolean> {
     return this.http.put<boolean>('http://localhost:8080/api/teams/' + teamID + '/' + playerID,
-  		JSON.stringify({ "name": playerName, "offensiveRating": offRating, "defensiveRating": defRating, "position": position, "role": playerRole, "rotationMinutes": rotationMinutes, "possessionsPlayed": 0, "stamina": stamina, "positionPlay": positionPlay }), 
+      JSON.stringify(player),
       {
         headers: { 'Content-Type': 'application/json' },
         observe: 'body',
       }
-      );
+    );
   }
 
   /**
@@ -77,11 +78,11 @@ export class PlayerService {
    * @param offRating The offensive rating of the coach
    * @param defRating The defensive rating of the coach
    */
-  createCoach(teamNumber: number, coachName: string, offRating: number, defRating: number, position: number, playerRole: string, rotationMinutes: number, stamina: number, staminaRemaining: number, positionPlay: number) {
-  	return this.http.post('http://localhost:8080/api/teams/' + teamNumber + '/coach',
-  		JSON.stringify({ "name": coachName, "offensiveRating": offRating, "defensiveRating": defRating, "position": position, "role": playerRole, "rotationMinutes": rotationMinutes, "possessionsPlayed": 0, "stamina": 100, "positionPlay": 0 }), 
-  		HEADERS
-  	);
+  createCoach(teamNumber: number, coach: Player) {
+    return this.http.post('http://localhost:8080/api/teams/' + teamNumber + '/coach',
+      JSON.stringify(coach),
+      HEADERS
+    );
   }
 
   /**
@@ -89,7 +90,7 @@ export class PlayerService {
    * @param playerID The id of the player to delete
    */
   deleteCoach(teamID: number, coachID: number) {
-  	return this.http.delete('http://localhost:8080/api/teams/' + teamID + '/coach/' + coachID);
+    return this.http.delete('http://localhost:8080/api/teams/' + teamID + '/coach/' + coachID);
   }
 
   /**
@@ -99,11 +100,11 @@ export class PlayerService {
    * @param offRating The offensive rating of the coach
    * @param defRating The defensive rating of the coach
    */
-  updateCoach(teamID: number, coachID: number, coachName: string, offRating: number, defRating: number, position: number, playerRole: string, rotationMinutes: number, stamina: number, positionPlay: number) {
-  	return this.http.put('http://localhost:8080/api/teams/' + teamID + '/coach/' + coachID,
-  		JSON.stringify({ "name": coachName, "offensiveRating": offRating, "defensiveRating": defRating, "position": position, "role": playerRole, "rotationMinutes": rotationMinutes, "possessionsPlayed": 0, "stamina": 100, "positionPlay": 0 }), 
-  		HEADERS
-  	);
+  updateCoach(teamID: number, coachID: number, coach: Player) {
+    return this.http.put('http://localhost:8080/api/teams/' + teamID + '/coach/' + coachID,
+      JSON.stringify(coach),
+      HEADERS
+    );
   }
 
 }

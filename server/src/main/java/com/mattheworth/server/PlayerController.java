@@ -47,6 +47,11 @@ public class PlayerController {
 		
 		Team team = teamRepository.findById(teamID).get();
 		
+		System.out.println(jsonPlayer);
+		System.out.println(jsonPlayer.getName());
+		System.out.println(jsonPlayer.getOffensiveRating());
+		System.out.println(jsonPlayer.getRole());
+		
 		if (team.validPlayerRole(jsonPlayer.getId(), jsonPlayer.getRole())) {
 			jsonPlayer.resetPlayerGameStats();
 			jsonPlayer.setOverallRating();
@@ -131,7 +136,7 @@ public class PlayerController {
 	
 	/**
 	 * Returns an object of the player with the given id
-	 * @param id The id of the player that is returned
+	 * @param playerID The id of the player that is returned
 	 * @return The player with the specified id as json
 	 */
 	@RequestMapping(path="/players/{playerID}", method = RequestMethod.GET)

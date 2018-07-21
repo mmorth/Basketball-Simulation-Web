@@ -83,7 +83,7 @@ export class TeamInputComponent implements OnInit {
 	 * @param player The player to update the position for
 	 */
 	updatePosition(player: Player): void {
-			this.playerService.updatePlayer(this.team.id, player.id, player.name, player.offensiveRating, player.defensiveRating, player.position, player.role, player.rotationMinutes, player.stamina, player.positionPlay)
+			this.playerService.updatePlayer(this.team.id, player.id, player)
 			.subscribe(validChange => {
 				if (validChange) {
 					this.sortPlayers();

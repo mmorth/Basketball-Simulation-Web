@@ -161,7 +161,7 @@ export class PlayerInputComponent implements OnInit {
 		// Create a coach
 		if (pcid === 1) {
 			if (this.playerName.length > 0 && this.offensiveRating > 0 && this.offensiveRating <= 100 && this.defensiveRating > 0 && this.defensiveRating <= 100) {
-				this.playerService.createCoach(id, this.playerName, this.offensiveRating, this.defensiveRating, 0, "Coach", 100, this.player.stamina, this.player.remainingStamina, this.player.positionPlay)
+				this.playerService.createCoach(id, this.playerName, this.offensiveRating, this.defensiveRating, 0, "Coach", 100, 100, 0, 0)
 				.subscribe(() => {
 						this.player = null;
 						this.playerName = "";

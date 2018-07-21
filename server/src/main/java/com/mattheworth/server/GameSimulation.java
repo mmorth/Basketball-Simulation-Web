@@ -1,6 +1,7 @@
 package com.mattheworth.server;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -170,16 +171,25 @@ public class GameSimulation {
 	 * Sets the starters for the home and away team for the simulation
 	 */
 	public void setStartingPlayers() {
-		for (Player player : awayTeam.getPlayers()) {
-			if (player.getRole().equals("Starter")) {
-				awayPlayers.add(player);
-			}
+		awayTeam.sortPlayersRotation();
+		homeTeam.sortPlayersRotation();
+		
+		awayPlayers.clear();
+		homePlayers.clear();
+		
+		for (int i = 0; i < 5; i++) {
+			awayPlayers.add(awayTeam.getPlayers().get(i));
+			homePlayers.add(homeTeam.getPlayers().get(i));
 		}
 		
-		for (Player player : homeTeam.getPlayers()) {
-			if (player.getRole().equals("Starter")) {
-				homePlayers.add(player);
-			}
+		Collections.sort(this.awayPlayers, new SortPlayersPosition());
+		Collections.sort(this.homePlayers, new SortPlayersPosition());
+		
+		System.out.println("Got Here.");
+		
+		for (int i = 0; i < 5; i++) {
+			awayPlayers.get(i).setPositionPlay(i+1);
+			homePlayers.get(i).setPositionPlay(i+1);
 		}
 	}
 	
@@ -195,18 +205,28 @@ public class GameSimulation {
 	 */
 	public void updatePlayerStaminas() {
 		for (Player player: awayTeam.getPlayers()) {
-			if (!player.getRole().equals("Starter")) {
-				player.setStamina(player.getStamina() + 5);
+			if (!awayPlayers.contains(player)) {
+				if (player.getStamina() < 95) {
+					player.setStamina(player.getStamina() + 5);
+				} else {
+					player.setStamina(100);
+				}
 			} else {
 				player.setStamina(player.getStamina() - 1);
+				player.setPossessionsRemaining(player.getPossessionsRemaining() - 1);
 			}
 		}
 		
 		for (Player player: homeTeam.getPlayers()) {
-			if (!player.getRole().equals("Starter")) {
-				player.setStamina(player.getStamina() + 5);
+			if (!homePlayers.contains(player)) {
+				if (player.getStamina() < 95) {
+					player.setStamina(player.getStamina() + 5);
+				} else {
+					player.setStamina(100);
+				}
 			} else {
 				player.setStamina(player.getStamina() - 1);
+				player.setPossessionsRemaining(player.getPossessionsRemaining() - 1);
 			}
 		}
 	}
@@ -261,6 +281,8 @@ public class GameSimulation {
 	 * @return The number of possessions remaining
 	 */
 	public int simulatePossession(int quarter, int possessions) {
+		setStartingPlayers();
+		
 		// Determine who will pass, shoot, and rebound for each team for this possession
 		int awayPassPlayers = determinePasser(determineAwayOffense(), (ArrayList<Player>) awayPlayers);
 		Player awayPasser = awayPlayers.get(awayPassPlayers);
@@ -725,6 +747,28 @@ public class GameSimulation {
 		} else {
 			return false;
 		}
+	}
+	
+	/**
+	 * Determines which players need to be subbed out for each team based on stamina and rotation minutes
+	 * @param teamPlayers The players to check if they need to be subbed out
+	 * @return Returns a list of who needs to be subbed out
+	 */
+	public boolean[] determineSubPlayers(List<Player> teamPlayers) {
+		boolean subStatus[] = { false, false, false, false, false };
+		
+		for (int i = 0; i < teamPlayers.size(); i++) {
+			if (teamPlayers.get(i).getStamina() <= 90 || teamPlayers.get(i).getRotationMinutes() <= 0) {
+				subStatus[i] = true;
+			}
+		}
+		
+		return subStatus;
+	}
+	
+	
+	public void subPlayers() {
+		
 	}
 
 	// ====================================== Getters and Setters ============================ //

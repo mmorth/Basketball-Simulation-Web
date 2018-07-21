@@ -42,16 +42,12 @@ public class GameSimulationController {
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody GameSimulation createGameSimulation(@RequestBody GameSimulation gameSimulation) {
 
-		gameSimulation.resetGame();
 		Team awayTeam = teamRepository.findById(gameSimulation.getAwayTeam().getId()).get();
 		Team homeTeam = teamRepository.findById(gameSimulation.getHomeTeam().getId()).get();
 		
-		awayTeam.resetGameStats();
-		homeTeam.resetGameStats();
-		
 		gameSimulation.setAwayTeam(awayTeam);
 		gameSimulation.setHomeTeam(homeTeam);
-		gameSimulation.setStartingPlayers();
+		gameSimulation.resetGame();
 		
 		teamRepository.save(awayTeam);
 		teamRepository.save(homeTeam);
@@ -88,8 +84,6 @@ public class GameSimulationController {
 		gameSimulation.setAwayTeam(newAwayTeam);
 		gameSimulation.resetGame();
 		
-		gameSimulation.setStartingPlayers();
-		
 		gameSimulationRepository.save(gameSimulation);
 		
 		return gameSimulation;
@@ -109,8 +103,6 @@ public class GameSimulationController {
 		
 		gameSimulation.setHomeTeam(newHomeTeam);
 		gameSimulation.resetGame();
-		
-		gameSimulation.setStartingPlayers();
 		
 		gameSimulationRepository.save(gameSimulation);
 		

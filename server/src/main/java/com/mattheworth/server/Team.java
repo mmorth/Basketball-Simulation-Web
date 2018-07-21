@@ -291,6 +291,29 @@ public class Team {
 	}
 	
 	/**
+	 * Sorts the team's players by their player role and position played
+	 */
+	public void sortPlayersRotation() {
+//		System.out.println("\nPre-Sorted:");
+//		for (int i = 0; i < players.size(); i++) {
+//			System.out.println(players.get(i).getName() + ": " + players.get(i).getPossessionsRemaining() + ": " + players.get(i).getStamina());
+//		}
+		
+		Collections.sort(this.players, new SortPlayersRotation());
+//		System.out.println("\nPost-Sorted:");
+//		for (int i = 0; i < players.size(); i++) {
+//			System.out.println(players.get(i).getName() + ": " + players.get(i).getPossessionsRemaining() + ": " + players.get(i).getStamina());
+//		}
+	}
+	
+	/**
+	 * Sorts the team's players by their player role and position played
+	 */
+	public void sortPlayersPosition() {
+		Collections.sort(this.players, new SortPlayersPosition());
+	}
+	
+	/**
 	 * Determines whether the new player role is valid (checks that there are no more than 5 starters(
 	 * @param playerID The id of the new player
 	 * @param playerRole The role of the new player
@@ -352,6 +375,18 @@ public class Team {
 		
 		return -1;
 	}
+	
+	/**
+	 * Sets the game positions of the starters
+	 */
+	public void setStartersPositions() {
+		int numPlayers = this.players.size();
+		int loop = Math.min(5, numPlayers);
+		
+		for (int i = 0; i < loop; i++) {
+			players.get(i).setPositionPlay(i+1);
+		}
+	}
 
 }
 
@@ -363,6 +398,32 @@ class SortPlayers implements Comparator<Player>{
 		int player2NumPlayerRole = player2.numericPlayerRole(player2.getRole());
 		
 		if (player1NumPlayerRole < player2NumPlayerRole || (player1NumPlayerRole == player2NumPlayerRole && player1.getPositionPlay() < player2.getPositionPlay())) {
+			return -1;
+		} else {
+			return 1;
+		}
+	}
+	
+}
+
+class SortPlayersRotation implements Comparator<Player>{
+
+	@Override
+	public int compare(Player player1, Player player2) {
+		if (player1.getPossessionsRemaining() > player2.getPossessionsRemaining()) {
+			return -1;
+		} else {
+			return 1;
+		}
+	}
+	
+}
+
+class SortPlayersPosition implements Comparator<Player>{
+
+	@Override
+	public int compare(Player player1, Player player2) {
+		if (player1.getPosition() < player2.getPosition()) {
 			return -1;
 		} else {
 			return 1;

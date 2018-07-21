@@ -132,6 +132,7 @@ public class TeamController {
 		Team team = teamRepository.findById(id).get();
 		
 		team.sortPlayers();
+		team.setStartersPositions();
 		
 		teamRepository.save(team);
 		

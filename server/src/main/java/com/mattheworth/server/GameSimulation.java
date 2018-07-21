@@ -185,8 +185,6 @@ public class GameSimulation {
 		Collections.sort(this.awayPlayers, new SortPlayersPosition());
 		Collections.sort(this.homePlayers, new SortPlayersPosition());
 		
-		System.out.println("Got Here.");
-		
 		for (int i = 0; i < 5; i++) {
 			awayPlayers.get(i).setPositionPlay(i+1);
 			homePlayers.get(i).setPositionPlay(i+1);

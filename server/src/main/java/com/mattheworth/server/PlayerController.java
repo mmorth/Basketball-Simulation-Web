@@ -53,7 +53,6 @@ public class PlayerController {
 			
 			int gamePosition = team.determineDefaultGamePosition(jsonPlayer.getId(), jsonPlayer.getRole());
 			
-			System.out.println(gamePosition);
 			if (gamePosition != -1) {
 				jsonPlayer.setPositionPlay(gamePosition);
 			}

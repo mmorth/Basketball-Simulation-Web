@@ -32,6 +32,11 @@ export class GameSimulationInputComponent implements OnInit {
   @Output() gameSimulationUpdate = new EventEmitter<number>();
 
   /**
+   * Displays an error message if exists
+   */
+  errorString: string;
+
+  /**
    * Constructs a new GameSimulationInputComponent
    * @param teamService Inject the TeamService into the component
    * @param gameSimulationService Inject the GameSimulationService into the component
@@ -108,24 +113,34 @@ export class GameSimulationInputComponent implements OnInit {
    * Sets the away team for the current simulation
    * @param awayTeamID The id of the team to set as the away team for the simulation
    */
-  setAwayTeam(awayTeamID: number): void {
-    this.gameSimulationService.setAwayteam(this.gameSimulation.id, awayTeamID)
-    .subscribe(gameSimulation =>{
-      this.getSimulation(gameSimulation.id);
-      this.updateParentGameSimulation();
-    });
+  setAwayTeam(awayTeamID: number, awayTeam: Team): void {
+    if (awayTeam.players.length >= 5) {
+      this.gameSimulationService.setAwayteam(this.gameSimulation.id, awayTeamID)
+      .subscribe(gameSimulation =>{
+        this.getSimulation(gameSimulation.id);
+        this.updateParentGameSimulation();
+        this.errorString = "";
+      });
+    } else {
+      this.errorString = "Error: Team needs at least 5 players"
+    }
   }
 
   /**
    * Sets the home team for the game simulation
    * @param homeTeamID The id of the team to set as the home team for the simulation
    */
-  setHomeTeam(homeTeamID: number): void {
-    this.gameSimulationService.setHometeam(this.gameSimulation.id, homeTeamID)
-    .subscribe(gameSimulation =>{
-      this.getSimulation(gameSimulation.id);
-      this.updateParentGameSimulation();
-    });
+  setHomeTeam(homeTeamID: number, homeTeam: Team): void {
+    if (homeTeam.players.length >= 5) {
+      this.gameSimulationService.setHometeam(this.gameSimulation.id, homeTeamID)
+      .subscribe(gameSimulation =>{
+        this.getSimulation(gameSimulation.id);
+        this.updateParentGameSimulation();
+        this.errorString = "";
+      });
+    } else {
+      this.errorString = "Error: Team needs at least 5 players"
+    }
   }
 
   /**

@@ -17,7 +17,7 @@
         Away Team Select
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <li><a class="dropdown-item" *ngFor="let team of teams" (click)="setAwayTeam(team.id)">{{team.name}}</a></li>
+        <li><a class="dropdown-item" *ngFor="let team of teams" (click)="setAwayTeam(team.id, team)">{{team.name}}</a></li>
       </ul>
     </div>                 
 
@@ -31,8 +31,10 @@
         Home Team Select
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <li><a class="dropdown-item" *ngFor="let team of teams" (click)="setHomeTeam(team.id)">{{team.name}}</a></li>
+        <li><a class="dropdown-item" *ngFor="let team of teams" (click)="setHomeTeam(team.id, team)">{{team.name}}</a></li>
       </ul>
     </div>                     
   </div>
+
+  <font color="red">{{ errorString }}</font> 
 </div>

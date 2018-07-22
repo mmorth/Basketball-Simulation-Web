@@ -61,6 +61,17 @@ public class GameSimulationController {
 	}
 	
 	/**
+	 * Deletes all GameSimulation objects from the database
+	 * @return True
+	 */
+	@RequestMapping(method = RequestMethod.DELETE)
+	public @ResponseBody boolean deleteGameSimulations() {
+		gameSimulationRepository.deleteAll();
+		
+		return true;
+	}
+	
+	/**
 	 * Updates the away team for the GameSimulation object in the database
 	 * @param awayTeamID The id of the team to set as json
 	 * @param id The id of the GameSimulation

@@ -49,11 +49,29 @@ export class TeamService {
   }
 
   /**
+   * Creates the list of teams
+   * @param teams The teams to create
+   */
+  createTeams(teams: Team[]) {
+    return this.http.post('http://localhost:8080/api/teams/file',
+      JSON.stringify(teams),
+      HEADERS
+    );
+  }
+
+  /**
    * Makes a REST API call to delete the team with the specified id from the back-end database
    * @param teamID The id of the team to delete
    */
   deleteTeam(teamID: number) {
     return this.http.delete('http://localhost:8080/api/teams/' + teamID);
+  }
+
+  /**
+   * Makes a REST API call to delete all teams from the back-end database
+   */
+  deleteAllTeams() {
+    return this.http.delete('http://localhost:8080/api/teams');
   }
 
   /**
@@ -74,5 +92,12 @@ export class TeamService {
   sortPlayers(teamID: number): Observable<Array<Player>> {
     return this.http.get<Array<Player>>('http://localhost:8080/api/teams/' + teamID + '/sort/players');
   }
+
+  /**
+   * Reads the list of teams and players to create from the file
+   */
+  readTeamFile(): Observable<Team[]> {
+    return this.http.get<Team[]>("./assets/teams.json")
+}
 
 }

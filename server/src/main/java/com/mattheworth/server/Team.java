@@ -302,16 +302,7 @@ public class Team {
 	 * Sorts the team's players by their player role and position played
 	 */
 	public void sortPlayersRotation() {
-//		System.out.println("\nPre-Sorted:");
-//		for (int i = 0; i < players.size(); i++) {
-//			System.out.println(players.get(i).getName() + ": " + players.get(i).getPossessionsRemaining() + ": " + players.get(i).getStamina());
-//		}
-		
 		Collections.sort(this.players, new SortPlayersRotation());
-//		System.out.println("\nPost-Sorted:");
-//		for (int i = 0; i < players.size(); i++) {
-//			System.out.println(players.get(i).getName() + ": " + players.get(i).getPossessionsRemaining() + ": " + players.get(i).getStamina());
-//		}
 	}
 	
 	/**

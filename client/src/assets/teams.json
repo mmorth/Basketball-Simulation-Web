@@ -1,0 +1,57 @@
+[
+    {
+        "name": "NBA",
+        "players": [
+            {
+                "name": "Magic Johnson",
+                "offensiveRating": 96,
+                "defensiveRating": 96,
+                "position": 1,
+                "positionPlay": 1,
+                "role": "Starter",
+                "rotationMinutes": 100
+            },
+            {
+                "name": "Michael Jordan",
+                "offensiveRating": 100,
+                "defensiveRating": 100,
+                "position": 2,
+                "positionPlay": 2,
+                "role": "Starter",
+                "rotationMinutes": 100
+            },
+            {
+                "name": "Lebron James",
+                "offensiveRating": 98,
+                "defensiveRating": 98,
+                "position": 3,
+                "positionPlay": 3,
+                "role": "Starter",
+                "rotationMinutes": 100
+            },
+            {
+                "name": "Kareem Abdul-Jabbar",
+                "offensiveRating": 97,
+                "defensiveRating": 97,
+                "position": 4,
+                "positionPlay": 4,
+                "role": "Starter",
+                "rotationMinutes": 100
+            },
+            {
+                "name": "Wilt Chamberlin",
+                "offensiveRating": 93,
+                "defensiveRating": 93,
+                "position": 5,
+                "positionPlay": 5,
+                "role": "Starter",
+                "rotationMinutes": 100
+            }
+        ],
+        "coach": {
+            "name": "Phil Jackson",
+            "offensiveRating": 100,
+            "defensiveRating": 100
+        }
+    }
+]

@@ -32,6 +32,12 @@ public class TeamController {
 	 */
 	@Autowired
 	private PlayerRepository playerRepository;
+	
+	/**
+	 * Manages the GameSimulation for the database
+	 */
+	@Autowired
+	private GameSimulationRepository gameSimulationRepository;
 
 	/**
 	 * Creates a new team from the input json 
@@ -52,6 +58,33 @@ public class TeamController {
 	}
 	
 	/**
+	 * Creates multiple from the input json 
+	 * @param jsonTeams The teams constructed from the input json
+	 * @return The list of teams created
+	 */
+	@RequestMapping(path="/file", method = RequestMethod.POST, produces = "application/json") 
+	public @ResponseBody Team[] createTeams(@RequestBody Team[] jsonTeams) {
+		for (Team team: jsonTeams) {
+			team.setOffensiveRating();
+			team.setDefensiveRating();
+			team.resetGameStats();
+			
+			for (Player player: team.getPlayers()) {
+				player.resetPlayerGameStats();
+				player.setOverallRating();
+				playerRepository.save(player);
+			}
+			
+			team.getCoach().setOverallRating();
+			playerRepository.save(team.getCoach());
+			
+			teamRepository.save(team); 
+		}
+		
+		return jsonTeams;
+	}
+	
+	/**
 	 * Deletes a team with the given id
 	 * @param id The id of the team to delete
 	 * @return The id of the deleted team as json
@@ -62,6 +95,20 @@ public class TeamController {
 		teamRepository.delete(deleteTeam);
 		
 		return id;
+	}
+	
+	/**
+	 * Deletes a team with the given id
+	 * @param id The id of the team to delete
+	 * @return The id of the deleted team as json
+	 */
+	@RequestMapping(method = RequestMethod.DELETE, produces = "application/json")
+	public @ResponseBody boolean deleteTeams() {
+		gameSimulationRepository.deleteAll();
+		teamRepository.deleteAll();
+		playerRepository.deleteAll();
+		
+		return true;
 	}
 	
 	/**

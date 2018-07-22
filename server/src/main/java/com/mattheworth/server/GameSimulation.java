@@ -36,14 +36,14 @@ public class GameSimulation {
 	/**
 	 * The away team
 	 */
-	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
+	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name="away_team_id")
 	private Team awayTeam;
 	
 	/**
 	 * The home team
 	 */
-	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
+	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name="home_team_id")
 	private Team homeTeam;
 	
@@ -171,23 +171,25 @@ public class GameSimulation {
 	 * Sets the starters for the home and away team for the simulation
 	 */
 	public void setStartingPlayers() {
-		awayTeam.sortPlayersRotation();
-		homeTeam.sortPlayersRotation();
-		
-		awayPlayers.clear();
-		homePlayers.clear();
-		
-		for (int i = 0; i < 5; i++) {
-			awayPlayers.add(awayTeam.getPlayers().get(i));
-			homePlayers.add(homeTeam.getPlayers().get(i));
-		}
-		
-		Collections.sort(this.awayPlayers, new SortPlayersPosition());
-		Collections.sort(this.homePlayers, new SortPlayersPosition());
-		
-		for (int i = 0; i < 5; i++) {
-			awayPlayers.get(i).setPositionPlay(i+1);
-			homePlayers.get(i).setPositionPlay(i+1);
+		if (awayTeam.getPlayers().size() >=5 && homeTeam.getPlayers().size() >= 5) {
+			awayTeam.sortPlayersRotation();
+			homeTeam.sortPlayersRotation();
+			
+			awayPlayers.clear();
+			homePlayers.clear();
+			
+			for (int i = 0; i < 5; i++) {
+				awayPlayers.add(awayTeam.getPlayers().get(i));
+				homePlayers.add(homeTeam.getPlayers().get(i));
+			}
+			
+			Collections.sort(this.awayPlayers, new SortPlayersPosition());
+			Collections.sort(this.homePlayers, new SortPlayersPosition());
+			
+			for (int i = 0; i < 5; i++) {
+				awayPlayers.get(i).setPositionPlay(i+1);
+				homePlayers.get(i).setPositionPlay(i+1);
+			}
 		}
 	}
 	

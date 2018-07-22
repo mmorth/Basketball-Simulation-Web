@@ -9,7 +9,7 @@ import { PlayerInputComponent } from './player-input/player-input.component';
 const routes: Routes = [
   { path: 'game-simulation', component: GameSimulationComponent },
   { path: 'team-details', component: TeamDetailsComponent },
-  { path: 'team-details/:id', component: TeamInputComponent },
+  { path: 'team-details/:teamID', component: TeamInputComponent },
   { path: 'team-details/create', component: TeamInputComponent },
   { path: 'team-details/:teamID/:playerID/:playerCoachSelector', component: PlayerInputComponent },
   { path: 'team-details/:teamID/create/:playerCoachSelector', component: PlayerInputComponent }

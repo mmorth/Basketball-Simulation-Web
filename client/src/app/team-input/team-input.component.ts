@@ -9,9 +9,9 @@ import { Player } from '../models/player';
 import { PlayerService } from '../services/player.service';
 
 @Component({
-  selector: 'app-team-input',
-  templateUrl: './team-input.component.html',
-  styleUrls: ['./team-input.component.css']
+	selector: 'app-team-input',
+	templateUrl: './team-input.component.html',
+	styleUrls: ['./team-input.component.css']
 })
 
 /**
@@ -28,31 +28,21 @@ export class TeamInputComponent implements OnInit {
 	 * The name of the team
 	 */
 	teamName: string;
-	
-	/**
-	 * The offensive rating of the team
-	 */
-	offensiveRating: number;
-	
-	/**
-	 * The defensive rating of the team
-	 */
-	defensiveRating: number;
-	
-	/**
-	 * The overall rating of the team
-	 */
-	overallRating: number;
 
 	/**
 	 * Represents the error message displayed when the user has invalid input
 	 */
 	inputError: string;
-		
+
 	/**
 	 * Stores the position options for the players dropdown
 	 */
 	positions: number[] = [1, 2, 3, 4, 5];
+
+	/**
+	 * Stores the id of the team from the url
+	 */
+	teamID: number;
 
 	/**
 	 * Constructs a new TeamInputComponent with the following injections
@@ -61,30 +51,30 @@ export class TeamInputComponent implements OnInit {
 	 * @param location Inject Location into the component
 	 * @param router Inject Router into the component
 	 */
-  constructor(private route: ActivatedRoute, private playerService: PlayerService, private teamService: TeamService, private location: Location, private router: Router) { }
+	constructor(private route: ActivatedRoute, private playerService: PlayerService, private teamService: TeamService, private location: Location, private router: Router) { }
 
 	/**
 	 * Get the specified team if it exists when the user enters the page
 	 */
-    ngOnInit(): void {
-		const id = +this.route.snapshot.paramMap.get('id');
+	ngOnInit(): void {
+		this.teamID = +this.route.snapshot.paramMap.get('teamID');
 
-    if (!isNaN(id)) {
-	   this.getTeam();
-    } else {
-			this.teamName = "";
-			this.offensiveRating = 0;
-			this.defensiveRating = 0;
+		this.team = new Team();
+
+		if (!isNaN(this.teamID)) {
+			this.getTeam();
 		}
+
+		this.teamName = "";
 	}
-	
+
 	/**
 	 * Updates the position of the player
 	 * @param player The player to update the position for
+	 * @param pos The new game position of the player
 	 */
 	updatePosition(player: Player, pos: number): void {
-		player.positionPlay = pos;
-			this.playerService.updatePlayer(this.team.id, player.id, player)
+		this.playerService.updatePlayer(this.team.id, player.id, player)
 			.subscribe(validChange => {
 				if (validChange) {
 					this.sortPlayers();
@@ -93,35 +83,16 @@ export class TeamInputComponent implements OnInit {
 					this.sortPlayers();
 					this.inputError = "Invalid player game position. There is already a starter with that position."
 				}
-			 });
+			});
 	}
 
+	/**
+	 * Updates the starters player ratings based on their stamina and position
+	 * @param player The player
+	 * @param playerRating The player rating to update
+	 */
 	updatePlayerRating(player: Player, playerRating: number): number {
-		return ((player.stamina/100.0) * (1-Math.abs(player.position-player.positionPlay)*.05)) * playerRating;
-	}
-
-	/**
-	 * Updates the displayed offensive rating of the player
-	 * @param player The player to update the displayed rating of 
-	 */
-	updatedOffensiveRating(player: Player): void {
-		this.offensiveRating = ((player.stamina/100.0) * (1-Math.abs(player.position-player.positionPlay)*.05)) * player.offensiveRating;
-	}
-
-	/**
-	 * Updates the displayed defensive rating of the player
-	 * @param player The player to update the displayed rating of 
-	 */
-	updatedDefensiveRating(player: Player): void {
-		this.offensiveRating = ((player.stamina/100.0) * (1-Math.abs(player.position-player.positionPlay)*.05)) * player.offensiveRating;
-	}
-
-	/**
-	 * Updates the displayed overall rating of the player
-	 * @param player The player to update the displayed rating of 
-	 */	
-	updatedOverallRating(player: Player): void {
-		this.offensiveRating = ((player.stamina/100.0) * (1-Math.abs(player.position-player.positionPlay)*.05)) * player.offensiveRating;
+		return ((player.stamina / 100.0) * (1 - Math.abs(player.position - player.positionPlay) * .05)) * playerRating;
 	}
 
 	/**
@@ -129,97 +100,86 @@ export class TeamInputComponent implements OnInit {
 	 */
 	sortPlayers(): void {
 		this.teamService.sortPlayers(this.team.id)
-		.subscribe( players => {
-			this.team.players = players;
-		 });
-	}  
+			.subscribe(players => {
+				this.team.players = players;
+			});
+	}
 
 	/**
 	 * Gets the team with the specified id
 	 */
-  getTeam(): void {
-  	const id = +this.route.snapshot.paramMap.get('id');
-  	this.teamService.getTeam(id)
-    .subscribe(team => {
-			this.team = team;
-    	this.teamName = team.name; 
-    	this.offensiveRating = team.offensiveRating; 
-		this.defensiveRating = team.defensiveRating;
-		this.sortPlayers();
-    	}
-    );
-  }
+	getTeam(): void {
+		this.teamService.getTeam(this.teamID)
+			.subscribe(team => {
+				this.team = team;
+				this.teamName = team.name;
+				this.sortPlayers();
+			}
+			);
+	}
 
 	/**
 	 * Create the specified team based on the user's input
 	 */
-  createTeam(): void {
-  	if (this.teamName.length > 0) {
-  		this.teamService.createTeam(this.teamName)
-  		.subscribe(() => {
-				this.team = null;
-				this.teamName = ""; 
-				this.offensiveRating = 0; 
-				this.defensiveRating = 0;
-				this.inputError = "";
-				this.router.navigateByUrl('/team-details');
-  		});
-    } else {
-    	this.inputError = "Invalid Input";
-    }
+	createTeam(): void {
+		if (this.teamName.length > 0) {
+			this.teamService.createTeam(this.teamName)
+				.subscribe(() => {
+					this.team = null;
+					this.teamName = "";
+					this.inputError = "";
+					this.router.navigateByUrl('/team-details');
+				});
+		} else {
+			this.inputError = "Invalid Input";
+		}
 
-  }
+	}
 
 	/**
 	 * Deletes the team with the specified id
 	 */
-  deleteTeam(): void {
-		const id = +this.route.snapshot.paramMap.get('id');
-		
-		if(window.confirm('Are sure you want to delete this team?')){
-			this.teamService.deleteTeam(id)
-			.subscribe(
-				() => {
-					this.team = null;
-					this.teamName = ""; 
-					this.offensiveRating = 0; 
-					this.defensiveRating = 0;
-					this.router.navigateByUrl('/team-details');
-				}
-			);
-		 }
+	deleteTeam(): void {
+		if (window.confirm('Are sure you want to delete this team?')) {
+			this.teamService.deleteTeam(this.teamID)
+				.subscribe(
+					() => {
+						this.team = null;
+						this.teamName = "";
+						this.router.navigateByUrl('/team-details');
+					}
+				);
+		}
 
-  }
+	}
 
 	/**
 	 * Update the team with the specified id
 	 */
-  updateTeam(): void {
-  	const id = +this.route.snapshot.paramMap.get('id');
-  	
-		this.teamService.updateTeam(id)
-		.subscribe(
-			() => {
-				this.team = null;
-				this.teamName = ""; 
-				this.offensiveRating = 0; 
-				this.defensiveRating = 0;
-				this.inputError = "";
-				this.router.navigateByUrl('/team-details');
-			}
-		);	
+	updateTeam(): void {
+		this.teamService.updateTeam(this.teamID)
+			.subscribe(
+				() => {
+					this.team = null;
+					this.teamName = "";
+					this.inputError = "";
+					this.router.navigateByUrl('/team-details');
+				}
+			);
 
 	}
-	
+
 	/**
-	 * Creates a new player
+	 * Routes to the form to create a new player for this team
+	 * @param teamID The id of the team to create the player on
 	 */
 	createPlayer(teamID: number): void {
 		this.router.navigateByUrl('/team-details/' + teamID + '/create/0');
 	}
 
-		/**
-	 * Creates a new coach
+	/**
+	 * Routes to the form to create a new coach for this team
+	 * @param teamID The id of the team to create the coach on
 	 */
 	createCoach(teamID: number): void {
 		if (this.team.coach == null) {

@@ -9,21 +9,21 @@
 
 	<h1>Team Information:</h1>
 
-	<div class="teamInputForm" *ngIf="team; else notTeam">
+	<div class="teamInputForm" *ngIf="team.name.length!=0; else notTeam">
 
 		<div class="form-group">
 			<label for="inputsm">Team Name (cannot change)</label>
-			<input id="teamName" class="form-control input-sm" id="inputsm" type="text" [(ngModel)]="teamName" placeholder="Team Name" value={{team.name}} ng-model="teamInputs" readonly>
+			<input id="teamName" class="form-control input-sm" id="inputsm" type="text" [(ngModel)]="team.name" placeholder="Team Name" value={{team.name}} ng-model="teamInputs" readonly>
 		</div>
 
 		<div class="form-group">
 			<label for="inputsm">Offensive Rating (must be between 0 and 100</label>
-			<input id="teamOffensiveRating" class="form-control input-sm" id="inputsm" type="text" [(ngModel)]="offensiveRating" placeholder="Offensive Rating" value={{team.offensiveRating}} ng-model="teamInputs" readonly>
+			<input id="teamOffensiveRating" class="form-control input-sm" id="inputsm" type="text" [(ngModel)]="team.offensiveRating" placeholder="Offensive Rating" value={{team.offensiveRating}} ng-model="teamInputs" readonly>
 		</div>
 
 		<div class="form-group">
 			<label for="inputsm">Defensive Rating (must be between 0 and 100)</label>
-			<input id="teamDefensiveRating" class="form-control input-sm" id="inputsm" type="text" [(ngModel)]="defensiveRating" placeholder="Defensive Rating" value={{team.defensiveRating}} ng-model="teamInputs" readonly>
+			<input id="teamDefensiveRating" class="form-control input-sm" id="inputsm" type="text" [(ngModel)]="team.defensiveRating" placeholder="Defensive Rating" value={{team.defensiveRating}} ng-model="teamInputs" readonly>
 		</div>
 
 		<h2>Coach: </h2>

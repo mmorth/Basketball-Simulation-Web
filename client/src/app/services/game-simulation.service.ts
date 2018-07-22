@@ -21,30 +21,9 @@ export class GameSimulationService {
 	 * @param awayTeamID The id of the away team
 	 * @param homeTeamID The id of the home team
 	 */
-  createGameSimulation(awayTeamID: number, homeTeamID: number): Observable<GameSimulation> {
+  createGameSimulation(gameSimulation: GameSimulation): Observable<GameSimulation> {
   	return this.http.post<GameSimulation>('http://localhost:8080/api/game-simulation/',
-  		JSON.stringify({ 
-  		"awayTeam": {
-  			"id": 9
-  		}, 
-  		"homeTeam": {
-  			"id": 1
-  		}, 
-  		"possessionsRemaining": 99, 
-  		"isOvertime": false, 
-  		"awayTeamScore": 0, 
-  		"homeTeamScore": 0, 
-			"awayTeamFirstQuarterScore": 0,
-			"awayTeamSecondQuarterScore": 0,
-			"awayTeamThirdQuarterScore": 0,
-			"awayTeamFourthQuarterScore": 0,
-			"awayTeamOvertimeScore": 0,
-			"homeTeamFirstQuarterScore": 0,
-			"homeTeamSecondQuarterScore": 0,
-			"homeTeamThirdQuarterScore": 0,
-			"homeTeamFourthQuarterScore": 0,
-			"homeTeamOvertimeScore": 0,
-	}), 
+  		JSON.stringify(gameSimulation), 
 		{
 			headers: { 'Content-Type': 'application/json' },
 			observe: 'body',

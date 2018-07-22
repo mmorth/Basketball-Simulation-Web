@@ -65,48 +65,73 @@ export class GameSimulationInputComponent implements OnInit {
     .subscribe(teams => this.teams = teams);
   }
 
+  determineValidTeamSelect(): boolean {
+    return this.gameSimulation.awayTeam != null && this.gameSimulation.homeTeam != null;
+  }
+
   /**
    * Simulates a possession
    */
   simulatePossession(): void {
-    this.gameSimulationService.simulatePossession(this.gameSimulation.id)
-    .subscribe(gameSimulation =>{
-      this.getSimulation(gameSimulation.id);
-      this.updateParentGameSimulation();
-    });
+    if (this.determineValidTeamSelect()) {
+      this.gameSimulationService.simulatePossession(this.gameSimulation.id)
+      .subscribe(gameSimulation =>{
+        this.getSimulation(gameSimulation.id);
+        this.updateParentGameSimulation();
+        this.errorString = "";
+      });
+    } else {
+      this.errorString = "You must select a home and away team"
+    }
   }
 
   /**
    * Simulates a quarter
    */
   simulateQuarter(): void {
-    this.gameSimulationService.simulateQuarter(this.gameSimulation.id)
-    .subscribe(gameSimulation =>{
-      this.getSimulation(gameSimulation.id);
-      this.updateParentGameSimulation();
-    });
+    if (this.determineValidTeamSelect()) {
+      this.gameSimulationService.simulateQuarter(this.gameSimulation.id)
+      .subscribe(gameSimulation =>{
+        this.getSimulation(gameSimulation.id);
+        this.updateParentGameSimulation();
+        this.errorString = "";
+      });
+    } else {
+      this.errorString = "You must select a home and away team"
+    }
   }
 
   /**
    * Simulates the game
    */
   simulateGame(): void {
-    this.gameSimulationService.simulateGame(this.gameSimulation.id)
-    .subscribe(gameSimulation => {
-      this.getSimulation(gameSimulation.id);
-      this.updateParentGameSimulation();
-    });
+    console.log(this.determineValidTeamSelect())
+    if (this.determineValidTeamSelect()) {
+      this.gameSimulationService.simulateGame(this.gameSimulation.id)
+      .subscribe(gameSimulation =>{
+        this.getSimulation(gameSimulation.id);
+        this.updateParentGameSimulation();
+        this.errorString = "";
+      });
+    } else {
+      this.errorString = "You must select a home and away team"
+    }
   }
   
   /**
    * Resets the simulation
    */
   resetSimulation(): void {
-    this.gameSimulationService.resetSimulation(this.gameSimulation.id)
-    .subscribe(gameSimulation => {
-      this.getSimulation(gameSimulation.id);
-      this.updateParentGameSimulation();
-    });
+    if (this.determineValidTeamSelect()) {
+      this.gameSimulationService.resetSimulation(this.gameSimulation.id)
+      .subscribe(gameSimulation =>{
+        this.getSimulation(gameSimulation.id);
+        this.updateParentGameSimulation();
+        this.errorString = "";
+      });
+    } else {
+      this.errorString = "You must select a home and away team"
+    }
   }
 
   /**

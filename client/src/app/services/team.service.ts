@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Team } from '../models/team';
 import { Player } from '../models/player';
 
-const HEADERS: any = { headers: { 'Content-Type': 'application/json' }};
+const HEADERS: any = { headers: { 'Content-Type': 'application/json' } };
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class TeamService {
   constructor(private http: HttpClient) { }
 
   /**
-   * Makes a REST API call to get all the players from the back-end database
+   * Makes a REST API call to get all the team from the back-end database
    */
   getTeams(): Observable<Team[]> {
     return this.http.get<Team[]>('http://localhost:8080/api/teams')
@@ -31,40 +31,40 @@ export class TeamService {
 
   /**
    * Makes a REST API call to get a team with the specified id from the back-end database
-   * @param playerID The id of the player to get
+   * @param teamID The id of the team to get
    */
-  getTeam(playerID: number): Observable<Team> {
-  	return this.http.get<Team>('http://localhost:8080/api/teams/' + playerID)
+  getTeam(teamID: number): Observable<Team> {
+    return this.http.get<Team>('http://localhost:8080/api/teams/' + teamID)
   }
 
   /**
    * Makes a REST API call to create a team with the given information from the back-end database
-   * @param teamName The name of the player
+   * @param teamName The name of the team
    */
   createTeam(teamName: string) {
-  	return this.http.post('http://localhost:8080/api/teams/',
-  		JSON.stringify({ "name": teamName }), 
-  		HEADERS
-  	);
+    return this.http.post('http://localhost:8080/api/teams/',
+      JSON.stringify({ "name": teamName }),
+      HEADERS
+    );
   }
 
   /**
    * Makes a REST API call to delete the team with the specified id from the back-end database
-   * @param teamID The id of the player to delete
+   * @param teamID The id of the team to delete
    */
   deleteTeam(teamID: number) {
-  	return this.http.delete('http://localhost:8080/api/teams/' + teamID);
+    return this.http.delete('http://localhost:8080/api/teams/' + teamID);
   }
 
   /**
    * Makes a REST API call to update the team with the given id from the back-end database
-   * @param teamID The id of the player
+   * @param teamID The id of the team
    */
   updateTeam(teamID: number) {
-  	return this.http.put('http://localhost:8080/api/teams/' + teamID,
-  		JSON.stringify({ }), 
-  		HEADERS
-  	);
+    return this.http.put('http://localhost:8080/api/teams/' + teamID,
+      JSON.stringify({}),
+      HEADERS
+    );
   }
 
   /**

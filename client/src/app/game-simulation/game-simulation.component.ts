@@ -47,6 +47,7 @@ export class GameSimulationComponent implements OnInit {
    * Creates a new game simulation when the user enters the page
    */
   ngOnInit() {
+    console.log("NGINIT")
     this.createSimulation();
     this.statDisplay = 1;
   }
@@ -55,7 +56,7 @@ export class GameSimulationComponent implements OnInit {
    * Deletes the current game simulation when the user leaves the page
    */
   ngOnDestroy() {
-  	this.deleteSimulation();
+    this.deleteSimulation();
   }
 
   /**
@@ -70,23 +71,25 @@ export class GameSimulationComponent implements OnInit {
    * Creates a new game simulation
    */
   createSimulation(): void {
-	  this.gameSimulationService.createGameSimulation(this.awayTeamID, this.homeTeamID)
-		.subscribe(gameSimulation => {
+    let gameSim = new GameSimulation();
+    this.gameSimulationService.createGameSimulation(gameSim)
+      .subscribe(gameSimulation => {
+        console.log();
         this.getSimulation(gameSimulation.id);
-    	}
-    );
+      }
+      );
   }
 
   /**
    * Deletes the current game simulation
    */
   deleteSimulation(): void {
-  	this.gameSimulationService.deleteGameSimulation(this.gameSimulation.id)
-  	.subscribe(
-  		() => {
-        console.log("DELETE")
-  		}
-  	);
+    this.gameSimulationService.deleteGameSimulation(this.gameSimulation.id)
+      .subscribe(
+        () => {
+          console.log("DELETE")
+        }
+      );
   }
 
   /**
@@ -95,10 +98,10 @@ export class GameSimulationComponent implements OnInit {
    */
   getSimulation(gameSimID: number): void {
     this.gameSimulationService.getGameSimulation(gameSimID)
-    .subscribe(gameSimulation => {
-      this.gameSimulation = gameSimulation;
-    }
-    );
+      .subscribe(gameSimulation => {
+        this.gameSimulation = gameSimulation;
+      }
+      );
   }
 
 }

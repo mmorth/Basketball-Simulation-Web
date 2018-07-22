@@ -24,4 +24,26 @@ export class GameSimulation {
 	homeTeamOvertimeScore: number;
 	awayPlayers: Array<Player>;
 	homePlayers: Array<Player>;
+
+	constructor() {
+		this.awayTeam = new Team();
+		this.homeTeam = new Team();
+		this.possessionsRemaining = 99;
+		this.isOvertime = false;
+		this.awayTeamScore = 0;
+		this.homeTeamScore = 0;
+		this.awayTeamFirstQuarterScore = 0;
+		this.awayTeamSecondQuarterScore = 0;
+		this.awayTeamThirdQuarterScore = 0;
+		this.awayTeamFourthQuarterScore = 0;
+		this.awayTeamOvertimeScore = 0;
+		this.homeTeamFirstQuarterScore = 0;
+		this.homeTeamSecondQuarterScore = 0;
+		this.homeTeamThirdQuarterScore = 0;
+		this.homeTeamFourthQuarterScore = 0;
+		this.homeTeamOvertimeScore = 0;
+		this.awayPlayers = [];
+		this.homePlayers = [];
+	}
+
 }

@@ -9,7 +9,7 @@
                 "position": 1,
                 "positionPlay": 1,
                 "role": "Starter",
-                "rotationMinutes": 100
+                "rotationMinutes": 65
             },
             {
                 "name": "Michael Jordan",
@@ -18,7 +18,7 @@
                 "position": 2,
                 "positionPlay": 2,
                 "role": "Starter",
-                "rotationMinutes": 100
+                "rotationMinutes": 70
             },
             {
                 "name": "Lebron James",
@@ -27,7 +27,7 @@
                 "position": 3,
                 "positionPlay": 3,
                 "role": "Starter",
-                "rotationMinutes": 100
+                "rotationMinutes": 50
             },
             {
                 "name": "Kareem Abdul-Jabbar",
@@ -36,20 +36,165 @@
                 "position": 4,
                 "positionPlay": 4,
                 "role": "Starter",
-                "rotationMinutes": 100
+                "rotationMinutes": 50
             },
             {
-                "name": "Wilt Chamberlin",
-                "offensiveRating": 93,
-                "defensiveRating": 93,
+                "name": "Wilt Chamberlain",
+                "offensiveRating": 95,
+                "defensiveRating": 95,
                 "position": 5,
                 "positionPlay": 5,
                 "role": "Starter",
-                "rotationMinutes": 100
+                "rotationMinutes": 50
+            },
+            {
+                "name": "Jerry West",
+                "offensiveRating": 88,
+                "defensiveRating": 88,
+                "position": 1,
+                "positionPlay": 1,
+                "role": "Role Player",
+                "rotationMinutes": 35
+            },
+            {
+                "name": "Kobe Bryant",
+                "offensiveRating": 94,
+                "defensiveRating": 94,
+                "position": 2,
+                "positionPlay": 2,
+                "role": "Role Player",
+                "rotationMinutes": 25
+            },
+            {
+                "name": "Larry Bird",
+                "offensiveRating": 96,
+                "defensiveRating": 96,
+                "position": 3,
+                "positionPlay": 3,
+                "role": "Sixth Man",
+                "rotationMinutes": 50
+            },
+            {
+                "name": "Tim Duncan",
+                "offensiveRating": 95,
+                "defensiveRating": 95,
+                "position": 4,
+                "positionPlay": 4,
+                "role": "Role Player",
+                "rotationMinutes": 50
+            },
+            {
+                "name": "Bill Russel",
+                "offensiveRating": 96,
+                "defensiveRating": 96,
+                "position": 5,
+                "positionPlay": 5,
+                "role": "Sixth Man",
+                "rotationMinutes": 50
             }
         ],
         "coach": {
             "name": "Phil Jackson",
+            "offensiveRating": 100,
+            "defensiveRating": 100
+        }
+    },
+    {
+        "name": "MBL",
+        "players": [
+            {
+                "name": "Terrell Smith",
+                "offensiveRating": 100,
+                "defensiveRating": 100,
+                "position": 1,
+                "positionPlay": 1,
+                "role": "Starter",
+                "rotationMinutes": 70
+            },
+            {
+                "name": "Doug Martin",
+                "offensiveRating": 98,
+                "defensiveRating": 98,
+                "position": 2,
+                "positionPlay": 2,
+                "role": "Starter",
+                "rotationMinutes": 50
+            },
+            {
+                "name": "Jabar Woods",
+                "offensiveRating": 99,
+                "defensiveRating": 99,
+                "position": 3,
+                "positionPlay": 3,
+                "role": "Starter",
+                "rotationMinutes": 65
+            },
+            {
+                "name": "Travis Davis",
+                "offensiveRating": 92,
+                "defensiveRating": 92,
+                "position": 4,
+                "positionPlay": 4,
+                "role": "Starter",
+                "rotationMinutes": 60
+            },
+            {
+                "name": "Jerome Howard",
+                "offensiveRating": 98,
+                "defensiveRating": 98,
+                "position": 5,
+                "positionPlay": 5,
+                "role": "Starter",
+                "rotationMinutes": 55
+            },
+            {
+                "name": "Tyler Lewis",
+                "offensiveRating": 88,
+                "defensiveRating": 88,
+                "position": 1,
+                "positionPlay": 1,
+                "role": "Role Player",
+                "rotationMinutes": 30
+            },
+            {
+                "name": "Steve Wells",
+                "offensiveRating": 97,
+                "defensiveRating": 97,
+                "position": 2,
+                "positionPlay": 2,
+                "role": "Sixth Man",
+                "rotationMinutes": 50
+            },
+            {
+                "name": "Ryan Jax",
+                "offensiveRating": 91,
+                "defensiveRating": 91,
+                "position": 3,
+                "positionPlay": 3,
+                "role": "Role Player",
+                "rotationMinutes": 35
+            },
+            {
+                "name": "Tyler Peters",
+                "offensiveRating": 87,
+                "defensiveRating": 87,
+                "position": 4,
+                "positionPlay": 4,
+                "role": "Role Player",
+                "rotationMinutes": 40
+            },
+            {
+                "name": "Tyson Smith",
+                "offensiveRating": 95,
+                "defensiveRating": 95,
+                "position": 5,
+                "positionPlay": 5,
+                "role": "Sixth Man",
+                "rotationMinutes": 45
+            }
+        ],
+        "coach": {
+            "name": "Travis Johnson",
             "offensiveRating": 100,
             "defensiveRating": 100
         }

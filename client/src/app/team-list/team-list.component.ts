@@ -68,7 +68,7 @@ export class TeamListComponent implements OnInit {
    * Deletes all teams
    */
   deleteTeams() {
-    this.teamService.deleteAllTeams().subscribe(() => this.createFileTeams(this.newTeams);
+    this.teamService.deleteAllTeams().subscribe(() => this.createFileTeams(this.newTeams));
   }
 
 }

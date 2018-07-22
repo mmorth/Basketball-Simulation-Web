@@ -1,0 +1,19 @@
+{
+    "name": "",
+    "players": [
+        {
+            "name": "",
+            "offensiveRating": ,
+            "defensiveRating": ,
+            "position": ,
+            "positionPlay": ,
+            "role": "",
+            "rotationMinutes": 
+        }
+    ],
+    "coach": {
+        "name": "",
+        "offensiveRating": ,
+        "defensiveRating": 
+    }
+}

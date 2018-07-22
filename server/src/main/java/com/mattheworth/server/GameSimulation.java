@@ -36,14 +36,14 @@ public class GameSimulation {
 	/**
 	 * The away team
 	 */
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
 	@JoinColumn(name="away_team_id")
 	private Team awayTeam;
 	
 	/**
 	 * The home team
 	 */
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
 	@JoinColumn(name="home_team_id")
 	private Team homeTeam;
 	

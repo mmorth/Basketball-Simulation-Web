@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { GameSimulationService } from '../services/game-simulation.service';
 import { GameSimulation } from '../models/game-simulation';
+import { Team } from '../models/team';
 import { TeamService } from '../services/team.service';
 
 @Component({
@@ -21,14 +22,9 @@ export class GameSimulationComponent implements OnInit {
   gameSimulation: GameSimulation;
 
   /**
-   * The id of the away team for the game simulation
+   * Stores the created teams
    */
-  awayTeamID: number;
-
-  /**
-   * The id of the home team for the game simulation
-   */
-  homeTeamID: number;
+  teams: Team[];
 
   /**
    * Controls which stat page gets displayed on the bottom of the page
@@ -47,16 +43,16 @@ export class GameSimulationComponent implements OnInit {
    * Creates a new game simulation when the user enters the page
    */
   ngOnInit() {
-    console.log("NGINIT")
-    this.createSimulation();
+    this.getTeams();
     this.statDisplay = 1;
   }
 
   /**
-   * Deletes the current game simulation when the user leaves the page
-   */
-  ngOnDestroy() {
-    this.deleteSimulation();
+ * Gets the list of team
+ */
+  getTeams(): void {
+    this.teamService.getTeams()
+      .subscribe(teams => { this.teams = teams; this.createSimulation() });
   }
 
   /**
@@ -71,24 +67,11 @@ export class GameSimulationComponent implements OnInit {
    * Creates a new game simulation
    */
   createSimulation(): void {
-    let gameSim = new GameSimulation();
+    let gameSim = new GameSimulation(this.teams[0], this.teams[1]);
     this.gameSimulationService.createGameSimulation(gameSim)
       .subscribe(gameSimulation => {
-        console.log();
         this.getSimulation(gameSimulation.id);
       }
-      );
-  }
-
-  /**
-   * Deletes the current game simulation
-   */
-  deleteSimulation(): void {
-    this.gameSimulationService.deleteGameSimulation(this.gameSimulation.id)
-      .subscribe(
-        () => {
-          console.log("DELETE")
-        }
       );
   }
 

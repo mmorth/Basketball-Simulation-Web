@@ -42,8 +42,6 @@ public class GameSimulationController {
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody GameSimulation createGameSimulation(@RequestBody GameSimulation gameSimulation) {
 
-		gameSimulation.setAwayTeam(new Team());
-		gameSimulation.setHomeTeam(new Team());
 		gameSimulationRepository.save(gameSimulation);
 		
 		return gameSimulation;

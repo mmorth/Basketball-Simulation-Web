@@ -12,172 +12,147 @@ import { TeamService } from '../services/team.service';
 })
 
 /**
- * Represents the game simulation options for the user
- */
+* Represents the game simulation options for the user
+*/
 export class GameSimulationInputComponent implements OnInit {
 
   /**
-   * Represents the list of teams
-   */
+  * Represents the list of teams
+  */
   teams: Team[];
 
   /**
-   * The current game simulation
-   */
+  * The current game simulation
+  */
   @Input() gameSimulation: GameSimulation;
 
   /**
-   * Used to send the id of the game simulation to the parent to display
-   */
+  * Used to send the id of the game simulation to the parent to display
+  */
   @Output() gameSimulationUpdate = new EventEmitter<number>();
 
   /**
-   * Displays an error message if exists
-   */
+  * Displays an error message if exists
+  */
   errorString: string;
 
   /**
-   * Constructs a new GameSimulationInputComponent
-   * @param teamService Inject the TeamService into the component
-   * @param gameSimulationService Inject the GameSimulationService into the component
-   */
+  * Constructs a new GameSimulationInputComponent
+  * @param teamService Inject the TeamService into the component
+  * @param gameSimulationService Inject the GameSimulationService into the component
+  */
   constructor(private teamService: TeamService, private gameSimulationService: GameSimulationService) { }
 
   /**
-   * Get the list of teams when the user enters the page
-   */
+  * Get the list of teams when the user enters the page
+  */
   ngOnInit() {
     this.getTeams();
   }
 
   /**
-   * Update the current game simulation
-   */
+  * Update the current game simulation
+  */
   updateParentGameSimulation() {
     this.gameSimulationUpdate.next(this.gameSimulation.id);
   }
 
   /**
-   * Gets the list of team
-   */
+  * Gets the list of team
+  */
   getTeams(): void {
     this.teamService.getTeams()
-    .subscribe(teams => this.teams = teams);
-  }
-
-  determineValidTeamSelect(): boolean {
-    return this.gameSimulation.awayTeam != null && this.gameSimulation.homeTeam != null;
+      .subscribe(teams => this.teams = teams);
   }
 
   /**
-   * Simulates a possession
-   */
+  * Simulates a possession
+  */
   simulatePossession(): void {
-    if (this.determineValidTeamSelect()) {
-      this.gameSimulationService.simulatePossession(this.gameSimulation.id)
-      .subscribe(gameSimulation =>{
+    this.gameSimulationService.simulatePossession(this.gameSimulation.id)
+      .subscribe(gameSimulation => {
         this.getSimulation(gameSimulation.id);
         this.updateParentGameSimulation();
-        this.errorString = "";
       });
-    } else {
-      this.errorString = "You must select a home and away team"
-    }
   }
 
   /**
-   * Simulates a quarter
-   */
+  * Simulates a quarter
+  */
   simulateQuarter(): void {
-    if (this.determineValidTeamSelect()) {
-      this.gameSimulationService.simulateQuarter(this.gameSimulation.id)
-      .subscribe(gameSimulation =>{
+    this.gameSimulationService.simulateQuarter(this.gameSimulation.id)
+      .subscribe(gameSimulation => {
         this.getSimulation(gameSimulation.id);
         this.updateParentGameSimulation();
-        this.errorString = "";
       });
-    } else {
-      this.errorString = "You must select a home and away team"
-    }
   }
 
   /**
-   * Simulates the game
-   */
+  * Simulates the game
+  */
   simulateGame(): void {
-    console.log(this.determineValidTeamSelect())
-    if (this.determineValidTeamSelect()) {
-      this.gameSimulationService.simulateGame(this.gameSimulation.id)
-      .subscribe(gameSimulation =>{
+    this.gameSimulationService.simulateGame(this.gameSimulation.id)
+      .subscribe(gameSimulation => {
         this.getSimulation(gameSimulation.id);
         this.updateParentGameSimulation();
-        this.errorString = "";
       });
-    } else {
-      this.errorString = "You must select a home and away team"
-    }
-  }
-  
-  /**
-   * Resets the simulation
-   */
-  resetSimulation(): void {
-    if (this.determineValidTeamSelect()) {
-      this.gameSimulationService.resetSimulation(this.gameSimulation.id)
-      .subscribe(gameSimulation =>{
-        this.getSimulation(gameSimulation.id);
-        this.updateParentGameSimulation();
-        this.errorString = "";
-      });
-    } else {
-      this.errorString = "You must select a home and away team"
-    }
   }
 
   /**
-   * Sets the away team for the current simulation
-   * @param awayTeamID The id of the team to set as the away team for the simulation
-   */
+  * Resets the simulation
+  */
+  resetSimulation(): void {
+    this.gameSimulationService.resetSimulation(this.gameSimulation.id)
+      .subscribe(gameSimulation => {
+        this.getSimulation(gameSimulation.id);
+        this.updateParentGameSimulation();
+      });
+  }
+
+  /**
+  * Sets the away team for the current simulation
+  * @param awayTeamID The id of the team to set as the away team for the simulation
+  */
   setAwayTeam(awayTeamID: number, awayTeam: Team): void {
     if (awayTeam.players.length >= 5) {
       this.gameSimulationService.setAwayteam(this.gameSimulation.id, awayTeamID)
-      .subscribe(gameSimulation =>{
-        this.getSimulation(gameSimulation.id);
-        this.updateParentGameSimulation();
-        this.errorString = "";
-      });
+        .subscribe(gameSimulation => {
+          this.getSimulation(gameSimulation.id);
+          this.updateParentGameSimulation();
+          this.errorString = "";
+        });
     } else {
       this.errorString = "Error: Team needs at least 5 players"
     }
   }
 
   /**
-   * Sets the home team for the game simulation
-   * @param homeTeamID The id of the team to set as the home team for the simulation
-   */
+  * Sets the home team for the game simulation
+  * @param homeTeamID The id of the team to set as the home team for the simulation
+  */
   setHomeTeam(homeTeamID: number, homeTeam: Team): void {
     if (homeTeam.players.length >= 5) {
       this.gameSimulationService.setHometeam(this.gameSimulation.id, homeTeamID)
-      .subscribe(gameSimulation =>{
-        this.getSimulation(gameSimulation.id);
-        this.updateParentGameSimulation();
-        this.errorString = "";
-      });
+        .subscribe(gameSimulation => {
+          this.getSimulation(gameSimulation.id);
+          this.updateParentGameSimulation();
+          this.errorString = "";
+        });
     } else {
       this.errorString = "Error: Team needs at least 5 players"
     }
   }
 
   /**
-   * Gets the simulation with the given id
-   * @param gameSimID The id of the game simulation to get
-   */
+  * Gets the simulation with the given id
+  * @param gameSimID The id of the game simulation to get
+  */
   getSimulation(gameSimID: number): void {
     this.gameSimulationService.getGameSimulation(gameSimID)
-    .subscribe(gameSimulation => {
-      this.gameSimulation = gameSimulation;
-    	}
-    );
+      .subscribe(gameSimulation => {
+        this.gameSimulation = gameSimulation;
+      }
+      );
   }
 
 }

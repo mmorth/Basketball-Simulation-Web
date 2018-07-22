@@ -25,9 +25,9 @@ export class GameSimulation {
 	awayPlayers: Array<Player>;
 	homePlayers: Array<Player>;
 
-	constructor() {
-		this.awayTeam = new Team();
-		this.homeTeam = new Team();
+	constructor(awayTeam: Team, homeTeam: Team) {
+		this.awayTeam = awayTeam;
+		this.homeTeam = homeTeam;
 		this.possessionsRemaining = 99;
 		this.isOvertime = false;
 		this.awayTeamScore = 0;

@@ -12,7 +12,7 @@ const HEADERS: any = { headers: { 'Content-Type': 'application/json' }};
 })
 
 /**
- * A service used to make REST API calls to the back-end for the Player
+ * A service used to make REST API calls to the back-end for the Team
  */
 export class TeamService {
 
@@ -31,17 +31,15 @@ export class TeamService {
 
   /**
    * Makes a REST API call to get a team with the specified id from the back-end database
-   * @param id The id of the player to get
+   * @param playerID The id of the player to get
    */
-  getTeam(id: number): Observable<Team> {
-  	return this.http.get<Team>('http://localhost:8080/api/teams/' + id)
+  getTeam(playerID: number): Observable<Team> {
+  	return this.http.get<Team>('http://localhost:8080/api/teams/' + playerID)
   }
 
   /**
-   * Makes a REST API call to create a player with the given information from the back-end database
+   * Makes a REST API call to create a team with the given information from the back-end database
    * @param teamName The name of the player
-   * @param offRating The offensive rating of the player
-   * @param defRating The defensive rating of the player
    */
   createTeam(teamName: string) {
   	return this.http.post('http://localhost:8080/api/teams/',
@@ -51,7 +49,7 @@ export class TeamService {
   }
 
   /**
-   * Makes a REST API call to delete the player with the specified id from the back-end database
+   * Makes a REST API call to delete the team with the specified id from the back-end database
    * @param teamID The id of the player to delete
    */
   deleteTeam(teamID: number) {
@@ -59,15 +57,12 @@ export class TeamService {
   }
 
   /**
-   * Makes a REST API call to update the player with the given id from the back-end database
+   * Makes a REST API call to update the team with the given id from the back-end database
    * @param teamID The id of the player
-   * @param teamName The name of the player
-   * @param offRating The offensive rating of the player
-   * @param defRating The defensive rating of the player
    */
-  updateTeam(teamID: number, teamName: string) {
+  updateTeam(teamID: number) {
   	return this.http.put('http://localhost:8080/api/teams/' + teamID,
-  		JSON.stringify({ "name": teamName }), 
+  		JSON.stringify({ }), 
   		HEADERS
   	);
   }
@@ -75,7 +70,6 @@ export class TeamService {
   /**
    * Makes a REST API call to sorts the players on the team with the given id from the back-end database
    * @param teamID The team id
-   * @param team The team to sort
    */
   sortPlayers(teamID: number): Observable<Array<Player>> {
     return this.http.get<Array<Player>>('http://localhost:8080/api/teams/' + teamID + '/sort/players');

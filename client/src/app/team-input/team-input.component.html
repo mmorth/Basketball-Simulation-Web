@@ -72,9 +72,9 @@
 					<td>{{ updatePlayerRating(player, player.overallRating) }}</td>
 					<td>
 						<div class="form-group">
-							<select class="form-control" [(ngModel)]="player.positionPlay" id="sel1">
+							<select class="form-control" [(ngModel)]="player.positionPlay" type="number" id="sel1">
 								<option value="" disabled selected>Select a position</option>
-								<option *ngFor="let pos of positions" [value]="pos" (click)="updatePosition(player)">{{pos}}</option>
+								<option *ngFor="let pos of positions" (click)="updatePosition(player, pos)" [value]="pos">{{pos}}</option>
 							</select>
 							</div> 
 					</td>

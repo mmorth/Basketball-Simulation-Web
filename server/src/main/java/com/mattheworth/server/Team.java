@@ -327,11 +327,11 @@ public class Team {
 	 * @param playerRole The role of the new player
 	 * @return Whether the new player role is valid
 	 */
-	public boolean validPlayerRole(long playerID, String playerRole) {
+	public boolean validPlayerRole(Player inputPlayer, String playerRole) {
 		int numStarters = 0;
 		
 		for (Player player: this.players) {
-			if (playerID != player.getId() && playerRole.equals("Starter") && player.getRole().equals("Starter")) {
+			if (!inputPlayer.equals(player) && playerRole.equals("Starter") && player.getRole().equals("Starter")) {
 				numStarters++;
 			}
 			

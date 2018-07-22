@@ -26,7 +26,7 @@
 			<input id="playerDefensiveRating" class="form-control input-lg" id="inputlg" type="number" [(ngModel)]="player.defensiveRating" placeholder="Defensive Rating" value={{player.defensiveRating}} ng-model="playerInputs">
 		</div>
 
-		<div class="form-group" *ngIf="pcid==0">
+		<div class="form-group" *ngIf="playerCoachSelector==0">
 				<label for="sel1">Position (0=Coach, 1=PG, 2=SG, 3=SF, 4=PF, 5=C):</label>
 				<select class="form-control" [(ngModel)]="player.position" type="number" id="sel1">
 				  <option value="" disabled selected>Select a position</option>
@@ -34,12 +34,12 @@
 				</select>
 			  </div> 
 
-		<div class="form-group" *ngIf="pcid==0">
+		<div class="form-group" *ngIf="playerCoachSelector==0">
 			<label for="inputlg">Rotation Minutes (must be between 0 and 100)</label>
 			<input id="playerDefensiveRating" class="form-control input-lg" id="inputlg" type="number" [(ngModel)]="player.rotationMinutes" placeholder="Rotation Possessions" value={{player.rotationMinutes}} ng-model="playerInputs">
 		</div>
 
-		<div class="form-group" *ngIf="pcid==0">
+		<div class="form-group" *ngIf="playerCoachSelector==0">
 				<label for="sel1">Player Role:</label>
 				<select class="form-control" [(ngModel)]="player.role" type="number" id="sel1">
 				  <option value="" disabled selected>Select a player role</option>
@@ -68,20 +68,20 @@
 			<input id="playerDefensiveRating" class="form-control input-lg" id="inputlg" type="number" [(ngModel)]="player.defensiveRating" placeholder="Defensive Rating" ng-model="playerInputs">
 		</div>
 
-		<div class="form-group" *ngIf="pcid==0">
+		<div class="form-group" *ngIf="playerCoachSelector==0">
 				<label for="sel1">Position (0=Coach, 1=PG, 2=SG, 3=SF, 4=PF, 5=C):</label>
 				<select class="form-control" [(ngModel)]="player.position" type="number" id="sel1">
 				  <option value="" disabled selected>Select a position</option>
-				  <option *ngFor="let pos of positions" (click)="setPosition(pos)" [value]="pos">{{pos}}</option>
+				  <option *ngFor="let pos of positions" [value]="pos">{{pos}}</option>
 				</select>
 			  </div> 
 
-		<div class="form-group" *ngIf="pcid==0">
+		<div class="form-group" *ngIf="playerCoachSelector==0">
 			<label for="inputlg">Rotation Minutes (must be between 0 and 100)</label>
 			<input id="playerDefensiveRating" class="form-control input-lg" id="inputlg" type="number" [(ngModel)]="player.rotationMinutes" placeholder="Rotation Possessions" ng-model="playerInputs">
 		</div>
 
-		<div class="form-group" *ngIf="pcid==0">
+		<div class="form-group" *ngIf="playerCoachSelector==0">
 				<label for="sel1">Player Role:</label>
 				<select class="form-control" [(ngModel)]="player.role" type="number" id="sel1">
 				  <option value="" disabled selected>Select a player role</option>

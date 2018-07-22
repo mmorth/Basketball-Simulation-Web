@@ -6,6 +6,9 @@ import { Router } from '@angular/router';
 import { Player } from '../models/player';
 import { PlayerService } from '../services/player.service';
 
+/**
+ * A class that represents the player and coach create, update, and delete form
+ */
 @Component({
 	selector: 'app-player-input',
 	templateUrl: './player-input.component.html',
@@ -14,8 +17,8 @@ import { PlayerService } from '../services/player.service';
 export class PlayerInputComponent implements OnInit {
 
 	/**
- * The current player
- */
+	 * The current player
+	 */
 	player: Player;
 
 	/**
@@ -26,16 +29,12 @@ export class PlayerInputComponent implements OnInit {
 	/**
 	 * Determines whether a coach or a player is selected
 	 */
-	pcid: number;
+	playerCoachSelector: number;
 
 	/**
 	 * The name of the team
 	 */
 	playerName: string;
-
-	/**
-	 * 
-	 */
 
 	/**
 	 * Stores the position options for the players dropdown
@@ -46,6 +45,16 @@ export class PlayerInputComponent implements OnInit {
 	 * Stores the player role options for the players dropdown
 	 */
 	roles: string[] = ["Starter", "Sixth Man", "Role Player", "Prospect", "Bench Warmer"];
+
+	/**
+	 * Stores the id of the team from the url
+	 */
+	teamID: number;
+
+	/**
+	 * Stores the id of the player from the url
+	 */
+	playerID: number;
 
 	/**
 	 * Constructs a new TeamInputComponent with the following injections
@@ -60,49 +69,33 @@ export class PlayerInputComponent implements OnInit {
 	 * Get the specified player if it exists when the user enters the page
 	 */
 	ngOnInit(): void {
-		const playerID = +this.route.snapshot.paramMap.get('playerID');
+		this.playerID = +this.route.snapshot.paramMap.get('playerID');
+		this.teamID = +this.route.snapshot.paramMap.get('teamID');
 
-		if (!isNaN(playerID)) {
+		this.player = new Player();
+
+		if (!isNaN(this.playerID)) {
 			this.getPlayer();
-		} else {
-			this.player = new Player();
 		}
 
 		this.playerName = "";
 
-		this.pcid = +this.route.snapshot.paramMap.get('pcid');
+		this.playerCoachSelector = +this.route.snapshot.paramMap.get('playerCoachSelector');
 
-	}
-
-	/**
-	 * Sets the position of the player
-	 */
-	setPosition(inputPosition: number) {
-		console.log(inputPosition)
-		this.player.position = inputPosition;
-	}
-
-	/**
-	 * Sets the role of the player / coach
-	 */
-	setRole(inputRole: string) {
-		this.player.role = inputRole;
 	}
 
 	/**
 	 * Gets the player with the specified id
 	 */
 	getPlayer(): void {
-		const id = +this.route.snapshot.paramMap.get('playerID');
-		this.playerService.getPlayer(id)
+		this.playerService.getPlayer(this.playerID)
 			.subscribe(player => {
-				if (this.player!= null) {
+				if (this.player != null) {
 					this.player = player;
 					this.playerName = player.name;
 				} else {
 					this.player = new Player();
 				}
-				
 			}
 			);
 	}
@@ -111,23 +104,20 @@ export class PlayerInputComponent implements OnInit {
 	 * Create the specified player based on the user's input
 	 */
 	createPlayer(): void {
-		const id = +this.route.snapshot.paramMap.get('teamID');
-		const pcid = +this.route.snapshot.paramMap.get('pcid');
-
 		// Create a player
-		if (pcid === 0) {
+		if (this.playerCoachSelector === 0) {
 			if ((this.playerName.length > 0 || this.player.name.length > 0) && this.player.offensiveRating > 0 && this.player.offensiveRating <= 100 && this.player.defensiveRating > 0 && this.player.defensiveRating <= 100 && this.player.position >= 1 && this.player.position <= 5 && this.player.rotationMinutes >= 0 && this.player.rotationMinutes <= 100 && this.player.role.length > 0) {
 				if (this.playerName.length > 0) {
 					this.player.name = this.playerName;
 				}
 				this.player.position = +this.player.position;
-				this.playerService.createPlayer(id, this.player)
+				this.playerService.createPlayer(this.teamID, this.player)
 					.subscribe(validCreate => {
 						if (validCreate) {
 							this.player = null;
 							this.playerName = "";
 							this.inputError = "";
-							this.router.navigateByUrl('/team-details/' + id);
+							this.router.navigateByUrl('/team-details/' + this.teamID);
 						} else {
 							this.inputError = "Invalid Player Role. There are already 5 starters."
 						}
@@ -138,14 +128,17 @@ export class PlayerInputComponent implements OnInit {
 		}
 
 		// Create a coach
-		if (pcid === 1) {
+		if (this.playerCoachSelector === 1) {
 			if (this.playerName.length > 0 && this.player.offensiveRating > 0 && this.player.offensiveRating <= 100 && this.player.defensiveRating > 0 && this.player.defensiveRating <= 100) {
-				this.playerService.createCoach(id, this.player)
+				if (this.playerName.length > 0) {
+					this.player.name = this.playerName;
+				}
+				this.playerService.createCoach(this.teamID, this.player)
 					.subscribe(() => {
 						this.player = null;
 						this.playerName = "";
 						this.inputError = "";
-						this.router.navigateByUrl('/team-details/' + id);
+						this.router.navigateByUrl('/team-details/' + this.teamID);
 					});
 			} else {
 				this.inputError = "Invalid Input";
@@ -158,35 +151,30 @@ export class PlayerInputComponent implements OnInit {
 	 * Deletes the player with the specified id
 	 */
 	deletePlayer(): void {
-		const teamID = +this.route.snapshot.paramMap.get('teamID');
-		const playerID = +this.route.snapshot.paramMap.get('playerID');
-
-		const pcid = +this.route.snapshot.paramMap.get('pcid');
-
 		// Delete a player
-		if (pcid == 0) {
+		if (this.playerCoachSelector == 0) {
 			if (window.confirm('Are sure you want to delete this player?')) {
-				this.playerService.deletePlayer(teamID, playerID)
+				this.playerService.deletePlayer(this.teamID, this.playerID)
 					.subscribe(
 						() => {
 							this.player = null;
 							this.playerName = "";
 							this.inputError = "";
-							this.router.navigateByUrl('/team-details/' + teamID);
+							this.router.navigateByUrl('/team-details/' + this.teamID);
 						}
 					);
 			}
 		}
 
 		// Delete a coach
-		if (pcid == 1) {
+		if (this.playerCoachSelector == 1) {
 			if (window.confirm('Are sure you want to delete this coach?')) {
-				this.playerService.deleteCoach(teamID, playerID)
+				this.playerService.deleteCoach(this.teamID, this.playerID)
 					.subscribe(
 						() => {
 							this.player = null;
 							this.playerName = "";
-							this.router.navigateByUrl('/team-details/' + teamID);
+							this.router.navigateByUrl('/team-details/' + this.teamID);
 						}
 					);
 			}
@@ -198,23 +186,17 @@ export class PlayerInputComponent implements OnInit {
 	 * Update the player with the specified id
 	 */
 	updatePlayer(): void {
-		const teamID = +this.route.snapshot.paramMap.get('teamID');
-		const playerID = +this.route.snapshot.paramMap.get('playerID');
-
-		const pcid = +this.route.snapshot.paramMap.get('pcid');
-
 		// Update a player
-		if (pcid === 0) {
+		if (this.playerCoachSelector === 0) {
 			if (this.player.offensiveRating > 0 && this.player.offensiveRating <= 100 && this.player.defensiveRating > 0 && this.player.defensiveRating <= 100 && this.player.position >= 1 && this.player.position <= 5 && this.player.rotationMinutes >= 0 && this.player.rotationMinutes <= 100 && this.player.role.length > 0 && this.player.stamina >= 0 && this.player.stamina <= 100) {
-
-				this.playerService.updatePlayer(teamID, playerID, this.player)
+				this.playerService.updatePlayer(this.teamID, this.playerID, this.player)
 					.subscribe(
 						validChange => {
 							if (validChange) {
 								this.player = null;
 								this.playerName = "";
 								this.inputError = "";
-								this.router.navigateByUrl('/team-details/' + teamID);
+								this.router.navigateByUrl('/team-details/' + this.teamID);
 							} else {
 								this.inputError = "Invalid Change."
 							}
@@ -227,16 +209,15 @@ export class PlayerInputComponent implements OnInit {
 		}
 
 		// Update a coach
-		if (pcid === 1) {
+		if (this.playerCoachSelector === 1) {
 			if (this.player.offensiveRating > 0 && this.player.offensiveRating <= 100 && this.player.defensiveRating > 0 && this.player.defensiveRating <= 100) {
-
-				this.playerService.updateCoach(teamID, playerID, this.player)
+				this.playerService.updateCoach(this.teamID, this.playerID, this.player)
 					.subscribe(
 						() => {
 							this.player = null;
 							this.playerName = "";
 							this.inputError = "";
-							this.router.navigateByUrl('/team-details/' + teamID);
+							this.router.navigateByUrl('/team-details/' + this.teamID);
 						}
 					);
 

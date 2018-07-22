@@ -82,7 +82,8 @@ export class TeamInputComponent implements OnInit {
 	 * Updates the position of the player
 	 * @param player The player to update the position for
 	 */
-	updatePosition(player: Player): void {
+	updatePosition(player: Player, pos: number): void {
+		player.positionPlay = pos;
 			this.playerService.updatePlayer(this.team.id, player.id, player)
 			.subscribe(validChange => {
 				if (validChange) {
@@ -196,7 +197,7 @@ export class TeamInputComponent implements OnInit {
   updateTeam(): void {
   	const id = +this.route.snapshot.paramMap.get('id');
   	
-		this.teamService.updateTeam(id, this.teamName)
+		this.teamService.updateTeam(id)
 		.subscribe(
 			() => {
 				this.team = null;

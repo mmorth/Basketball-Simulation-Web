@@ -11,8 +11,8 @@ const routes: Routes = [
   { path: 'team-details', component: TeamDetailsComponent },
   { path: 'team-details/:id', component: TeamInputComponent },
   { path: 'team-details/create', component: TeamInputComponent },
-  { path: 'team-details/:teamID/:playerID/:pcid', component: PlayerInputComponent },
-  { path: 'team-details/:teamID/create/:pcid', component: PlayerInputComponent }
+  { path: 'team-details/:teamID/:playerID/:playerCoachSelector', component: PlayerInputComponent },
+  { path: 'team-details/:teamID/create/:playerCoachSelector', component: PlayerInputComponent }
 ];
 
 @NgModule({

@@ -47,12 +47,7 @@ public class PlayerController {
 		
 		Team team = teamRepository.findById(teamID).get();
 		
-		System.out.println(jsonPlayer);
-		System.out.println(jsonPlayer.getName());
-		System.out.println(jsonPlayer.getOffensiveRating());
-		System.out.println(jsonPlayer.getRole());
-		
-		if (team.validPlayerRole(jsonPlayer.getId(), jsonPlayer.getRole())) {
+		if (team.validPlayerRole(jsonPlayer, jsonPlayer.getRole())) {
 			jsonPlayer.resetPlayerGameStats();
 			jsonPlayer.setOverallRating();
 			
@@ -111,7 +106,7 @@ public class PlayerController {
 		
 		boolean validChange = true;
 		
-		if (team.validPlayerRole(updatePlayer.getId(), jsonPlayer.getRole())) {
+		if (team.validPlayerRole(updatePlayer, jsonPlayer.getRole())) {
 			updatePlayer.setRole(jsonPlayer.getRole());
 			
 			if (updatePlayer.getRole().equals("Starter")) {

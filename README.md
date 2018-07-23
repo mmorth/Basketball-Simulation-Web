@@ -3,9 +3,8 @@ A basketball simulation web application using an Angular front-end, a Java sprin
 * User can create teams and assign players and coaches to those teams.
 * User can simulate a basketball game between two teams
 * Improved the simulation by adding player statistics, player substitutions, and a more accurate simulation algorithm.
+
 The future goals for this project are listed below:
-* Add players and a coach to each team
-* Improve the simulation by adding player statistics, player substitutions, and a more accurate simulation algorithm.
 * Create the ability for the user to simulate a season
 * Create the ability for the user to simulate a career
 * Allow multiple users to face each other in a game simulation, season, or career. (Add multiplayer) 

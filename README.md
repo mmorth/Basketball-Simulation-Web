@@ -34,8 +34,8 @@ MySQL Install Steps:
 1. Follow all steps from webpage to configure mysql
 	https://support.rackspace.com/how-to/installing-mysql-server-on-ubuntu/
 2. Create db_basketball_simulation table
-3. Create database user:
-	username = bballuser
+3. Create database user:  
+	username = bballuser  
 	password = bballsim
 4. Grant all permissions to bballuser
 
@@ -61,8 +61,8 @@ ng serve
 ## Server:
 # Spring Install Steps:
 1. Open server workspace from eclipse
-2. Configure Run As:
-	Project: server
+2. Configure Run As:  
+	Project: server  
 	Main Type: com.mattheworth.server.ServerApplication
 3. Press run button
 

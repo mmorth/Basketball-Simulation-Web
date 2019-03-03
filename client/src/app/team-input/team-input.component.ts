@@ -189,4 +189,15 @@ export class TeamInputComponent implements OnInit {
 		}
 	}
 
+
+	// Create a button that, when clicked, will reduce the player's age and contract years and update their overall ratings
+		// Have a confirmation window appear to ensure the user wants to update this information
+	// Call back-end method that reduces the player's age and contract years and updates their ratings
+		// In the back-end, loop through each team by calling teamRepository.all() and reduce age and contract years
+			// Create algorithm to reduce player's ratings. Increase ratings until 30 then reduce.
+				// Calculate (potential/100) * randomNumber(between 0-3)
+					// Result is how much a player's ratings changes.
+	// Call back-end method to list all teams
+	// Iterate through each team and print out only the desired JSON fields to the teams.JSON file
+
 }

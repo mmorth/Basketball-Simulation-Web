@@ -66,6 +66,12 @@ ng serve
 	Main Type: com.mattheworth.server.ServerApplication
 3. Press run button
 
+## Other Setup
+1. In a web browser, navigate to http://localhost:4200
+2. Client on the "Team Details" button in the top navigation
+3. Click on "Create Team From File"
+4. Navigate to other parts of the application and enjoy!
+
 ## Built With
 * [Angular](https://angular.io/docs) - Front-end
 * [Spring](https://spring.io/docs) - Back-end

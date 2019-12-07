@@ -9,6 +9,7 @@ The future goals for this project are listed below:
 * Create the ability for the user to simulate a career
 * Allow multiple users to face each other in a game simulation, season, or career. (Add multiplayer) 
 
+![alt text](https://github.com/mmorth/Basketball-Simulation-Web/blob/master/Game_Summary.png)
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine.
